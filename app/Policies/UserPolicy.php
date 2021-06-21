@@ -41,6 +41,7 @@ class UserPolicy
     public function create(User $user)
     {
         return $user->hasPermission('create_users');
+        
     }
 
     /**
