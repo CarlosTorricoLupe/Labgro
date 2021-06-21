@@ -4,6 +4,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\UserController;
 
 /*
 |--------------------------------------------------------------------------
@@ -32,3 +33,19 @@ Route::group(['middleware' => ['jwt.verify']], function() {
     Route::put('update/{product}',  [ProductController::class, 'update']);
     Route::delete('delete/{product}',  [ProductController::class, 'destroy']);
 });
+
+
+Route::get('/permission', function () {
+    $user = App\Models\User::where('name','canaviri')->first();
+    $op = $user->role->permissions()->where('name', 'views_articles')->exists();
+    dd($op);
+    return $op;
+});
+
+Route::get('users', [UserController::class, 'index']);
+Route::post('users/create', [UserController::class, 'store']);
+Route::put('users/update/{user}', [UserController::class, 'update']);
+Route::delete('users/delete/{user}',  [UserController::class, 'destroy']);
+
+
+//https://www.youtube.com/watch?v=2f0ucOIQJko&list=PLwNeytHvRMPxnPxvEckKJ73c2FxvSoZyY&index=9
