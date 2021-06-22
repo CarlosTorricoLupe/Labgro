@@ -25,7 +25,7 @@ class CreateArticuloRequest extends FormRequest
     {
 
         $rules = [
-            'nombre_articulo' => 'required|between:2,25|unique:articles,nombre_articulo|regex:/^[w-]*$/'
+            'nombre_articulo' => 'required|between:2,25|unique:articles,nombre_articulo'
         ];
 
         switch ($this->method()) {
