@@ -32,6 +32,12 @@ Route::group(['middleware' => ['jwt.verify']], function() {
     Route::post('create', [ProductController::class, 'store']);
     Route::put('update/{product}',  [ProductController::class, 'update']);
     Route::delete('delete/{product}',  [ProductController::class, 'destroy']);
+
+    Route::get('users', [UserController::class, 'index']);
+    Route::post('users/create', [UserController::class, 'store']);
+    Route::put('users/update/{user}', [UserController::class, 'update']);
+    Route::delete('users/delete/{user}',  [UserController::class, 'destroy']);
+    
 });
 
 
@@ -41,11 +47,6 @@ Route::get('/permission', function () {
     dd($op);
     return $op;
 });
-
-Route::get('users', [UserController::class, 'index']);
-Route::post('users/create', [UserController::class, 'store']);
-Route::put('users/update/{user}', [UserController::class, 'update']);
-Route::delete('users/delete/{user}',  [UserController::class, 'destroy']);
 
 
 //https://www.youtube.com/watch?v=2f0ucOIQJko&list=PLwNeytHvRMPxnPxvEckKJ73c2FxvSoZyY&index=9
