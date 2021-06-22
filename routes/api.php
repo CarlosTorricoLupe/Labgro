@@ -7,6 +7,7 @@ use App\Http\Controllers\ArticleController;
 //
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\UserController;
 
 /*
 |--------------------------------------------------------------------------
@@ -51,3 +52,18 @@ Route::delete('articles/{articles}',  [ArticleController::class, 'destroy'])->na
 
 
 
+
+Route::get('/permission', function () {
+    $user = App\Models\User::where('name','canaviri')->first();
+    $op = $user->role->permissions()->where('name', 'views_articles')->exists();
+    dd($op);
+    return $op;
+});
+
+Route::get('users', [UserController::class, 'index']);
+Route::post('users/create', [UserController::class, 'store']);
+Route::put('users/update/{user}', [UserController::class, 'update']);
+Route::delete('users/delete/{user}',  [UserController::class, 'destroy']);
+
+
+//https://www.youtube.com/watch?v=2f0ucOIQJko&list=PLwNeytHvRMPxnPxvEckKJ73c2FxvSoZyY&index=9
