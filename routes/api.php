@@ -34,10 +34,12 @@ Route::group(['middleware' => ['jwt.verify']], function() {
     //Route::delete('delete/{product}',  [ProductController::class, 'destroy']);
 });
 
-Route::get('article', [ArticleController::class, 'index']);
-Route::get('article/{id}', [ArticleController::class, 'show']);
-Route::post('create', [ArticleController::class, 'store']);
-Route::put('update/{id}',  [ArticleController::class, 'update']);
-Route::delete('delete/{id}',  [ArticleController::class, 'destroy']);
+Route::get('articles', [ArticleController::class, 'index'])->name('articles');
+Route::get('article/{articles}', [ArticleController::class, 'show'])->name('articles');
+Route::post('articles/create', [ArticleController::class, 'store'])->name('articles');
+Route::put('articles/{articles}',  [ArticleController::class, 'update'])->name('articles');
+Route::delete('articles/{articles}',  [ArticleController::class, 'destroy'])->name('articles');
+
+
 
 
