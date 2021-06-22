@@ -49,15 +49,15 @@ class CreateArticuloRequest extends FormRequest
     public function messages()
     {
         return [
-            'name.required'   => 'El :attribute es obligatorio.',
-            'name.unique'   => 'El :attribute es unico.',
+            'nombre_articulo.required'   => 'El :attribute es obligatorio.',
+            'nombre_articulo.unique'   => 'El :attribute es unico.',
         ];
     }
 
     public function attributes()
     {
         return [
-            'name' => 'nombre de categoria',
+            'nombre_articulo' => 'nombre de articulo',
         ];
     }
 
