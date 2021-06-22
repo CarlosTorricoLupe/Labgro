@@ -38,7 +38,7 @@ class ArticleController extends Controller
     {
         Article::create($request->all());
         return response()->json([
-            'res' => true,
+            'sucess' => true,
             'message' => 'Regsitro creado correctamente'
         ],status:200);
     }
@@ -52,7 +52,10 @@ class ArticleController extends Controller
     //GET return un solo registro
     public function show(Article $article)
     {
-        return $article;
+        return response()->json([
+            'success'=> true,
+            'category' =>$article
+        ],200);
     }
 
     /**
@@ -69,7 +72,7 @@ class ArticleController extends Controller
         $article->update($request->all());
         return response()->json([
             'res' => true,
-            'message' => 'Registro actualizado correctamente'
+            'message' => 'Articulo actualizado correctamente'
         ],status:200);
     }
 
@@ -84,7 +87,7 @@ class ArticleController extends Controller
     {
         Article::destroy($id);
         return response()->json([
-            'res' => true,
+            'success' => true,
             'message' => 'Se elimino correctamente'
         ],status:200);
     }

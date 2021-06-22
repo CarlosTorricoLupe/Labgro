@@ -3,7 +3,6 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
-use Symfony\Contracts\Service\Attribute\Required;
 
 class CreateArticuloRequest extends FormRequest
 {
@@ -49,15 +48,15 @@ class CreateArticuloRequest extends FormRequest
     public function messages()
     {
         return [
-            'name.required'   => 'El :attribute es obligatorio.',
-            'name.unique'   => 'El :attribute es unico.',
+            'nombre_articulo.required'   => 'El :attribute es obligatorio.',
+            'nombre_articulo.unique'   => 'El :attribute es unico.',
         ];
     }
 
     public function attributes()
     {
         return [
-            'name' => 'nombre de articulo',
+            'nombre_articulo' => 'nombre de articulo',
         ];
     }
 
