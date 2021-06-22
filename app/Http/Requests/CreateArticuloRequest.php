@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class CreateCategoryRequest extends FormRequest
+class CreateArticuloRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -16,11 +16,16 @@ class CreateCategoryRequest extends FormRequest
         return true;
     }
 
+    /**
+     * Get the validation rules that apply to the request.
+     *
+     * @return array
+     */
     public function rules()
     {
 
         $rules = [
-            'name' => 'required|between:2,25|unique:categories,name'
+            'nombre_articulo' => 'required|between:2,25|unique:articles,nombre_articulo'
         ];
 
         switch ($this->method()) {
@@ -43,15 +48,16 @@ class CreateCategoryRequest extends FormRequest
     public function messages()
     {
         return [
-            'name.required'   => 'El :attribute es obligatorio.',
-            'name.unique'   => 'El :attribute es unico.',
+            'nombre_articulo.required'   => 'El :attribute es obligatorio.',
+            'nombre_articulo.unique'   => 'El :attribute es unico.',
         ];
     }
 
     public function attributes()
     {
         return [
-            'name' => 'nombre de categoria',
+            'nombre_articulo' => 'nombre de articulo',
         ];
     }
+
 }

@@ -16,13 +16,23 @@ class RoleSeeder extends Seeder
     {
         $items = [
             [
-                'name' => 'super_admin' 
+                'name' => 'Super_Admin' 
             ],           
+            
             [
-                'name' => 'users',
+                'name' => 'Lacteos',
             ],
+            
             [
-                'name' => 'viewers',
+                'name' => 'Frutas',
+            ],
+
+            [
+                'name' => 'Carnicos',
+            ],
+
+            [
+                'name' => 'Almacenes',
             ]
 
         ];

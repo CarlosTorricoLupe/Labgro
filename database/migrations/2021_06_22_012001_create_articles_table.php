@@ -15,6 +15,10 @@ class CreateArticlesTable extends Migration
     {
         Schema::create('articles', function (Blueprint $table) {
             $table->id();
+            $table->string('nombre_articulo')->unique();
+            $table->string('categoria');
+            $table->float('cantidad');
+            $table->string('unidad_medida');
             $table->timestamps();
         });
     }

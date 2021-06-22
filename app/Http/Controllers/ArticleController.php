@@ -1,10 +1,11 @@
 <?php
 
 namespace App\Http\Controllers;
-
-use Illuminate\Http\Request;
+use App\Http\Requests\CreateArticuloRequest;
+use App\Http\Requests\UpdateArticuloRequest;
 use App\Models\Article;
 
+use Illuminate\Http\Request;
 
 class ArticleController extends Controller
 {
@@ -13,10 +14,17 @@ class ArticleController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    //GET listar registro
+    public function index(Request $request)
     {
-        $articles =  Article::all();   
-        return response()->json([ 'articles' => $articles ], 200);
+        if($request->has(key:'txtBuscar'))
+        {
+            $article = Article::where('categoria', 'like', '%' . $request->txtBuscar . '%')
+                            ->get();
+        }else{
+        $article = Article::all();
+        }
+        return $article;
     }
 
     /**
@@ -25,16 +33,14 @@ class ArticleController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    //POST insertar datos
+    public function store(CreateArticuloRequest $request)
     {
-        $this->authorize('create', Article::class);
-
-        $input  = $request->all();
-        User::create($input);
+        Article::create($request->all());
         return response()->json([
-            'status' => true,
-            'message' => 'Usuario creado correctamente'
-        ], 201);
+            'sucess' => true,
+            'message' => 'Regsitro creado correctamente'
+        ],status:200);
     }
 
     /**
@@ -43,9 +49,13 @@ class ArticleController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    //GET return un solo registro
+    public function show(Article $article)
     {
-        //
+        return response()->json([
+            'success'=> true,
+            'category' =>$article
+        ],200);
     }
 
     /**
@@ -55,9 +65,15 @@ class ArticleController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    //PUT actualizar registros
+    public function update(UpdateArticuloRequest $request, Article $article)
     {
-        //
+
+        $article->update($request->all());
+        return response()->json([
+            'res' => true,
+            'message' => 'Articulo actualizado correctamente'
+        ],status:200);
     }
 
     /**
@@ -66,8 +82,13 @@ class ArticleController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
+    //DELETE eliminar
     public function destroy($id)
     {
-        //
+        Article::destroy($id);
+        return response()->json([
+            'success' => true,
+            'message' => 'Se elimino correctamente'
+        ],status:200);
     }
 }
