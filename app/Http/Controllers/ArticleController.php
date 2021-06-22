@@ -36,8 +36,7 @@ class ArticleController extends Controller
     //POST insertar datos
     public function store(CreateArticuloRequest $request)
     {
-        $input = $request->all();
-        Article::create($input);
+        Article::create($request->all());
         return response()->json([
             'res' => true,
             'message' => 'Regsitro creado correctamente'
