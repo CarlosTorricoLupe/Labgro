@@ -25,7 +25,7 @@ class UpdateArticuloRequest extends FormRequest
     {
 
         $rules = [
-            'nombre_articulo' => 'required|unique:articles,nombre_articulo|min:5|max:100|regex:/^[w-]*$/'
+            'nombre_articulo' => 'required|unique:articles,nombre_articulo|regex:/^[w-]*$/'
         ];
 
         switch ($this->method()) {
