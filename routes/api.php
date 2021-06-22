@@ -68,10 +68,13 @@ Route::apiResource('articles',ArticleController::class);
 
 
 Route::get('/permission', function () {
-    $user = App\Models\User::where('name','canaviri')->first();
+   /* $user = App\Models\User::where('name','canaviri')->first();
     $op = $user->role->permissions()->where('name', 'views_articles')->exists();
     dd($op);
-    return $op;
+    return $op;*/
+
+    $categorie1 = App\Models\Category::where('name','Material de escritorio')->first();
+    dd($categorie1->id);
 
 });
 

@@ -20,19 +20,19 @@ class RoleSeeder extends Seeder
             ],           
             
             [
-                'name' => 'Lacteos',
+                'name' => 'Lacteos'
             ],
             
             [
-                'name' => 'Frutas',
+                'name' => 'Frutas'
             ],
 
             [
-                'name' => 'Carnicos',
+                'name' => 'Carnicos'
             ],
 
             [
-                'name' => 'Almacenes',
+                'name' => 'Almacenes'
             ]
 
         ];

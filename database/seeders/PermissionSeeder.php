@@ -20,10 +20,10 @@ class PermissionSeeder extends Seeder
                 'name' => 'ver_articulos' 
             ],           
             [
-                'name' => 'administrar_articulos',
+                'name' => 'administrar_articulos'
             ],
             [
-                'name' => 'administrar_usuarios',
+                'name' => 'administrar_usuarios'
             ]
 
         ];
