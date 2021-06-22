@@ -14,9 +14,9 @@ class CreateArticlesTable extends Migration
     public function up()
     {
         Schema::create('articles', function (Blueprint $table) {
-            $table->id();
+            $table->bigIncrements('id');
             $table->string('nombre_articulo')->unique();
-            $table->string('categoria');
+            $table->foreignId('category_id')->constrained();
             $table->float('cantidad');
             $table->string('unidad_medida');
             $table->timestamps();
