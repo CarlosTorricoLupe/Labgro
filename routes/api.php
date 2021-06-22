@@ -4,8 +4,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ArticleController;
-//
-use App\Http\Controllers\ProductController;
+//use App\Http\Controllers\ProductController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\UserController;
 
@@ -36,20 +35,20 @@ Route::delete('categories/{category}',  [CategoryController::class, 'destroy']);
 Route::group(['middleware' => ['jwt.verify']], function() {
     Route::get('logout', [AuthController::class, 'logout']);
     Route::get('get_user', [AuthController::class, 'get_user']);
-    Route::get('products', [ProductController::class, 'index']);
-    Route::get('products/{id}', [ProductController::class, 'show']);
-    Route::post('create', [ProductController::class, 'store']);
+    //Route::get('products', [ProductController::class, 'index']);
+    //Route::get('products/{id}', [ProductController::class, 'show']);
+    //Route::post('create', [ProductController::class, 'store']);
     //Route::put('update/{product}',  [ProductController::class, 'update']);
     //Route::delete('delete/{product}',  [ProductController::class, 'destroy']);
 });
 
-Route::get('articles', [ArticleController::class, 'index'])->name('articles');
+/*Route::get('articles', [ArticleController::class, 'index'])->name('articles');
 Route::get('article/{articles}', [ArticleController::class, 'show'])->name('articles');
 Route::post('articles/create', [ArticleController::class, 'store'])->name('articles');
 Route::put('articles/{articles}',  [ArticleController::class, 'update'])->name('articles');
-Route::delete('articles/{articles}',  [ArticleController::class, 'destroy'])->name('articles');
+Route::delete('articles/{articles}',  [ArticleController::class, 'destroy'])->name('articles');*/
 
-
+Route::apiResource('articles',ArticleController::class);
 
 
 
