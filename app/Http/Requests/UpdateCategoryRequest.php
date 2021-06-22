@@ -25,7 +25,7 @@ class UpdateCategoryRequest extends FormRequest
         public function rules()
     {
         $rules = [
-            'name' => 'required|between:2,25|unique:categories,name|regex:/^[w-]*$/'//.$this->route('category')->id
+            'name' => 'required|between:2,25|unique:categories,name'//.$this->route('category')->id
         ];
 
         switch ($this->method()) {
