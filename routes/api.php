@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\CategoryController;
 
 /*
 |--------------------------------------------------------------------------
@@ -24,12 +25,19 @@ use App\Http\Controllers\UserController;
 Route::post('login', [AuthController::class, 'login']);
 Route::post('register', [AuthController::class, 'register']);
 
+Route::get('categories', [CategoryController::class,'index'])->name('categories');
+Route::post('categories/create', [CategoryController::class,'store'])->name('categories');
+Route::get('categories/{category}', [CategoryController::class,'show'])->name('categories');
+Route::put('categories/{category}', [CategoryController::class,'update'])->name('categories');
+Route::delete('categories/{category}',  [CategoryController::class, 'destroy']);
+
 Route::group(['middleware' => ['jwt.verify']], function() {
     Route::get('logout', [AuthController::class, 'logout']);
     Route::get('get_user', [AuthController::class, 'get_user']);
     Route::get('products', [ProductController::class, 'index']);
     Route::get('products/{id}', [ProductController::class, 'show']);
     Route::post('create', [ProductController::class, 'store']);
+
     Route::put('update/{product}',  [ProductController::class, 'update']);
     Route::delete('delete/{product}',  [ProductController::class, 'destroy']);
 
@@ -46,6 +54,7 @@ Route::get('/permission', function () {
     $op = $user->role->permissions()->where('name', 'views_articles')->exists();
     dd($op);
     return $op;
+
 });
 
 
