@@ -115,7 +115,7 @@ class AuthController extends Controller
             'token' => 'required'
         ]);
  
-        $user = JWTAuth::login($request->token);
+        $user = JWTAuth::authenticate($request->token);
  
         return response()->json(['user' => $user]);
     }
