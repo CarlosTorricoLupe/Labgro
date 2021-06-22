@@ -24,8 +24,41 @@ class CreateArticuloRequest extends FormRequest
      */
     public function rules()
     {
+
+        $rules = [
+            'nombre_articulo' => 'required|unique:articles,nombre_articulo|regex:/^[w-]*$/'
+        ];
+
+        switch ($this->method()) {
+            case 'GET':
+            case 'DELETE': {
+                    return [];
+                }
+            case 'POST': {
+                    return $rules;
+                }
+            case 'PUT':
+            case 'PATCH': {
+                    return $rules;
+                }
+            default:
+                break;
+        }
+    }
+
+    public function messages()
+    {
         return [
-        'nombre_articulo' => 'required|unique:articles,nombre_articulo|min:5|max:100'
+            'name.required'   => 'El :attribute es obligatorio.',
+            'name.unique'   => 'El :attribute es unico.',
         ];
     }
+
+    public function attributes()
+    {
+        return [
+            'name' => 'nombre de categoria',
+        ];
+    }
+
 }
