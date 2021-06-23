@@ -89,4 +89,35 @@ class ArticleController extends Controller
             'message' => 'Se elimino correctamente'
         ],200);
     }
+    public function searchArticle(Request $request)
+    {      
+        $result = Article::where('name_article', 'like',$request->txtBuscar.'%')->get();
+        
+        if(count($result)){
+            return $result;
+        } else {
+            return response()->json([
+                'success'=>false,
+                'message'=>'No se encontraron resultados'
+            ],404);
+        }
+    }
+
+    public function searchArticleForCategorgy(Request $request)
+    {             
+        $result =Article::join('categories','articles.category_id','=',"categories.id")
+            ->where('categories.name','=',$request->txtBuscar)
+            ->select('articles.*') 
+            ->get();
+
+
+        if(count($result)){
+            return $result;
+        } else {
+            return response()->json([
+                'success'=>false,
+                'message'=>'No se encontraron resultados'
+            ],404);
+        }
+    }
 }

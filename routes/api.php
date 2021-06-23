@@ -41,6 +41,8 @@ Route::apiResource('categories',CategoryController::class);
 Route::get('search/category/{name}', [CategoryController::class,'search']);
 
 Route::apiResource('articles',ArticleController::class);
+Route::get('search', [ArticleController::class, 'searchArticle']);
+Route::get('search_category', [ArticleController::class, 'searchArticleForCategorgy']);
 
 
 
