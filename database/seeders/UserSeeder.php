@@ -17,7 +17,7 @@ class UserSeeder extends Seeder
         $users= [
             [
                 'name' => 'SuperAdmin',
-                'email' => 'superadmin@gmail.com',
+                'email' => 'superadmin@phpgmail.com',
                 'email_verified_at' => Null,
                 'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password
                 'remember_token' => Null,
@@ -38,7 +38,7 @@ class UserSeeder extends Seeder
                 'email_verified_at' => Null,
                 'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password
                 'remember_token' => Null,
-                'role_id' =>3
+                'role_id' =>5
             ],
             [
                 'name' => 'Carnicos',
@@ -54,7 +54,7 @@ class UserSeeder extends Seeder
                 'email_verified_at' => Null,
                 'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password
                 'remember_token' => Null,
-                'role_id' =>5
+                'role_id' =>3
             ]
         ];
         foreach($users as $key => $value){

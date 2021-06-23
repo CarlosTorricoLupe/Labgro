@@ -24,7 +24,7 @@ class RoleSeeder extends Seeder
             ],
             
             [
-                'name' => 'Frutas'
+                'name' => 'Almacenes'
             ],
 
             [
@@ -32,7 +32,7 @@ class RoleSeeder extends Seeder
             ],
 
             [
-                'name' => 'Almacenes'
+                'name' => 'Frutas'
             ]
 
         ];

@@ -14,7 +14,6 @@ class RolePermissionSeeder extends Seeder
      */
     public function run()
     {
-      
         $super_admin = Role::where('name','Super_Admin')->first();
         $super_admin ->permissions()->sync([1,2,3]);
 
