@@ -78,4 +78,17 @@ class CategoryController extends Controller
             'message'=>'Categoria eliminada correctamente'
         ],200);
     }
+
+    public function search($name)
+    {
+        $result = Category::where('name', 'like',$name.'%')->get();
+        if(count($result)){
+            return $result;
+        } else {
+            return response()->json([
+                'success'=>false,
+                'message'=>'No se encontraron resultados'
+            ],404);
+        }
+    }
 }

@@ -38,6 +38,7 @@ Route::group(['middleware' => ['jwt.verify']], function() {
 });
 
 Route::apiResource('categories',CategoryController::class);
+Route::get('search/category/{name}', [CategoryController::class,'search']);
 
 Route::apiResource('articles',ArticleController::class);
 
