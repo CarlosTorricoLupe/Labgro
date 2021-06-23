@@ -17,10 +17,9 @@ class ArticleController extends Controller
     //GET listar registro
     public function index(Request $request)
     {
-        if($request->has(key:'txtBuscar'))
+        if($request->has('txtBuscar'))
         {
-            $article = Article::where('categoria', 'like', '%' . $request->txtBuscar . '%')
-                            ->get();
+            $article = Article::where('categoria', 'like', '%' . $request->txtBuscar . '%')->get();
         }else{
         $article = Article::all();
         }
@@ -40,7 +39,7 @@ class ArticleController extends Controller
         return response()->json([
             'sucess' => true,
             'message' => 'Regsitro creado correctamente'
-        ],status:200);
+        ],200);
     }
 
     /**
@@ -68,12 +67,11 @@ class ArticleController extends Controller
     //PUT actualizar registros
     public function update(UpdateArticuloRequest $request, Article $article)
     {
-
         $article->update($request->all());
         return response()->json([
             'res' => true,
             'message' => 'Articulo actualizado correctamente'
-        ],status:200);
+        ],200);
     }
 
     /**
@@ -89,6 +87,6 @@ class ArticleController extends Controller
         return response()->json([
             'success' => true,
             'message' => 'Se elimino correctamente'
-        ],status:200);
+        ],200);
     }
 }

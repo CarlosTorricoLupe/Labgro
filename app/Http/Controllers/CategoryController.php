@@ -60,7 +60,7 @@ class CategoryController extends Controller
         $category->update($request->all());
         return response()->json([
             'sucess' => true,
-            'message' => 'Categoria actualisada correctamente'
+            'message' => 'Categoria actualizada correctamente'
         ],200);
     }
 
