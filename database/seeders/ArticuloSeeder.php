@@ -21,7 +21,7 @@ class ArticuloSeeder extends Seeder
                 'nombre_articulo' => 'Embase de 700 cc',
                 'category_id' => Category::where('name','Material de escritorio')->first(),
                 'unidad_medida'=> 'javas',
-                'cantidad'=> '50'
+                'cantidad'=> '5'
             ],
             [
                 'nombre_articulo' => 'Hojas bond tamaño carta',
