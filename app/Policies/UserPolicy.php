@@ -29,7 +29,7 @@ class UserPolicy
      */
     public function view(User $user, User $model)
     {
-        //
+        return $user->hasPermission('views_items');
     }
 
     /**
@@ -41,7 +41,6 @@ class UserPolicy
     public function create(User $user)
     {
         return $user->hasPermission('create_users');
-        
     }
 
     /**

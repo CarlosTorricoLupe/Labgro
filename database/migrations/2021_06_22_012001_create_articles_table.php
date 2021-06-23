@@ -14,11 +14,11 @@ class CreateArticlesTable extends Migration
     public function up()
     {
         Schema::create('articles', function (Blueprint $table) {
-            $table->id();
-            $table->string('nombre_articulo')->unique();
-            $table->string('categoria');
-            $table->float('cantidad');
-            $table->string('unidad_medida');
+            $table->bigIncrements('id');
+            $table->string('name_article')->unique();
+            $table->foreignId('category_id')->constrained();
+            $table->float('stock');
+            $table->string('unit_measure');
             $table->timestamps();
         });
     }

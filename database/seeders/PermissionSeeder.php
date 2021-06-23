@@ -17,13 +17,13 @@ class PermissionSeeder extends Seeder
     {
         $items = [
             [
-                'name' => 'views_articles' 
+                'name' => 'ver_articulos' 
             ],           
             [
-                'name' => 'manage_articles',
+                'name' => 'administrar_articulos'
             ],
             [
-                'name' => 'manage_users',
+                'name' => 'administrar_usuarios'
             ]
 
         ];

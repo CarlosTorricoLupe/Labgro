@@ -4,10 +4,16 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\User;
-
+//use JWTAuth;
+//use Tymon\JWTAuth\Exceptions\JWTException;
 
 class UserController extends Controller
 {
+  /*   public function __construct()
+    {
+        $this->user = JWTAuth::parseToken()->authenticate();
+    } 
+*/
     /**
      * Display a listing of the resource.
      *
@@ -15,7 +21,9 @@ class UserController extends Controller
      */
     public function index()
     {
-        $users =  User::with('role')->get();   
+        $this->authorize('create', User::class);
+
+        $users =  User::with('role')->get();  
         return response()->json([ 'users' => $users ], 200);
     }
 
@@ -43,8 +51,12 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show(User $user)
+    public function show($id)
     {
+        $user = User::find($id);
+
+        $this->authorize('view', $user);
+        
         return response()->json(['user' => $user ], 200);
     }
 
