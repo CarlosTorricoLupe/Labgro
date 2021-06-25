@@ -16,7 +16,17 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        return Category::all();
+        $categories=Category::where('Active','=',1)->get();
+        if(count($categories)){
+            return $categories;
+        } else {
+            return response()->json([
+                'success'=>false,
+                'message'=>'No se encontraron resultados'
+            ],404);
+        }
+        //return Category::all();
+
     }
 
     /**
@@ -70,14 +80,16 @@ class CategoryController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Category $category)
+    public function destroy($id)
     {
-        $category->delete();
+        $category = Category::findorfail($id);
+        $category->update(['Active'=>0]);
         return response()->json([
             'success'=>true,
             'message'=>'Categoria eliminada correctamente'
         ],200);
     }
+
 
     public function search($name)
     {
