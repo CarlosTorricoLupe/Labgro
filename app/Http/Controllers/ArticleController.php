@@ -38,8 +38,8 @@ class ArticleController extends Controller
         Article::create($request->all());
         return response()->json([
             'sucess' => true,
-            'message' => 'Regsitro creado correctamente'
-        ],200);
+            'message' => 'Registro creado correctamente'
+        ],201);
     }
 
     /**
