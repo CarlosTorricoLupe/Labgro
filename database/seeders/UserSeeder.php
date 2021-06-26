@@ -1,35 +1,28 @@
 <?php
 
-namespace Database\Factories;
+namespace Database\Seeders;
 
 use App\Models\User;
-use Illuminate\Database\Eloquent\Factories\Factory;
-use Illuminate\Support\Str;
+use Illuminate\Database\Seeder;
 
-class UserFactory extends Factory
+class UserSeeder extends Seeder
 {
     /**
-     * The name of the factory's corresponding model.
+     * Run the database seeds.
      *
-     * @var string
+     * @return void
      */
-    protected $model = User::class;
-
-    /**
-     * Define the model's default state.
-     *
-     * @return array
-     */
-    public function definition()
+    public function run()
     {
-        return [
+        $users= [
             [
                 'name' => 'SuperAdmin',
-                'email' => 'superadmin@gmail.com',
+                'email' => 'superadmin@phpgmail.com',
                 'email_verified_at' => Null,
                 'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password
                 'remember_token' => Null,
                 'role_id' =>1
+               
             ],
             [
                 'name' => 'Lacteos',
@@ -37,7 +30,7 @@ class UserFactory extends Factory
                 'email_verified_at' => Null,
                 'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password
                 'remember_token' => Null,
-                'role_id' =>2
+                'role_id' =>2 
             ],
             [
                 'name' => 'Frutas',
@@ -45,7 +38,7 @@ class UserFactory extends Factory
                 'email_verified_at' => Null,
                 'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password
                 'remember_token' => Null,
-                'role_id' =>3
+                'role_id' =>5
             ],
             [
                 'name' => 'Carnicos',
@@ -61,22 +54,11 @@ class UserFactory extends Factory
                 'email_verified_at' => Null,
                 'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password
                 'remember_token' => Null,
-                'role_id' =>5
+                'role_id' =>3
             ]
         ];
-    }
-
-    /**
-     * Indicate that the model's email address should be unverified.
-     *
-     * @return \Illuminate\Database\Eloquent\Factories\Factory
-     */
-    public function unverified()
-    {
-        return $this->state(function (array $attributes) {
-            return [
-                'email_verified_at' => null,
-            ];
-        });
+        foreach($users as $key => $value){
+            User::create($value);
+        }
     }
 }

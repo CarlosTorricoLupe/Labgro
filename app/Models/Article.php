@@ -11,12 +11,16 @@ class Article extends Model
    protected $table = 'articles';
 
     protected $fillable = [
-        'nombre_articulo',
-        'categoria',
-        'unidad_medida',
-        'cantidad'
+        'name_article',
+        'category_id',
+        'stock',
+        'unit_measure'
     ];
     protected $hidden = [
         'created_at','updated_at'
     ];
+
+    public function categories(){
+        return $this->belongsToMany(Category::class);
+    }
 }

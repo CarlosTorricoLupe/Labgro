@@ -60,7 +60,7 @@ class CategoryController extends Controller
         $category->update($request->all());
         return response()->json([
             'sucess' => true,
-            'message' => 'Categoria actualisada correctamente'
+            'message' => 'Categoria actualizada correctamente'
         ],200);
     }
 
@@ -77,5 +77,18 @@ class CategoryController extends Controller
             'success'=>true,
             'message'=>'Categoria eliminada correctamente'
         ],200);
+    }
+
+    public function search($name)
+    {
+        $result = Category::where('name', 'like',$name.'%')->get();
+        if(count($result)){
+            return $result;
+        } else {
+            return response()->json([
+                'success'=>false,
+                'message'=>'No se encontraron resultados'
+            ],404);
+        }
     }
 }

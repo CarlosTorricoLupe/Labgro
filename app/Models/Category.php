@@ -9,7 +9,7 @@ class Category extends Model
 {
     use HasFactory;
     protected $fillable = [
-        'name','Active'
+        'name','Active' 
     ];
 
     protected $hidden = [
