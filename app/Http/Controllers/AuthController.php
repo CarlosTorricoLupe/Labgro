@@ -64,12 +64,12 @@ class AuthController extends Controller
                     return response()->json([
                         'succes' =>false,
                         'message' =>'El email no existe o no coincide con nuestros datos'
-                    ]);
+                    ],422);
                 }else{
                     return response()->json([
                         'succes' =>false,
                         'message' =>'La contraseña es incorrecta'
-                    ]);
+                    ],422);
                 }
             }
         } catch (JWTException $e) {
