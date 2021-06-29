@@ -47,8 +47,8 @@ class AuthController extends Controller
 
         //validar credenciales de la BD
         $validator = Validator::make($credentials, [
-            'email' => 'required|email',
-            'password' => 'required|string|min:6|max:50'
+            'email' => 'required|email|min:2|max:50',
+            'password' => 'required|string|min:8|max:16'
         ]);
 
         //Si las credenciales no son validas enviar respuesta de error
@@ -59,10 +59,18 @@ class AuthController extends Controller
         //Si las credenciales son validas crear token
         try {
             if (! $token = JWTAuth::attempt($credentials)) {
-                return response()->json([
-                	'success' => false,
-                	'message' => 'Las credenciales de inicio de sesion no son validas.',
-                ], 400);
+                $user = User::where('email',$request->get('email'))->first();
+                if(!$user){
+                    return response()->json([
+                        'succes' =>false,
+                        'message' =>'El email no existe o no coincide con nuestros datos'
+                    ]);
+                }else{
+                    return response()->json([
+                        'succes' =>false,
+                        'message' =>'La contraseña es incorrecta'
+                    ]);
+                }
             }
         } catch (JWTException $e) {
     	return $credentials;

@@ -93,7 +93,8 @@ class CategoryController extends Controller
 
     public function search($name)
     {
-        $result = Category::where('name', 'like',$name.'%')->get();
+        $result = Category::where('name', 'like',$name.'%')
+                            /* ->where('Active','=',1) */->get();
         if(count($result)){
             return $result;
         } else {
