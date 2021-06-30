@@ -43,15 +43,15 @@ class CreateCategoryRequest extends FormRequest
     public function messages()
     {
         return [
-            'name.required'   => 'El :attribute es obligatorio.',
-            'name.unique'   => 'El :attribute es unico.',
+            'name.required'   => 'El nombre para la :attribute es obligatorio.',
+            'name.unique'   => 'Esta :attribute ya existe, prueba otro nombre.',
         ];
     }
 
     public function attributes()
     {
         return [
-            'name' => 'nombre de categoria',
+            'name' => 'categoria',
         ];
     }
 }
