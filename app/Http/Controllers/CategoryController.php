@@ -65,8 +65,14 @@ class CategoryController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdateCategoryRequest $request, Category $category)
+    public function update(CreateCategoryRequest $request, Category $category)
     {
+        /* $category = Category::findorfail($id);
+        $category->update($request->all());
+        return response()->json([
+            'success'=>true,
+            'message'=>'Categoria eliminada correctamente'
+        ],200); */
         $category->update($request->all());
         return response()->json([
             'sucess' => true,
