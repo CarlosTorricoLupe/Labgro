@@ -9,21 +9,29 @@ use Tymon\JWTAuth\Exceptions\JWTException;
 use Symfony\Component\HttpFoundation\Response;
 use Illuminate\Support\Facades\Validator;
 
+
 class AuthController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth:api', ['except' => ['login', 'register']]);
+    }
+    
     public function register(Request $request)
     {
-    	//Validar datos
-        $data = $request->only('name', 'email', 'password');
-        $validator = Validator::make($data, [
+        //Validar datos
+        $validator = Validator::make($request->all(), [
             'name' => 'required|string',
             'email' => 'required|email|unique:users|min:2|max:50',
             'password' => 'required|string|min:8|max:16'
         ]);
-
+        
         //Si la solicitud no es valida enviar respuesta de error
         if ($validator->fails()) {
-            return response()->json(['error' => $validator->messages()], 400);
+            return response()->json(array(
+                "status" => false,
+                "errors" => $validator->messages()
+            ), 400);
         }
 
         //Si la solicitud es valida crear el usuario
@@ -33,12 +41,11 @@ class AuthController extends Controller
         	'password' => bcrypt($request->password)
         ]);
 
-        //returnar success response
         return response()->json([
             'success' => true,
             'message' => 'Usuario creado correctamente',
-            'data' => $user
-        ],201);
+            'user' => $user
+        ], 201);
     }
  
     public function login(Request $request)
@@ -47,18 +54,19 @@ class AuthController extends Controller
 
         //validar credenciales de la BD
         $validator = Validator::make($credentials, [
-            'email' => 'required|email|min:2|max:50',
-            'password' => 'required|string|min:8|max:16'
+            'email' => 'required|email',
+            'password' => 'required|string|min:6',
         ]);
 
-        //Si las credenciales no son validas enviar respuesta de error
+        //Si las validaciones fallan enviar mensaje de error
         if ($validator->fails()) {
-            return response()->json(['error' => $validator->messages()], 422);
+            return response()->json(
+                $validator->messages(), 422);
         }
 
-        //Si las credenciales son validas crear token
+        //Si las credenciales no son validas enviar mensaje de error
         try {
-            if (! $token = JWTAuth::attempt($credentials)) {
+            if (!$token = auth()->attempt($validator->validated())) {
                 $user = User::where('email',$request->get('email'))->first();
                 if(!$user){
                     return response()->json([
@@ -79,53 +87,33 @@ class AuthController extends Controller
                 	'message' => 'Error al crear el token.',
                 ], 500);
         }
-        
-        $user = User::where('email',$request->get('email'))->first();
- 		//Si no hay errores crear token y una respuesta de creado exitosamente 
-        return response()->json([
-            'success' => true,
-            'token' => $token,
-            'id' => $user->id,
-            'role_id' => $user->role_id,
-        ]);
+        return $this->createNewToken($token);
     }
  
     public function logout(Request $request)
     {
-        //validar credenciales
-        $validator = Validator::make($request->only('token'), [
-            'token' => 'required'
-        ]);
+        auth()->logout();
 
-        //Si la solicitud no es valida enviar respuesta de error
-        if ($validator->fails()) {
-            return response()->json(['error' => $validator->messages()], 200);
-        }
+        return response()->json(['message' => 'El usuario ha cerrado sesion']);
+    }
 
-		//Si la solicitud es valida cerrar sesion        
-        try {
-            JWTAuth::invalidate($request->token);
- 
-            return response()->json([
-                'success' => true,
-                'message' => 'El usuario ha cerrado sesion'
-            ]);
-        } catch (JWTException $exception) {
-            return response()->json([
-                'success' => false,
-                'message' => 'El usuario no puede cerrar sesion'
-            ], Response::HTTP_INTERNAL_SERVER_ERROR);
-        }
+    public function refresh()
+    {
+        return $this->createNewToken(auth()->refresh());
     }
  
     public function get_user(Request $request)
     {
-        $this->validate($request, [
-            'token' => 'required'
+        return response()->json(auth()->user());
+    }
+
+    protected function createNewToken($token)
+    {
+        return response()->json([
+            'success' => true,
+            'token' => $token,
+            'expira_en' => auth()->factory()->getTTL() * 60,
+            'user' => auth()->user()
         ]);
- 
-        $user = JWTAuth::authenticate($request->token);
- 
-        return response()->json(['user' => $user],200);
     }
 }
