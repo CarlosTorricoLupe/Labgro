@@ -113,7 +113,8 @@ class AuthController extends Controller
             'success' => true,
             'token' => $token,
             'expira_en' => auth()->factory()->getTTL() * 60,
-            'user' => auth()->user()
+            'user' => auth()->user()->only('name','email','role_id'),
+            'role_id' => auth()->user()->role_id
         ]);
     }
 }
