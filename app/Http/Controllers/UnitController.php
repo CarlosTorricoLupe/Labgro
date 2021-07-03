@@ -72,11 +72,10 @@ class UnitController extends Controller
      */
     public function destroy($id)
     {
-        $unit = Unit::findorfail($id);
-        $unit->update(['Active'=>0]);
+        Unit::destroy($id);
         return response()->json([
-            'success'=>true,
-            'message'=>'Unidad eliminada correctamente'
+            'success' => true,
+            'message' => 'Se elimino correctamente'
         ],200);
     }
 }

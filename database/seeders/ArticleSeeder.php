@@ -21,10 +21,10 @@ class ArticleSeeder extends Seeder
         $categorie3 = Category::where('name','Materia Prima')->first();
         $categorie4 = Category::where('name','Insumos')->first();
 
-        $units1 = Unit::where('unit_measure','Ltr','kind','Pesetas')->firts();
-        $units2 = Unit::where('unit_measure','Kgr','kind','gravedad')->firts();
-        $units3 = Unit::where('unit_measure','Mlt','kind','Volumen')->firts();
-        $units4 = Unit::where('unit_measure','k','kind','Peso')->firts();
+        $units1 = Unit::where('unit_measure','Ltr')->orWhere('kind','Pesetas')->firts();
+        $units2 = Unit::where('unit_measure','Kgr')->orWhere('kind','gravedad')->firts();
+        $units3 = Unit::where('unit_measure','Mlt')->orWhere('kind','Volumen')->firts();
+        $units4 = Unit::where('unit_measure','k')->orWhere('kind','Peso')->firts();
 
         $articles= [
             [
@@ -38,19 +38,19 @@ class ArticleSeeder extends Seeder
                 'name_article' => 'Hojas bond tamaño carta',
                 'category_id' => $categorie1->id,
                 'stock'=> '15',
-                'unit_measure'=> $units2->id
+                'unit_id'=> $units2->id
             ],
             [
                 'name_article' => 'Leche',
                 'category_id'  => $categorie3->id,
                 'stock'=> '100',
-                'unit_measure'=> $units3->id
+                'unit_id'=> $units3->id
             ],
             [
                 'name_article' => 'Yogurt',
                 'category_id' => $categorie4->id,
                 'stock'=> '100',
-                'unit_measure'=> $units4->id
+                'unit_id'=> $units4->id
             ]
         ];
         foreach($articles as $key => $value){
