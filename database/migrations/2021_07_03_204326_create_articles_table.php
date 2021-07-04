@@ -16,11 +16,12 @@ class CreateArticlesTable extends Migration
         Schema::create('articles', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('name_article')->unique();
-            $table->foreignId('category_id')->constrained();
             $table->float('stock');
-            $table->string('unit_measure');
+            $table->foreignId('category_id')->constrained();
+            $table->foreignId('unit_id')->constrained();
             $table->timestamps();
         });
+
     }
 
     /**
