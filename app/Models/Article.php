@@ -12,9 +12,9 @@ class Article extends Model
 
     protected $fillable = [
         'name_article',
-        'category_id',
         'stock',
-        'unit_measure'
+        'category_id',
+        'unit_id'
     ];
     protected $hidden = [
         'created_at','updated_at'
@@ -22,5 +22,8 @@ class Article extends Model
 
     public function categories(){
         return $this->belongsToMany(Category::class);
+    }
+    public function units(){
+        return $this->belongsToMany(Unit::class);
     }
 }
