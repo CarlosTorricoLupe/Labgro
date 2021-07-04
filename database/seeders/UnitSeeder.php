@@ -16,22 +16,35 @@ class UnitSeeder extends Seeder
     {
         $units= [
             [
-                'unit_measure' => 'Ltr',
-                'kind' => 'Pesetas'
-            ],
-            [
-                'unit_measure' => 'Kgr',
-                'kind' => 'gravedad'
-            ],
-            [
-                'unit_measure' => 'Mlt',
-                'kind' => 'Volumen'
-            ],
-            [
-                'unit_measure' => 'k',
+                'unit_measure' => 'ton',
                 'kind' => 'Peso'
+            ],
+            [
+                'unit_measure' => 'Kg',
+                'kind' => 'Peso'
+            ],
+            [
+                'unit_measure' => 'Caja',
+                'kind' => 'Adquisición'
+            ],
+            [
+                'unit_measure' => 'Unidad',
+                'kind' => 'Adquisición'
+            ],
+            [
+                'unit_measure' => 'Hojas',
+                'kind' => 'Adquisición'
+            ],
+            [
+                'unit_measure' => 'Ltr',
+                'kind' => 'Capacidad'
+            ],
+            [
+                'unit_measure' => 'gal',
+                'kind' => 'Capacidad'
             ]
         ];
+    
         foreach($units as $key => $value){
             Unit::create($value);
         }
