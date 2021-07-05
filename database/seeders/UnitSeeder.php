@@ -16,7 +16,7 @@ class UnitSeeder extends Seeder
     {
         $units= [
             [
-                'unit_measure' => 'ton',
+                'unit_measure' => 'Ton',
                 'kind' => 'Peso'
             ],
             [
@@ -40,7 +40,7 @@ class UnitSeeder extends Seeder
                 'kind' => 'Capacidad'
             ],
             [
-                'unit_measure' => 'gal',
+                'unit_measure' => 'Gal',
                 'kind' => 'Capacidad'
             ]
         ];
