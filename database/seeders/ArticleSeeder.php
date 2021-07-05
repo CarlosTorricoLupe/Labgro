@@ -32,31 +32,31 @@ class ArticleSeeder extends Seeder
         $articles= [
             [
                 'name_article' => 'Azucar',
-                'category_id' => $categorie2->id,
+                'category_id' => $categorie4->id,
                 'stock'=> '50',
                 'unit_id'=> $units1->id
             ],
             [
                 'name_article' => 'Arroz',
-                'category_id' => $categorie1->id,
+                'category_id' => $categorie4->id,
                 'stock'=> '15',
                 'unit_id'=> $units2->id
             ],
             [
                 'name_article' => 'Grampas',
-                'category_id'  => $categorie3->id,
+                'category_id'  => $categorie1->id,
                 'stock'=> '100',
                 'unit_id'=> $units3->id
             ],
             [
                 'name_article' => 'Tijeras',
-                'category_id' => $categorie4->id,
+                'category_id' => $categorie1->id,
                 'stock'=> '100',
                 'unit_id'=> $units4->id
             ],
             [
                 'name_article' => 'Papal Bon',
-                'category_id'  => $categorie3->id,
+                'category_id'  => $categorie1->id,
                 'stock'=> '100',
                 'unit_id'=> $units5->id
             ],
