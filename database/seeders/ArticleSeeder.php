@@ -34,43 +34,43 @@ class ArticleSeeder extends Seeder
                 'name_article' => 'Azucar',
                 'category_id' => $categorie4->id,
                 'stock'=> '50',
-                'unit_id'=> $units1->id
+                'unit_id'=> 1
             ],
             [
                 'name_article' => 'Arroz',
                 'category_id' => $categorie4->id,
                 'stock'=> '15',
-                'unit_id'=> $units2->id
+                'unit_id'=> 2
             ],
             [
                 'name_article' => 'Grampas',
                 'category_id'  => $categorie1->id,
                 'stock'=> '100',
-                'unit_id'=> $units3->id
+                'unit_id'=> 3
             ],
             [
                 'name_article' => 'Tijeras',
                 'category_id' => $categorie1->id,
                 'stock'=> '100',
-                'unit_id'=> $units4->id
+                'unit_id'=> 4
             ],
             [
                 'name_article' => 'Papal Bon',
                 'category_id'  => $categorie1->id,
                 'stock'=> '100',
-                'unit_id'=> $units5->id
+                'unit_id'=> 5
             ],
             [
                 'name_article' => 'Aceite',
                 'category_id'  => $categorie3->id,
                 'stock'=> '100',
-                'unit_id'=> $units6->id
+                'unit_id'=> 6
             ],
             [
                 'name_article' => 'Leche',
                 'category_id'  => $categorie3->id,
                 'stock'=> '100',
-                'unit_id'=> $units7->id
+                'unit_id'=> 7
             ],
         ];
         foreach($articles as $key => $value){
