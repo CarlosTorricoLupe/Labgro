@@ -8,12 +8,17 @@ use Illuminate\Database\Eloquent\Model;
 class Category extends Model
 {
     use HasFactory;
+
     protected $fillable = [
-        'name','Active' 
+        'name','Active'
     ];
 
     protected $hidden = [
         'created_at',
         'updated_at',
     ];
+    public function article(){
+        return $this->hasMany(Article::class);
+    }
+
 }

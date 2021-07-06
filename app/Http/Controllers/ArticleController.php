@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\CreateArticuloRequest;
 use App\Http\Requests\UpdateArticuloRequest;
 use App\Models\Article;
-
+use App\Models\Category;
 use Illuminate\Http\Request;
 
 class ArticleController extends Controller
@@ -15,15 +15,14 @@ class ArticleController extends Controller
      * @return \Illuminate\Http\Response
      */
     //GET listar registro
-    public function index(Request $request)
+    public function index()
     {
-        if($request->has('txtBuscar'))
-        {
-            $article = Article::where('categoria', 'like', '%' . $request->txtBuscar . '%')->get();
-        }else{
-        $article = Article::all();
-        }
-        return $article;
+
+            $result =Article::join('categories','articles.category_id','=',"categories.id")->join('units','articles.unit_id','=',"units.id")
+
+            ->select('articles.*','name', 'unit_measure','kind')
+            ->get();
+           return $result;
     }
 
     /**
@@ -90,9 +89,9 @@ class ArticleController extends Controller
         ],200);
     }
     public function searchArticle(Request $request)
-    {      
+    {
         $result = Article::where('name_article', 'like',$request->txtBuscar.'%')->get();
-        
+
         if(count($result)){
             return $result;
         } else {
@@ -104,10 +103,10 @@ class ArticleController extends Controller
     }
 
     public function searchArticleForCategorgy(Request $request)
-    {             
+    {
         $result =Article::join('categories','articles.category_id','=',"categories.id")
             ->where('categories.name','=',$request->txtBuscar)
-            ->select('articles.*') 
+            ->select('articles.*')
             ->get();
 
 
@@ -120,4 +119,7 @@ class ArticleController extends Controller
             ],404);
         }
     }
+
+
+
 }

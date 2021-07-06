@@ -25,6 +25,7 @@ class CreateArticuloRequest extends FormRequest
     {
 
         $rules = [
+            'cod_article' => 'required|between:2,25|unique:articles,cod_article',
             'name_article' => 'required|between:2,25|unique:articles,name_article'
         ];
 
@@ -48,15 +49,15 @@ class CreateArticuloRequest extends FormRequest
     public function messages()
     {
         return [
-            'nombre_articulo.required'   => 'El :attribute es obligatorio.',
-            'nombre_articulo.unique'   => 'El :attribute es unico.',
+            'cod_article.required'   => 'El :attribute es obligatorio.',
+            'cod_article.unique'   => 'El :attribute es unico.',
         ];
     }
 
     public function attributes()
     {
         return [
-            'nombre_articulo' => 'nombre de articulo',
+            'cod_article' => 'codigo de articulo',
         ];
     }
 

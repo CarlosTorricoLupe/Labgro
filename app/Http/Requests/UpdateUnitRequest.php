@@ -25,7 +25,7 @@ class UpdateUnitRequest extends FormRequest
     {
         $rules = [
             'unit_measure' => 'required|between:2,25|unique:units,unit_measure',
-            'kind' => 'required|between:2,25|unique:units,kind'
+
         ];
 
         switch ($this->method()) {

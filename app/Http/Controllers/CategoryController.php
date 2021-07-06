@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\CreateCategoryRequest;
 use App\Http\Requests\UpdateCategoryRequest;
 use App\Models\Category;
+use App\Models\Article;
 use Illuminate\Http\Request;
 
 class CategoryController extends Controller
@@ -40,7 +41,7 @@ class CategoryController extends Controller
          Category::create($request->all());
         return response()->json([
             'sucess' =>true,
-            'message' =>'Categoria creada correctamente' 
+            'message' =>'Categoria creada correctamente'
         ]);
     }
 
@@ -110,4 +111,6 @@ class CategoryController extends Controller
             ],404);
         }
     }
+
+
 }

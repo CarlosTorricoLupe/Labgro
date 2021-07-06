@@ -21,57 +21,41 @@ class ArticleSeeder extends Seeder
         $categorie3 = Category::where('name','Materia Prima')->first();
         $categorie4 = Category::where('name','Insumos')->first();
 
-        $units1 = Unit::where('kind','Peso')->where('unit_measure','Ton')->first();
-        $units2 = Unit::where('kind','Peso')->where('unit_measure','Kg')->first();
-        $units3 = Unit::where('kind','Adquisicion')->where('unit_measure','Caja')->first();
-        $units4 = Unit::where('kind','Adquisicion')->where('unit_measure','Unidad')->first();
-        $units5 = Unit::where('kind','Adquisicion')->where('unit_measure','Hojas')->first();
-        $units6 = Unit::where('kind','Capacidad')->where('unit_measure','Ltr')->first();
-        $units7 = Unit::where('kind','Capacidad')->where('unit_measure','Gal')->first();
+        $units1 = Unit::where('unit_measure','Ltr')->orWhere('kind','Pesetas')->pluck('id');
+        $units2 = Unit::where('unit_measure','Kgr')->orWhere('kind','gravedad')->pluck('id');
+        $units3 = Unit::where('unit_measure','Mlt')->orWhere('kind','Volumen')->pluck('id');
+        $units4 = Unit::where('unit_measure','k')->orWhere('kind','Peso')->pluck('id');
 
         $articles= [
             [
-                'name_article' => 'Azucar',
-                'category_id' => $categorie4->id,
+                'cod_article' => 'Emb',
+                'name_article' => 'Embase de 700 cc',
+                'category_id' => $categorie2->id,
                 'stock'=> '50',
-                'unit_id'=> 1
+                'unit_id'=> $units1[0]
+
             ],
             [
-                'name_article' => 'Arroz',
-                'category_id' => $categorie4->id,
-                'stock'=> '15',
-                'unit_id'=> 2
-            ],
-            [
-                'name_article' => 'Grampas',
-                'category_id'  => $categorie1->id,
-                'stock'=> '100',
-                'unit_id'=> 3
-            ],
-            [
-                'name_article' => 'Tijeras',
+                'cod_article' => 'Esc',
+                'name_article' => 'Hojas bond tamaño carta',
                 'category_id' => $categorie1->id,
-                'stock'=> '100',
-                'unit_id'=> 4
+                'stock'=> '15',
+                'unit_id'=> $units2[0]
             ],
             [
-                'name_article' => 'Papal Bon',
-                'category_id'  => $categorie1->id,
-                'stock'=> '100',
-                'unit_id'=> 5
-            ],
-            [
-                'name_article' => 'Aceite',
-                'category_id'  => $categorie3->id,
-                'stock'=> '100',
-                'unit_id'=> 6
-            ],
-            [
+                'cod_article' => 'lch',
                 'name_article' => 'Leche',
                 'category_id'  => $categorie3->id,
                 'stock'=> '100',
-                'unit_id'=> 7
+                'unit_id'=> $units3[0]
             ],
+            [
+                'cod_article' => 'ygt',
+                'name_article' => 'Yogurt',
+                'category_id' => $categorie4->id,
+                'stock'=> '100',
+                'unit_id'=> $units4[0]
+            ]
         ];
         foreach($articles as $key => $value){
             Article::create($value);

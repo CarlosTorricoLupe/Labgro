@@ -25,7 +25,9 @@ class UpdateArticuloRequest extends FormRequest
     {
 
         $rules = [
+            'cod_article' => 'required|between:2,25|unique:articles,cod_article',
             'name_article' => 'required|between:2,25|unique:articles,name_article'
+
         ];
 
         switch ($this->method()) {
