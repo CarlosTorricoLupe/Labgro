@@ -15,6 +15,7 @@ class CreateArticlesTable extends Migration
     {
         Schema::create('articles', function (Blueprint $table) {
             $table->bigIncrements('id');
+            $table->string('cod_article')->unique();
             $table->string('name_article')->unique();
             $table->float('stock');
             $table->foreignId('category_id')->constrained();
