@@ -8,20 +8,25 @@ use Illuminate\Database\Eloquent\Model;
 class Article extends Model
 {
     use HasFactory;
+
+
    protected $table = 'articles';
 
     protected $fillable = [
+        'id',
+        'cod_article',
         'name_article',
         'stock',
         'category_id',
-        'unit_id'
+        'unit_id',
+        'created_at'
     ];
     protected $hidden = [
-        'created_at','updated_at'
+        'updated_at',
     ];
 
     public function categories(){
-        return $this->belongsToMany(Category::class);
+        return $this->belongsToMany(Category::class,'category_id');
     }
     public function units(){
         return $this->belongsToMany(Unit::class);
