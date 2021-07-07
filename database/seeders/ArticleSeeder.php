@@ -21,10 +21,10 @@ class ArticleSeeder extends Seeder
         $categorie3 = Category::where('name','Materia Prima')->first();
         $categorie4 = Category::where('name','Insumos')->first();
 
-        $units1 = Unit::where('unit_measure','Ltr')->orWhere('kind','Pesetas')->pluck('id');
-        $units2 = Unit::where('unit_measure','Kgr')->orWhere('kind','gravedad')->pluck('id');
-        $units3 = Unit::where('unit_measure','Mlt')->orWhere('kind','Volumen')->pluck('id');
-        $units4 = Unit::where('unit_measure','k')->orWhere('kind','Peso')->pluck('id');
+        $units1 = Unit::where('unit_measure','Unidad')->orWhere('kind','Otro')->pluck('id');
+        $units2 = Unit::where('unit_measure','Kg')->orWhere('kind','Peso')->pluck('id');
+        $units3 = Unit::where('unit_measure','Ltr')->orWhere('kind','Volumen')->pluck('id');
+        $units4 = Unit::where('unit_measure','Caja')->orWhere('kind','Otro')->pluck('id');
 
         $articles= [
             [

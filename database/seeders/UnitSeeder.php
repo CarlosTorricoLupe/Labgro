@@ -25,15 +25,15 @@ class UnitSeeder extends Seeder
             ],
             [
                 'unit_measure' => 'Caja',
-                'kind' => 'Adquisición'
+                'kind' => 'Otro'
             ],
             [
                 'unit_measure' => 'Unidad',
-                'kind' => 'Adquisición'
+                'kind' => 'Otro'
             ],
             [
                 'unit_measure' => 'Hojas',
-                'kind' => 'Adquisición'
+                'kind' => 'Otro'
             ],
             [
                 'unit_measure' => 'Ltr',
