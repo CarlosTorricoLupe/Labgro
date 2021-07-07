@@ -90,11 +90,23 @@ class CategoryController extends Controller
     public function destroy($id)
     {
         $category = Category::findorfail($id);
-        $category->update(['Active'=>0]);
-        return response()->json([
-            'success'=>true,
-            'message'=>'Categoria eliminada correctamente'
-        ],200);
+        $articles =Category::join('articles','articles.category_id','=',"categories.id")
+            ->where('categories.name','=',$category->name)
+            ->select('articles.cod_article','articles.name_article')
+            ->get();
+        if(count($articles)){
+            return response()->json([
+                'success'=>true,
+                'message'=>'No se puede eliminar la categoria porque tiene los siguientes articulos',
+                'articles'=>$articles
+            ],200);
+        } else {
+            $category->update(['Active'=>0]);
+            return response()->json([
+                'success'=>true,
+                'message'=>'Categoria eliminada correctamente'
+            ],200);
+        }
     }
 
 
@@ -111,6 +123,4 @@ class CategoryController extends Controller
             ],404);
         }
     }
-
-
 }

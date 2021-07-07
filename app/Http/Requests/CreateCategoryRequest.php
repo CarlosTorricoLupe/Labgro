@@ -20,7 +20,7 @@ class CreateCategoryRequest extends FormRequest
     {
 
         $rules = [
-            'name' => 'required|between:2,25|unique:categories,name|regex:/^[a-zA-Z0-9\s]+$/'
+            'name' => 'required|between:2,25|unique:categories,name'
         ];
 
         switch ($this->method()) {
