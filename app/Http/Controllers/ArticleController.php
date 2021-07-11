@@ -18,9 +18,10 @@ class ArticleController extends Controller
     public function index()
     {
 
-            $result =Article::join('categories','articles.category_id','=',"categories.id")->join('units','articles.unit_id','=',"units.id")
-
-            ->select('articles.*','name', 'unit_measure','kind')
+            $result =Article::join('categories','articles.category_id','=',"categories.id")
+                                ->join('units','articles.unit_id','=',"units.id")
+                                    ->join('item_prices','articles.price_id','=',"item_prices.id")
+            ->select('articles.*','name', 'unit_measure','kind','unit_price')
             ->get();
            return $result;
     }
