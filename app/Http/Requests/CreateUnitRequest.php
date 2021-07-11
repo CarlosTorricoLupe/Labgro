@@ -24,7 +24,7 @@ class CreateUnitRequest extends FormRequest
     public function rules()
     {
         $rules = [
-            'unit_measure' => 'required|between:2,25|unique:units,unit_measure',
+            'unit_measure' => 'required|between:2,25|iunique:units,unit_measure',
 
         ];
 
@@ -49,7 +49,7 @@ class CreateUnitRequest extends FormRequest
     {
         return [
             'unit_measure.required'   => 'El :attribute es obligatorio.',
-            'unit_measure.unique'   => 'El :attribute es unico.',
+            'unit_measure.iunique'   => 'El :attribute es unico.',
             'kind'   => 'El :attribute es obligatorio.',
             'kind'   => 'El :attribute es unico.',
         ];
