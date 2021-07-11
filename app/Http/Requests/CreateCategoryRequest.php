@@ -4,6 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
+
 class CreateCategoryRequest extends FormRequest
 {
     /**
@@ -20,7 +21,7 @@ class CreateCategoryRequest extends FormRequest
     {
 
         $rules = [
-            'name' => 'required|between:2,25|unique:categories,name'
+            'name' => 'required|between:2,25|iunique:categories,name'
         ];
 
         switch ($this->method()) {
@@ -45,6 +46,7 @@ class CreateCategoryRequest extends FormRequest
         return [
             'name.required'   => 'El nombre para la :attribute es obligatorio.',
             'name.unique'   => 'Esta :attribute ya existe, prueba otro nombre.',
+            'name.iunique'   => 'Esta :attribute ya existe, prueba otro nombre.',
         ];
     }
 
