@@ -30,6 +30,7 @@ class ArticleSeeder extends Seeder
             [
                 'cod_article' => 'Emb',
                 'name_article' => 'Embase de 700 cc',
+                'unit_price' => '15',
                 'category_id' => $categorie2->id,
                 'stock'=> '50',
                 'unit_id'=> $units1[0]
@@ -38,6 +39,7 @@ class ArticleSeeder extends Seeder
             [
                 'cod_article' => 'Esc',
                 'name_article' => 'Hojas bond tamaño carta',
+                'unit_price' => '15',
                 'category_id' => $categorie1->id,
                 'stock'=> '15',
                 'unit_id'=> $units2[0]
@@ -45,6 +47,7 @@ class ArticleSeeder extends Seeder
             [
                 'cod_article' => 'lch',
                 'name_article' => 'Leche',
+                'unit_price' => '15',
                 'category_id'  => $categorie3->id,
                 'stock'=> '100',
                 'unit_id'=> $units3[0]
@@ -52,6 +55,7 @@ class ArticleSeeder extends Seeder
             [
                 'cod_article' => 'ygt',
                 'name_article' => 'Yogurt',
+                'unit_price' => '15',
                 'category_id' => $categorie4->id,
                 'stock'=> '100',
                 'unit_id'=> $units4[0]

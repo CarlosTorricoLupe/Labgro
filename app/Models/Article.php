@@ -16,6 +16,7 @@ class Article extends Model
         'id',
         'cod_article',
         'name_article',
+        'unit_price',
         'stock',
         'category_id',
         'unit_id',
