@@ -13,17 +13,20 @@ class CreateArticlesTable extends Migration
      */
     public function up()
     {
+       
         Schema::create('articles', function (Blueprint $table) {
             $table->bigIncrements('id');
+            
             $table->string('cod_article')->unique();
             $table->string('name_article')->unique();
-            $table->decimal('unit_price', 8, 2);
             $table->float('stock');
             $table->foreignId('category_id')->constrained();
             $table->foreignId('unit_id')->constrained();
+            $table->foreignId('price_id')->constrained();
             $table->timestamps();
         });
-
+        
+       
     }
 
     /**
@@ -34,5 +37,6 @@ class CreateArticlesTable extends Migration
     public function down()
     {
         Schema::dropIfExists('articles');
+       
     }
 }

@@ -16,10 +16,10 @@ class Article extends Model
         'id',
         'cod_article',
         'name_article',
-        'unit_price',
         'stock',
         'category_id',
         'unit_id',
+        'price_id',
         'created_at'
     ];
     protected $hidden = [
@@ -31,5 +31,8 @@ class Article extends Model
     }
     public function units(){
         return $this->belongsToMany(Unit::class);
+    }
+    public function item_prices(){
+        return $this->belongsToMany(ItemPrice::class);
     }
 }

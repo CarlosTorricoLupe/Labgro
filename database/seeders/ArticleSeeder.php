@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use Illuminate\Database\Seeder;
 use App\Models\Article;
 use App\Models\Category;
+use App\Models\ItemPrice;
 use App\Models\Unit;
 
 class ArticleSeeder extends Seeder
@@ -26,6 +27,11 @@ class ArticleSeeder extends Seeder
         $units3 = Unit::where('unit_measure','Ltr')->orWhere('kind','Volumen')->pluck('id');
         $units4 = Unit::where('unit_measure','Caja')->orWhere('kind','Otro')->pluck('id');
 
+        $item_price1 = ItemPrice::where('unit_price', '85')->first();
+        $item_price2 = ItemPrice::where('unit_price' ,'50')->first();
+        $item_price3 = ItemPrice::where('unit_price' ,'20')->first();
+        $item_price4 = ItemPrice::where('unit_price', '10')->first();
+
         $articles= [
             [
                 'cod_article' => 'Emb',
@@ -33,7 +39,8 @@ class ArticleSeeder extends Seeder
                 'unit_price' => '15',
                 'category_id' => $categorie2->id,
                 'stock'=> '50',
-                'unit_id'=> $units1[0]
+                'unit_id'=> $units1[0],
+                'price_id' => $item_price1->id
 
             ],
             [
@@ -42,7 +49,8 @@ class ArticleSeeder extends Seeder
                 'unit_price' => '15',
                 'category_id' => $categorie1->id,
                 'stock'=> '15',
-                'unit_id'=> $units2[0]
+                'unit_id'=> $units2[0],
+                'price_id' => $item_price2->id
             ],
             [
                 'cod_article' => 'lch',
@@ -50,7 +58,8 @@ class ArticleSeeder extends Seeder
                 'unit_price' => '15',
                 'category_id'  => $categorie3->id,
                 'stock'=> '100',
-                'unit_id'=> $units3[0]
+                'unit_id'=> $units3[0],
+                'price_id' => $item_price3->id
             ],
             [
                 'cod_article' => 'ygt',
@@ -58,7 +67,8 @@ class ArticleSeeder extends Seeder
                 'unit_price' => '15',
                 'category_id' => $categorie4->id,
                 'stock'=> '100',
-                'unit_id'=> $units4[0]
+                'unit_id'=> $units4[0],
+                'price_id' => $item_price4->id
             ]
         ];
         foreach($articles as $key => $value){

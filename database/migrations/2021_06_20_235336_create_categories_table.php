@@ -19,6 +19,7 @@ class CreateCategoriesTable extends Migration
             $table->boolean('Active')->default(1);
             $table->timestamps();
         });
+        
     }
 
     /**

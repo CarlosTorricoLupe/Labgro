@@ -7,6 +7,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ArticleController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\ItemPriceController;
 use App\Http\Controllers\UnitController;
 
 /*
@@ -46,6 +47,8 @@ Route::get('search', [ArticleController::class, 'searchArticle']);
 Route::get('search_category', [ArticleController::class, 'searchArticleForCategorgy']);
 
 Route::apiResource('unit_measure',UnitController::class);
+
+Route::apiResource('unit_price',ItemPriceController::class);
 
 Route::get('/permission', function () {
    /* $user = App\Models\User::where('name','canaviri')->first();
