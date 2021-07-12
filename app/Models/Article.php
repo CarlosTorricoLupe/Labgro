@@ -11,7 +11,9 @@ class Article extends Model
 
 
    protected $table = 'articles';
-
+   protected $casts = [
+    'created_at' => "datetime:Y-m-d",
+];
     protected $fillable = [
         'id',
         'cod_article',
@@ -19,7 +21,6 @@ class Article extends Model
         'stock',
         'category_id',
         'unit_id',
-        'price_id',
         'created_at'
     ];
     protected $hidden = [

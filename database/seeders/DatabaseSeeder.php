@@ -24,7 +24,7 @@ class DatabaseSeeder extends Seeder
              RolePermissionSeeder::class,
              UserSeeder::class,
              ArticleSeeder::class,
-             ItemPriceSeeder::class,
+             //ItemPriceSeeder::class,
          ]);
         //\App\Models\User::factory()->create();
     }

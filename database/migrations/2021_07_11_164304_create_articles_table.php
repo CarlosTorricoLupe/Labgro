@@ -22,7 +22,7 @@ class CreateArticlesTable extends Migration
             $table->float('stock');
             $table->foreignId('category_id')->constrained();
             $table->foreignId('unit_id')->constrained();
-            $table->foreignId('price_id')->constrained();
+            //$table->foreignId('price_id')->constrained();
             $table->timestamps();
         });
         
