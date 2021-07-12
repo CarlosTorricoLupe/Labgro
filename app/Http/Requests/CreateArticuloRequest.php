@@ -25,8 +25,8 @@ class CreateArticuloRequest extends FormRequest
     {
 
         $rules = [
-            'cod_article' => 'required|between:2,25|unique:articles,cod_article',
-            'name_article' => 'required|between:2,25|unique:articles,name_article'
+            'cod_article' => 'required|between:2,25|iunique:articles,cod_article',
+            'name_article' => 'required|unique:articles,name_article'
         ];
 
         switch ($this->method()) {
@@ -50,7 +50,7 @@ class CreateArticuloRequest extends FormRequest
     {
         return [
             'cod_article.required'   => 'El :attribute es obligatorio.',
-            'cod_article.unique'   => 'El :attribute es unico.',
+            'cod_article.iunique'   => 'El :attribute es unico.',
         ];
     }
 
