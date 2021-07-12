@@ -12,6 +12,9 @@ class Article extends Model
 
    protected $table = 'articles';
 
+   protected $casts = [
+    'created_at' => "datetime:Y-m-d",
+];
     protected $fillable = [
         'id',
         'cod_article',
