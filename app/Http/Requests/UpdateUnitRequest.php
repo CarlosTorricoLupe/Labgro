@@ -13,7 +13,7 @@ class UpdateUnitRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**
@@ -44,6 +44,20 @@ class UpdateUnitRequest extends FormRequest
                 break;
         }
 
+    }
+    public function messages()
+    {
+        return [
+            'unit_measure.required'   => 'El nombre para la :attribute es obligatorio.',
+            'unit_measure.iunique'   => 'Esta :attribute ya existe, prueba otro nombre.',
+        ];
+    }
+
+    public function attributes()
+    {
+        return [
+            'unit_measure' => 'Unidad',
+        ];
     }
 
 

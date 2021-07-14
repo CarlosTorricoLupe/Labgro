@@ -49,5 +49,21 @@ class UpdateArticuloRequest extends FormRequest
 
     }
 
+    public function messages()
+    {
+        return [
+            'cod_article.required'   => 'El nombre para la :attribute es obligatorio.',
+            'cod_article.iunique'   => 'Este :attribute ya existe, prueba otro nombre.',
+            'name_article.required'   => 'El nombre para la :attribute es obligatorio.',
+            'name_article.iunique'   => 'Este :attribute ya existe, prueba otro nombre.',
+        ];
+    }
 
+    public function attributes()
+    {
+        return [
+            'cod_article' => 'Codigo',
+            'name_article' => 'Nombre'
+        ];
+    }
 }

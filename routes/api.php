@@ -28,7 +28,7 @@ Route::post('login', [AuthController::class, 'login']);
 Route::post('register', [AuthController::class, 'register']);
 
 Route::group(['middleware' => ['api']], function() {
-    Route::get('logout', [AuthController::class, 'logout']);
+    Route::get('logout', [AuthController::class, 'logout']);    
     Route::get('get_user', [AuthController::class, 'get_user']);
     Route::post('refresh', [AuthController::class, 'refresh']);
     Route::get('users', [UserController::class, 'index']);
@@ -45,7 +45,7 @@ Route::apiResource('articles',ArticleController::class);
 Route::get('search', [ArticleController::class, 'searchArticle']);
 Route::get('search_category', [ArticleController::class, 'searchArticleForCategorgy']);
 
-Route::apiResource('unit_measure',UnitController::class);
+Route::apiResource('unit',UnitController::class);
 
 Route::get('/permission', function () {
    /* $user = App\Models\User::where('name','canaviri')->first();
