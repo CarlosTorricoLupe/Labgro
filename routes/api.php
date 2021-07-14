@@ -45,7 +45,7 @@ Route::apiResource('articles',ArticleController::class);
 Route::get('search', [ArticleController::class, 'searchArticle']);
 Route::get('search_category', [ArticleController::class, 'searchArticleForCategorgy']);
 
-Route::apiResource('unit',UnitController::class);
+Route::apiResource('units',UnitController::class);
 
 Route::get('/permission', function () {
    /* $user = App\Models\User::where('name','canaviri')->first();
