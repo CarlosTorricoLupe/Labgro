@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use App\Rules\Iunique;
 
 class UpdateArticuloRequest extends FormRequest
 {
@@ -25,7 +26,7 @@ class UpdateArticuloRequest extends FormRequest
     {
 
         $rules = [
-            "cod_article" => "required|between:2,25|unique:articles,cod_article,".$this->route('article')->id,
+            'cod_article' => 'required|between:2,25|iunique:articles,cod_article,'.$this->article->id,
             'name_article' => 'required|between:2,25|unique:articles,name_article,'.$this->route('article')->id,
 
         ];
