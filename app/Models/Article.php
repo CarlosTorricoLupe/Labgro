@@ -34,4 +34,6 @@ class Article extends Model
     public function units(){
         return $this->belongsToMany(Unit::class);
     }
+
 }
+

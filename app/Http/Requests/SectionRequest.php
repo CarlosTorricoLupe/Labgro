@@ -4,8 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-
-class CreateCategoryRequest extends FormRequest
+class SectionRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -17,11 +16,16 @@ class CreateCategoryRequest extends FormRequest
         return true;
     }
 
+    /**
+     * Get the validation rules that apply to the request.
+     *
+     * @return array
+     */
     public function rules()
     {
 
         $rules = [
-            'name' => 'required|iunique:categories,name'
+            'name' => 'required|iunique:sections,name',
         ];
 
         switch ($this->method()) {
@@ -45,7 +49,6 @@ class CreateCategoryRequest extends FormRequest
     {
         return [
             'name.required'   => 'El nombre para la :attribute es obligatorio.',
-            'name.unique'   => 'Esta :attribute ya existe, prueba otro nombre.',
             'name.iunique'   => 'Esta :attribute ya existe, prueba otro nombre.',
         ];
     }
@@ -53,7 +56,7 @@ class CreateCategoryRequest extends FormRequest
     public function attributes()
     {
         return [
-            'name' => 'categoria',
+            'name' => 'seccion',
         ];
     }
 }

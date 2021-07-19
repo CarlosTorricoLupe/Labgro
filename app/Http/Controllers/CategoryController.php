@@ -42,7 +42,7 @@ class CategoryController extends Controller
         return response()->json([
             'sucess' =>true,
             'message' =>'Categoria creada correctamente'
-        ]);
+        ],201);
     }
 
     /**
@@ -68,17 +68,11 @@ class CategoryController extends Controller
      */
     public function update(CreateCategoryRequest $request, Category $category)
     {
-        /* $category = Category::findorfail($id);
-        $category->update($request->all());
-        return response()->json([
-            'success'=>true,
-            'message'=>'Categoria eliminada correctamente'
-        ],200); */
-        $category->update($request->all());
+         $category->update($request->all());
         return response()->json([
             'sucess' => true,
             'message' => 'Categoria actualizada correctamente'
-        ],200);
+        ],200); 
     }
 
     /**
