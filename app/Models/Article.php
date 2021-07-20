@@ -10,11 +10,11 @@ class Article extends Model
     use HasFactory;
 
 
-   protected $table = 'articles';
+    protected $table = 'articles';
 
-   protected $casts = [
-    'created_at' => "datetime:Y-m-d",
-];
+    protected $casts = [
+        'created_at' => "datetime:Y-m-d",
+    ];
     protected $fillable = [
         'id',
         'cod_article',
@@ -31,7 +31,13 @@ class Article extends Model
     public function categories(){
         return $this->belongsToMany(Category::class,'category_id');
     }
+
     public function units(){
         return $this->belongsToMany(Unit::class);
     }
+
+    public function outputs(){
+        return $this->belongsToMany(Output::class, "output_details");
+    }
+
 }
