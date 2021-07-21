@@ -8,7 +8,7 @@ use App\Http\Controllers\ArticleController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\UnitController;
-
+use App\Http\Controllers\OutputController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -28,7 +28,7 @@ Route::post('login', [AuthController::class, 'login']);
 Route::post('register', [AuthController::class, 'register']);
 
 Route::group(['middleware' => ['api']], function() {
-    Route::get('logout', [AuthController::class, 'logout']);    
+    Route::get('logout', [AuthController::class, 'logout']);
     Route::get('get_user', [AuthController::class, 'get_user']);
     Route::post('refresh', [AuthController::class, 'refresh']);
     Route::get('users', [UserController::class, 'index']);
@@ -58,6 +58,7 @@ Route::get('/permission', function () {
 
 });
 
-
+Route::get("article/output/", [OutputController::class, 'index']);
+Route::post("article/output/create", [OutputController::class, 'store']);
 
 //https://www.youtube.com/watch?v=2f0ucOIQJko&list=PLwNeytHvRMPxnPxvEckKJ73c2FxvSoZyY&index=9

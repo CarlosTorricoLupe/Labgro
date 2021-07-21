@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Article;
+use App\Models\Output;
+use App\Models\OutputDetail;
 use Illuminate\Http\Request;
 
 class OutputController extends Controller
@@ -13,9 +16,29 @@ class OutputController extends Controller
      */
     public function index()
     {
+        $outputs = Output::all();
+
+        foreach ($outputs as $output){
+            $output['details']= $this->getDetail($output['id']);
+        }
+        if(count($outputs)){
+            return $outputs;
+        } else {
+        return response()->json([
+            'success'=>false,
+            'message'=>'No se encontraron resultados'
+        ],404);
+    }
 
     }
 
+    public function getDetail($output){
+        $details  = OutputDetail::where('output_id', $output)->get();
+        foreach ($details as $detail){
+            $detail['article']= Article::find($detail['article_id']);
+        }
+        return $details;
+    }
     /**
      * Store a newly created resource in storage.
      *
@@ -24,7 +47,12 @@ class OutputController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $output = Output::create($request->except('details'));
+
+        $details = $request->only('details');
+
+        $output->articles()->attach($details['details']);
+
     }
 
     /**

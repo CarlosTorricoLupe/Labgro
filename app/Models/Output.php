@@ -9,7 +9,12 @@ class Output extends Model
 {
     use HasFactory;
 
-    protected $guarded = [];
+    protected $fillable = [
+        'receipt',
+        'order_number',
+        'order_date',
+        'delivery_date'
+    ];
 
     public function articles(){
         return $this->belongsToMany(Article::class, "output_details");
