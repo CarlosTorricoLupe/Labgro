@@ -6,6 +6,7 @@ use App\Models\Article;
 use App\Models\Output;
 use App\Models\OutputDetail;
 use Illuminate\Http\Request;
+use function PHPUnit\Framework\isEmpty;
 
 class OutputController extends Controller
 {
@@ -51,8 +52,52 @@ class OutputController extends Controller
 
         $details = $request->only('details');
 
-        $output->articles()->attach($details['details']);
+        $result = $this->decrementStockArticle($details['details']);
 
+        $response = array();
+
+        if(isset($result['details'])){
+
+            $output->articles()->attach($result['details']);
+
+        }
+
+        if(isset($result['errors'])){
+
+            $response['errors'][] = $result['errors'];
+
+        }
+
+        return response()->json([
+            'sucess' =>true,
+            'message' =>'Salida creada correctamente',
+            'details' => $response,
+        ]);
+    }
+    public function decrementStockArticle($details){
+        $response = array();
+        foreach ($details as $detail){
+            $article = Article::find($detail['article_id']);//10
+
+            if($article) {
+                $stock = $article->stock;
+
+                $new_stock = $stock - $detail['quantity'];
+
+                if( $new_stock < 0 ){
+                    $response['errors'][] = "Articulo " . $article->name_article . " no tiene stock suficiente";
+
+                } else {
+                    $response['details'][] = $detail;
+
+                    $article->stock = $new_stock;
+
+                    $article->save();
+                }
+            }
+        }
+
+        return $response;
     }
 
     /**

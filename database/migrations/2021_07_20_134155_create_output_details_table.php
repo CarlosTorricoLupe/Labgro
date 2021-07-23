@@ -15,7 +15,7 @@ class CreateOutputDetailsTable extends Migration
     {
         Schema::create('output_details', function (Blueprint $table) {
             $table->id();
-            $table->string('quantity');
+            $table->float('quantity');
             $table->float('total');
             $table->foreignId('article_id')->constrained();
             $table->foreignId('output_id')->constrained();
