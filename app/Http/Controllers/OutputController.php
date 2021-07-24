@@ -157,8 +157,8 @@ class OutputController extends Controller
     }
 
     public function getArticles($section){
-        $articles = Article::whereHas('outputs', function (Builder $query) {
-                $query->where('id',1);
+        $articles = Article::whereHas('outputs', function (Builder $query) use ($section) {
+                $query->where('section_id', $section);
         })->get();
 
         return $articles;
