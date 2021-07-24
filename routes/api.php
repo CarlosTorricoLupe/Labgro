@@ -61,7 +61,12 @@ Route::get('/permission', function () {
 
 });
 
-Route::get("article/output/", [OutputController::class, 'index']);
-Route::post("article/output/create", [OutputController::class, 'store']);
+Route::get("output/{section}", [OutputController::class, 'index']);
+Route::get("output/getDetail/{output}", [OutputController::class, 'getDetailOutput']);
+Route::post("output/create", [OutputController::class, 'store']);
+Route::post("output/search", [OutputController::class, 'searchOutputByDate']);
+
+Route::get("output/articles/{section}", [OutputController::class, 'getArticles']);
+
 
 //https://www.youtube.com/watch?v=2f0ucOIQJko&list=PLwNeytHvRMPxnPxvEckKJ73c2FxvSoZyY&index=9

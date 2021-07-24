@@ -10,6 +10,7 @@ class Output extends Model
     use HasFactory;
 
     protected $fillable = [
+        'section_id',
         'receipt',
         'order_number',
         'order_date',
@@ -17,7 +18,7 @@ class Output extends Model
     ];
 
     public function articles(){
-        return $this->belongsToMany(Article::class, "output_details");
+        return $this->belongsToMany(Article::class, "output_details", "output_id", "article_id");
     }
 
 }

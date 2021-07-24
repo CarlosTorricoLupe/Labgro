@@ -37,7 +37,7 @@ class Article extends Model
     }
 
     public function outputs(){
-        return $this->belongsToMany(Output::class, "output_details");
+        return $this->belongsToMany(Output::class, "output_details", "article_id", "output_id");
     }
 
 }

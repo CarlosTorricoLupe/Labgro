@@ -6,7 +6,7 @@ use App\Models\Article;
 use App\Models\Output;
 use App\Models\OutputDetail;
 use Illuminate\Http\Request;
-use function PHPUnit\Framework\isEmpty;
+use Illuminate\Database\Eloquent\Builder;
 
 class OutputController extends Controller
 {
@@ -15,22 +15,18 @@ class OutputController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index($section)
     {
-        $outputs = Output::all();
+        $outputs = Output::where('section_id',$section)->get();
 
-        foreach ($outputs as $output){
-            $output['details']= $this->getDetail($output['id']);
-        }
         if(count($outputs)){
             return $outputs;
         } else {
         return response()->json([
             'success'=>false,
             'message'=>'No se encontraron resultados'
-        ],404);
-    }
-
+            ],404);
+         }
     }
 
     public function getDetail($output){
@@ -48,7 +44,6 @@ class OutputController extends Controller
      */
     public function store(Request $request)
     {
-        $output = Output::create($request->except('details'));
 
         $details = $request->only('details');
 
@@ -57,9 +52,9 @@ class OutputController extends Controller
         $response = array();
 
         if(isset($result['details'])){
+            $output = Output::create($request->except('details'));
 
             $output->articles()->attach($result['details']);
-
         }
 
         if(isset($result['errors'])){
@@ -132,5 +127,40 @@ class OutputController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    public function searchOutputByDate(Request $request){
+        $outputs = Output::whereMonth('order_date', '=', $request->month)
+                            ->whereYear('order_date', '=', $request->year)
+                            ->get();
+
+        if(count($outputs)){
+            return $outputs;
+        } else {
+            return response()->json([
+                'success'=>false,
+                'message'=>'No se encontrarossn resultados'
+            ],404);
+        }
+    }
+
+    public function getDetailOutput($output){
+        $details = OutputDetail::where('output_id',$output)->get();
+        if(count($details)){
+            return $details;
+        } else {
+            return response()->json([
+                'success'=>false,
+                'message'=>'No se encontraron resultados'
+            ],404);
+        }
+    }
+
+    public function getArticles($section){
+        $articles = Article::whereHas('outputs', function (Builder $query) {
+                $query->where('id',1);
+        })->get();
+
+        return $articles;
     }
 }

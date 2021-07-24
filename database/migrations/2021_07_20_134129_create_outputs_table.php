@@ -15,7 +15,7 @@ class CreateOutputsTable extends Migration
     {
         Schema::create('outputs', function (Blueprint $table) {
             $table->id();
-            //$table->foreignId('section_id')->constrained();
+            $table->foreignId('section_id')->constrained();
             $table->integer('receipt');//comprobante
             $table->integer('order_number');//numero de pedido
             $table->date('order_date');//fecha de pedido
