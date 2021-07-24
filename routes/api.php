@@ -9,6 +9,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\SectionController;
 use App\Http\Controllers\UnitController;
+use App\Http\Controllers\IncomeController;
 
 /*
 |--------------------------------------------------------------------------
@@ -50,6 +51,13 @@ Route::apiResource('units',UnitController::class);
 
 Route::apiResource('sections',SectionController::class);
 
+
+Route::apiResource('incomes',IncomeController::class);
+Route::get('/incomes/getHeader', [IncomeController::class, 'getHeader']);
+Route::get('/incomes/getDetailsIncome', [IncomeController::class, 'getDetailsIncome']);
+
+
+
 Route::get('/permission', function () {
    /* $user = App\Models\User::where('name','canaviri')->first();
     $op = $user->role->permissions()->where('name', 'views_articles')->exists();
@@ -61,6 +69,8 @@ Route::get('/permission', function () {
 
 });
 
-
+/* 
+Route::get('/incomes',[IncomeController::class, 'index']);
+Route::post('/incomes',[IncomeController::class, 'store']); */
 
 //https://www.youtube.com/watch?v=2f0ucOIQJko&list=PLwNeytHvRMPxnPxvEckKJ73c2FxvSoZyY&index=9
