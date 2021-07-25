@@ -17,4 +17,11 @@ class Article_income extends Model
         'article_id'
     ];
 
+    public static function getDetails($id){
+        return self::join('articles','article_incomes.article_id','articles.id')->join('units','articles.unit_id',"units.id")
+        ->select('article_incomes.article_id','article_incomes.quantity','article_incomes.unit_price','article_incomes.total_price', 'articles.name_article','unit_measure','article_incomes.income_id')
+        ->where('article_incomes.income_id', '=', $id)
+        ->get();
+    }
+
 }

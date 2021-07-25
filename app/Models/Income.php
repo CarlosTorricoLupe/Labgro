@@ -30,11 +30,23 @@ class Income extends Model
     public static function searchIncome($value='',$month){
         if (!$value) {
             return self::select('incomes.id',
-            'incomes.receipt',
+            'incomes.receipt','incomes.order_number','provider',
             'total')->WhereMonth('created_at',$month)->paginate(12);
         }   
         return self::select('incomes.id',
-        'incomes.receipt',
+        'incomes.receipt','incomes.order_number','provider',
         'total')->where('receipt','like',"%$value%")->paginate(12);
+    }
+
+    public static function getIncome($id){
+        return self::select('incomes.receipt','incomes.order_number','provider',
+        'total')->where('incomes.id',$id)->get();
+    }
+
+    public static function getDetails($id){
+        return self::join('articles','article_incomes.article_id','articles.id')->join('units','articles.unit_id',"units.id")
+        ->select('article_incomes.quantity','article_incomes.unit_price','article_incomes.total_price', 'articles.name_article','unit_measure')
+        ->where('article_incomes.income_id', '=', $id)
+        ->get();
     }
 }

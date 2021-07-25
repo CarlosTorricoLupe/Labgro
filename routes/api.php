@@ -52,9 +52,8 @@ Route::apiResource('units',UnitController::class);
 Route::apiResource('sections',SectionController::class);
 
 
-Route::apiResource('incomes',IncomeController::class);
-Route::get('/incomes/getHeader', [IncomeController::class, 'getHeader']);
-Route::get('/incomes/getDetailsIncome', [IncomeController::class, 'getDetailsIncome']);
+/* Route::apiResource('incomes',IncomeController::class); */
+
 
 
 
@@ -69,8 +68,12 @@ Route::get('/permission', function () {
 
 });
 
-/* 
+
 Route::get('/incomes',[IncomeController::class, 'index']);
-Route::post('/incomes',[IncomeController::class, 'store']); */
+Route::post('/incomes',[IncomeController::class, 'store']);
+Route::get('/incomes/getDetailsIncome/', [IncomeController::class, 'getDetailsIncome']);
+Route::get('/incomes/{income}',[IncomeController::class, 'show']);
+Route::put('/incomes/{income}', [IncomeController::class, 'update']);
+Route::delete('/incomes/{income}', [IncomeController::class, 'destroy']);
 
 //https://www.youtube.com/watch?v=2f0ucOIQJko&list=PLwNeytHvRMPxnPxvEckKJ73c2FxvSoZyY&index=9

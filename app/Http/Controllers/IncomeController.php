@@ -7,9 +7,6 @@ use App\Models\Article;
 use App\Models\Article_income;
 use App\Models\Income;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
-use Carbon\Carbon;
-
 
 class IncomeController extends Controller
 {
@@ -25,6 +22,7 @@ class IncomeController extends Controller
             'success' => true,
             'incomes'=> $incomes
         ]);
+        
     }
 
     /**
@@ -41,7 +39,6 @@ class IncomeController extends Controller
         $articles=$request->get('articles');
         $res=$this->updateDataArticles($articles);
         $response=array();
-
         if(isset($res['articles'])){
             $income->articles()->sync($articles);
             $response['incomes']=$res['articles'];
@@ -75,39 +72,18 @@ class IncomeController extends Controller
      */
     public function show(Income $income)
     {
-        $id     = $income->id;    
-        $details = Article_income::join('articles','article_incomes.article_id','articles.id')->join('units','articles.unit_id',"units.id")
-        ->select('article_incomes.quantity','article_incomes.unit_price','article_incomes.total_price', 'articles.name_article','unit_measure')
-        ->where('article_incomes.income_id', '=', $id)
-        ->get();
-        
+        $incomes=Income::getIncome($income->id);
+        $details=Article_income::getDetails($income->id);
         return response()->json([
-            'success'=> true,
-            'details' => $details
-        ],200);  
+            'success'=>true,
+            'income'=>$incomes,
+            'details'=>$details
+        ]);
     }
 
-
-     public function getHeader(Request $request){
-        $id     = $request->id;
-        $income = Income::join('users','incomes.user_id','=','users.id')
-                ->select('*')
-                ->where('incomes.id', '=', $id)
-                ->take(1)->get();
-
-        return response()->json([
-        'success'=> true,
-        'income' => $income
-        ],200);           
-    }
-
-    public function getDetailsIncome(Request $request){
+    public function getDetailsIncome(Request $request){   
         
-        $id     = $request->id;    
-        $details = Article_income::join('articles','article_incomes.article_id','articles.id')->join('units','articles.unit_id',"units.id")
-        ->select('article_incomes.quantity','unit_measure', 'articles.name_article','article_incomes.unit_price','article_incomes.total_price')
-        ->where('article_incomes.income_id', $id)
-        ->get();
+        $details = Article_income::getDetails($request->id);
         
         return response()->json([
             'success'=> true,
@@ -131,7 +107,6 @@ class IncomeController extends Controller
             'sucess' => true,
             'message' => 'Entrada actualizada correctamente'
         ],200);
-        
     }
 
     /**
@@ -142,8 +117,28 @@ class IncomeController extends Controller
      */
     public function destroy(Income $income)
     {
-        //
+        $user=$income->user_id=auth()->user()->id;
+        $details=Article_income::getDetails($income->id);
+        $details=$this->restoreDataArticles($details);
+        $income->delete();
+        return response()->json([
+            'sucess' => true,
+            'user' =>$user,
+            'message' => 'Entrada eliminada correctamente'
+        ],200);
     }
 
-    
+    public function restoreDataArticles($details){
+        $response = array();
+         foreach($details as $detail){
+             $articleUpdate=Article::find($detail['article_id']);
+             if($articleUpdate){
+                 $articleUpdate->stock -=$detail['quantity'];
+                 $articleUpdate->saveOrFail();
+                 $response['articles']="Stock de los articulos restaurados correctamente";
+                $articleUpdate->incomes()->detach($detail['income_id']);
+             }
+        }
+        return $details;
+    }
 }
