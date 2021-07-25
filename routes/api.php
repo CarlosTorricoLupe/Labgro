@@ -10,7 +10,7 @@ use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\SectionController;
 use App\Http\Controllers\UnitController;
 use App\Http\Controllers\IncomeController;
-
+use App\Http\Controllers\OutputController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -30,7 +30,7 @@ Route::post('login', [AuthController::class, 'login']);
 Route::post('register', [AuthController::class, 'register']);
 
 Route::group(['middleware' => ['api']], function() {
-    Route::get('logout', [AuthController::class, 'logout']);    
+    Route::get('logout', [AuthController::class, 'logout']);
     Route::get('get_user', [AuthController::class, 'get_user']);
     Route::post('refresh', [AuthController::class, 'refresh']);
     Route::get('users', [UserController::class, 'index']);
@@ -68,6 +68,12 @@ Route::get('/permission', function () {
 
 });
 
+Route::get("output/{section}", [OutputController::class, 'index']);
+Route::get("output/getDetail/{output}", [OutputController::class, 'getDetailOutput']);
+Route::post("output/create", [OutputController::class, 'store']);
+Route::post("output/search", [OutputController::class, 'searchOutputByDate']);
+
+Route::get("output/articles/{section}", [OutputController::class, 'getArticles']);
 
 Route::get('/incomes',[IncomeController::class, 'index']);
 Route::post('/incomes',[IncomeController::class, 'store']);

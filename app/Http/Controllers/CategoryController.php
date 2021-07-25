@@ -38,7 +38,7 @@ class CategoryController extends Controller
      */
     public function store(CreateCategoryRequest $request)
     {
-         Category::create($request->all());
+        Category::create($request->all());
         return response()->json([
             'sucess' =>true,
             'message' =>'Categoria creada correctamente'

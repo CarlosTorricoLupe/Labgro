@@ -16,12 +16,13 @@ class DatabaseSeeder extends Seeder
      //    \App\Models\User::factory()->create();
          $this->call([
              UnitSeeder::class,
-             //CategorySeeder::class,
+             CategorySeeder::class,
              RoleSeeder::class,
              PermissionSeeder::class,
              RolePermissionSeeder::class,
              UserSeeder::class,
-             //ArticleSeeder::class,
+             ArticleSeeder::class,
+             SectionSeeder::class
          ]);
         //\App\Models\User::factory()->create();
     }
