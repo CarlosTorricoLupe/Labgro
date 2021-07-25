@@ -15,7 +15,7 @@ class SectionController extends Controller
      */
     public function index()
     {
-        $sections=Section::where('Active','=',1)->get();
+        $sections=Section::ActiveDescending()->get();
         if(count($sections)){
             return $sections;
         } else {
@@ -79,11 +79,17 @@ class SectionController extends Controller
      */
     public function destroy($id)
     {
-        $section = Section::findorfail($id);
+        $section = Section::find($id);
+        if($section['Active']==true){
         $section->update(['Active'=>0]);
+        $message="Unidad desactivada correctamente";
+        }else{
+            $section->update(['Active'=>1]);
+            $message="Unidad activada correctamente";
+        }
             return response()->json([
                 'success'=>true,
-                'message'=>'Unidad eliminada correctamente'
+                'message'=>$message,
             ],200);
     }
 }
