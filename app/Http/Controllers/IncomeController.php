@@ -17,7 +17,7 @@ class IncomeController extends Controller
      */
     public function index(Request $request)
     {
-        $incomes=Income::searchIncome($request->incomevalue,$request->month);   
+        $incomes=Income::searchIncome($request->incomevalue,$request->month,$request->year);   
           return response()->json([
             'success' => true,
             'incomes'=> $incomes

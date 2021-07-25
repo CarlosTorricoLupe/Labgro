@@ -27,11 +27,11 @@ class Income extends Model
         return $this->belongsToMany(Article::class,'article_incomes')->withPivot('quantity','unit_price','total_price')->withTimestamps();
     }
 
-    public static function searchIncome($value='',$month){
+    public static function searchIncome($value='',$month,$year){
         if (!$value) {
             return self::select('incomes.id',
             'incomes.receipt','incomes.order_number','provider',
-            'total')->WhereMonth('created_at',$month)->paginate(12);
+            'total')->WhereMonth('created_at',$month)->WhereYear('created_at',$year)->paginate(12);
         }   
         return self::select('incomes.id',
         'incomes.receipt','incomes.order_number','provider',
