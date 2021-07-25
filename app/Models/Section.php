@@ -18,4 +18,8 @@ class Section extends Model
         'updated_at',
     ];
 
+    public function scopeActiveDescending($query){
+        return $query->orderBy('Active','DESC');
+    }
+
 }
