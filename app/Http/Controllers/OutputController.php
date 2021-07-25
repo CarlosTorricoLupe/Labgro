@@ -164,10 +164,20 @@ class OutputController extends Controller
     }
 
     public function getArticles($section){
-        $articles = Article::whereHas('outputs', function (Builder $query) use ($section) {
+        /*$articles = Article::whereHas('outputs', function (Builder $query) use ($section) {
                 $query->where('section_id', $section);
         })->get();
 
         return $articles;
-    }
+    */
+        $articles = Article::join('categories','articles.category_id','=','categories.id')
+                            ->join('units', 'articles.unit_id', '=', 'units.id')
+                            ->join('output_details','output_details.article_id','=', 'articles.id' )
+                            ->join('outputs', 'output_details.output_id','=','outputs.id')
+                            ->where('outputs.section_id', $section)
+                            ->select('outputs.delivery_date', 'articles.name_article', 'output_details.quantity', 'units.unit_measure', 'categories.name')
+                            ->get();
+
+        return $articles;
+        }
 }
