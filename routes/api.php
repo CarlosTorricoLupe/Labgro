@@ -67,6 +67,8 @@ Route::post("output/create", [OutputController::class, 'store']);
 Route::post("output/search", [OutputController::class, 'searchOutputByDate']);
 
 Route::get("output/articles/{section}", [OutputController::class, 'getArticles']);
+Route::put("output/update/{output}", [OutputController::class, 'update']);
+Route::delete("output/delete/{output}", [OutputController::class, 'destroy']);
 
 
 //https://www.youtube.com/watch?v=2f0ucOIQJko&list=PLwNeytHvRMPxnPxvEckKJ73c2FxvSoZyY&index=9

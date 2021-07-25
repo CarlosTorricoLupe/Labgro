@@ -21,4 +21,12 @@ class Output extends Model
         return $this->belongsToMany(Article::class, "output_details", "output_id", "article_id");
     }
 
+    public static function boot() {
+        parent::boot();
+
+        static::deleting(function($output) { // before delete() method call this
+            $output->articles()->detach();
+        });
+    }
+
 }

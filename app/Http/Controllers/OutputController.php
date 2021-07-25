@@ -110,12 +110,18 @@ class OutputController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param  Output  $output
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, $output)
     {
-        //
+        $result = Output::find($output);
+        $result->update($request->all());
+        return response()->json([
+            'sucess' => true,
+            'message' => 'Salida actualizada correctamente'
+        ],200);
+
     }
 
     /**
@@ -124,9 +130,10 @@ class OutputController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy($output)
     {
-        //
+        $result = Output::find($output);
+        $result->delete();
     }
 
     public function searchOutputByDate(Request $request){
