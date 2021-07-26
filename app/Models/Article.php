@@ -36,6 +36,10 @@ class Article extends Model
         return $this->belongsToMany(Unit::class);
     }
 
+    public function incomes()
+    {
+        return $this->belongsToMany(Income::class,'article_incomes')->withPivot('quantity','unit_price','total_price')->withTimestamps();
+    }
     public function outputs(){
         return $this->belongsToMany(Output::class, "output_details", "article_id", "output_id");
     }

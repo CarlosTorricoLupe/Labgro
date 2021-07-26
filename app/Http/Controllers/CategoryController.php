@@ -90,19 +90,24 @@ class CategoryController extends Controller
             ->get();
         if(count($articles)){
             return response()->json([
-                'success'=>true,
+                'success'=>false,
                 'message'=>'No se puede eliminar la categoria porque tiene los siguientes articulos',
                 'articles'=>$articles
             ],200);
         } else {
-            $category->update(['Active'=>0]);
+            if($category['Active']==true){
+                $category->update(['Active'=>0]);
+                $message="Categoria desactivada correctamente";
+            }else{
+                $category->update(['Active'=>1]);
+                $message="Categoria activada correctamente";
+            }
             return response()->json([
                 'success'=>true,
-                'message'=>'Categoria eliminada correctamente'
+                'message'=>$message,
             ],200);
         }
     }
-
 
     public function search($name)
     {
