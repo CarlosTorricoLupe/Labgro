@@ -34,7 +34,6 @@ class IncomeController extends Controller
     public function store(IncomeRequest $request)
     {
         $income = new Income($request->all()); 
-        $income->user_id = auth()->user()->id;
         $income->saveOrFail();
         $articles=$request->get('articles');
         $res=$this->updateDataArticles($articles);
@@ -101,7 +100,6 @@ class IncomeController extends Controller
      */
     public function update(Request $request, Income $income)
     {   
-        $income->user_id=auth()->user()->id;
         $income->update($request->all());
         return response()->json([
             'sucess' => true,
@@ -117,13 +115,12 @@ class IncomeController extends Controller
      */
     public function destroy(Income $income)
     {
-        $user=$income->user_id=auth()->user()->id;
+        
         $details=Article_income::getDetails($income->id);
         $details=$this->restoreDataArticles($details);
         $income->delete();
         return response()->json([
-            'sucess' => true,
-            'user' =>$user,
+            'sucess' => true,           
             'message' => 'Entrada eliminada correctamente'
         ],200);
     }
