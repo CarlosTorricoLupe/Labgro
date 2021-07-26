@@ -179,5 +179,12 @@ class OutputController extends Controller
                             ->get();
 
         return $articles;
-        }
+    }
+
+    public function prueba(){
+        $outputs = Output::whereTime('created_at', '>=', '23:07:00')
+                            ->whereTime('created_at','<=', '23:08:00')
+                            ->get();
+        return $outputs;
+    }
 }

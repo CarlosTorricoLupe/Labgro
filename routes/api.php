@@ -56,9 +56,11 @@ Route::get('/permission', function () {
     dd($op);
     return $op;*/
 
-    $categorie1 = App\Models\Category::where('name','Material de escritorio')->first();
-    dd($categorie1->id);
+    //$categorie1 = App\Models\Category::where('name','Material de escritorio')->first();
+    //dd($categorie1->id);
 
+    $categories = Category::all('name');
+    return $categories;
 });
 
 Route::get("output/{section}", [OutputController::class, 'index']);
@@ -69,6 +71,8 @@ Route::post("output/search", [OutputController::class, 'searchOutputByDate']);
 Route::get("output/articles/{section}", [OutputController::class, 'getArticles']);
 Route::put("output/update/{output}", [OutputController::class, 'update']);
 Route::delete("output/delete/{output}", [OutputController::class, 'destroy']);
+
+Route::get("prueba", [OutputController::class, 'prueba']);
 
 
 //https://www.youtube.com/watch?v=2f0ucOIQJko&list=PLwNeytHvRMPxnPxvEckKJ73c2FxvSoZyY&index=9
