@@ -18,6 +18,7 @@ class CreateArticlesTable extends Migration
             $table->string('cod_article')->unique();
             $table->string('name_article')->unique();
             $table->float('stock');
+            $table->decimal('item_unit_price',11,2);
             $table->foreignId('category_id')->constrained();
             $table->foreignId('unit_id')->constrained();
             $table->timestamps();

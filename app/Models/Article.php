@@ -43,6 +43,9 @@ class Article extends Model
     public function outputs(){
         return $this->belongsToMany(Output::class, "output_details", "article_id", "output_id");
     }
+    public function kardex(){
+        return $this->hasMany(Kardex::class);
+    }
 
 }
 

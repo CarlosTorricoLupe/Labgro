@@ -37,4 +37,6 @@ class Income extends Model
         'incomes.receipt',
         'total')->where('receipt','like',"%$value%")->paginate(12);
     }
+   
+
 }

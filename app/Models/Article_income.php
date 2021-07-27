@@ -16,5 +16,8 @@ class Article_income extends Model
         'income_id',
         'article_id'
     ];
+    public function kardex(){
+        return $this->hasMany(Kardex::class);
+    }
 
 }

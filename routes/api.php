@@ -10,6 +10,7 @@ use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\SectionController;
 use App\Http\Controllers\UnitController;
 use App\Http\Controllers\IncomeController;
+use App\Http\Controllers\KardexController;
 use App\Http\Controllers\OutputController;
 /*
 |--------------------------------------------------------------------------
@@ -55,6 +56,9 @@ Route::apiResource('sections',SectionController::class);
 Route::apiResource('incomes',IncomeController::class);
 Route::get('/incomes/getHeader', [IncomeController::class, 'getHeader']);
 Route::get('/incomes/getDetailsIncome', [IncomeController::class, 'getDetailsIncome']);
+
+Route::apiResource('kardex' ,KardexController::class);
+Route::get('kardexPeriferico', [ArticleController::class, 'kardexPeriferico']);
 
 
 

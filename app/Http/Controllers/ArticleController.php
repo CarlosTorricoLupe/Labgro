@@ -120,6 +120,14 @@ class ArticleController extends Controller
         }
     }
 
+    public function kardexPeriferico(){
 
+        $result =Article::join('units','articles.unit_id','=',"units.id")
+        ->join('article_incomes','articles.article_income_id','=',"article_incomes.id")
+        //->join('output_details','kardexes.output_detail_id','=',"output_details.id")
+        ->select('articles.*', 'unit_measure','kind')
+        ->get();
+       return $result;
+    }
 
 }

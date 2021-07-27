@@ -11,4 +11,13 @@ class OutputDetail extends Model
 
     protected $guarded = [];
 
+    protected $hidden = [
+        'updated_at',
+        'created_at',
+        ];
+
+    public function kardex(){
+        return $this->hasMany(Kardex::class);
+    }
+
 }
