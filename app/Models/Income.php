@@ -24,7 +24,7 @@ class Income extends Model
 
     public function articles()
     {
-        return $this->belongsToMany(Article::class,'article_incomes')->withPivot('quantity','unit_price','total_price')->withTimestamps();
+        return $this->belongsToMany(Article::class,'article_incomes',"income_id","article_id")->withPivot('quantity','unit_price','total_price')->withTimestamps();
     }
 
     public static function searchIncome($value='',$month,$year){
