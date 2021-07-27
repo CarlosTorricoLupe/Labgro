@@ -15,7 +15,7 @@ class CreateIncomesTable extends Migration
     {
         Schema::create('incomes', function (Blueprint $table) {
             $table->id();
-            $table->integer('receipt')->unique();
+            $table->bigInteger('receipt')->unique();
             $table->decimal('total',11,2);
             $table->string('provider')->nullable();
             $table->integer('order_number')->nullable();
