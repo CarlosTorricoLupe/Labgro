@@ -15,9 +15,9 @@ class CreateArticleIncomesTable extends Migration
     {
         Schema::create('article_incomes', function (Blueprint $table) {
             $table->id();
-            $table->bigInteger('quantity');
-            $table->decimal('unit_price',11,2);
-            $table->decimal('total_price',11,2);
+            $table->float('quantity');
+            $table->float('unit_price',11,2);
+            $table->float('total_price',11,2);
             $table->foreignId('income_id')->constrained();
             $table->foreignId('article_id')->constrained();
             $table->timestamps();
