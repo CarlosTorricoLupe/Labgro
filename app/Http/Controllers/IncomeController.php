@@ -6,6 +6,7 @@ use App\Http\Requests\IncomeRequest;
 use App\Models\Article;
 use App\Models\Article_income;
 use App\Models\Income;
+use App\Models\OutputDetail;
 use Illuminate\Http\Request;
 
 class IncomeController extends Controller
@@ -137,5 +138,25 @@ class IncomeController extends Controller
              }
         }
         return $details;
+    }
+    public function kardexPeriferico(Request $request){
+
+        
+        $details = Article_income::join('articles','article_incomes.article_id','articles.id')->join('units','articles.unit_id',"units.id")
+        ->select('article_incomes.quantity','article_incomes.unit_price','article_incomes.total_price', 'articles.name_article','unit_measure','articles.cod_article','articles.stock')
+        ->orderBy('articles.name_article','asc')
+        //->paginate(20);
+        ->get();
+        $output = OutputDetail::join('articles', 'output_details.article_id','articles.id')->join('units','articles.unit_id',"units.id")
+        ->select('output_details.quantity','output_details.total', 'articles.name_article','unit_measure','articles.cod_article','articles.stock')
+        ->orderBy('articles.name_article','asc')
+        ->get();
+        //->paginate(20);
+        return response()->json([
+            'success'=> true,
+            'incomes' => $details,
+            'outputs' => $output
+
+        ],200); 
     }
 }

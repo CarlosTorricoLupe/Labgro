@@ -88,4 +88,7 @@ Route::get('/incomes/{income}',[IncomeController::class, 'show']);
 Route::put('/incomes/{income}', [IncomeController::class, 'update']);
 Route::delete('/incomes/{income}', [IncomeController::class, 'destroy']);
 
+Route::get('kardexPeriferico', [IncomeController::class, 'kardexPeriferico']);
+
+
 //https://www.youtube.com/watch?v=2f0ucOIQJko&list=PLwNeytHvRMPxnPxvEckKJ73c2FxvSoZyY&index=9
