@@ -31,7 +31,7 @@ class IncomeRequest extends FormRequest
     {
         return [
             'receipt.required'   => 'El numero para el :attribute es obligatorio.',
-            'receipt.unique'   => 'Esta :attribute ya existe, prueba otro numero.',
+            'receipt.unique'   => 'El nro de :attribute ya existe, pruebe con otro',
         ];
     }
 
