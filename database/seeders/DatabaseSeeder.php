@@ -22,7 +22,8 @@ class DatabaseSeeder extends Seeder
              RolePermissionSeeder::class,
              UserSeeder::class,
              ArticleSeeder::class,
-             SectionSeeder::class
+             SectionSeeder::class,
+             IncomeSeeder::class
          ]);
         //\App\Models\User::factory()->create();
     }

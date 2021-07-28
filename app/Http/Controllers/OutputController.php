@@ -15,18 +15,14 @@ class OutputController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index($section)
+    public function index(Request $request)
     {
-        $outputs = Output::where('section_id',$section)->get();
-
-        if(count($outputs)){
-            return $outputs;
-        } else {
+        $outputs = Output::searchOutput($request->outputvalue, $request->month, $request->year);
         return response()->json([
-            'success'=>false,
-            'message'=>'No se encontraron resultados'
-            ],404);
-         }
+            'success' => true,
+            'incomes'=> $outputs
+        ]);
+
     }
 
     public function getDetail($output){

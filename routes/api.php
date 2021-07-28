@@ -70,7 +70,7 @@ Route::get('/permission', function () {
     return $categories;
 });
 
-Route::get("output/{section}", [OutputController::class, 'index']);
+Route::get("output/", [OutputController::class, 'index']);
 Route::get("output/getDetail/{output}", [OutputController::class, 'getDetailOutput']);
 Route::post("output/create", [OutputController::class, 'store']);
 Route::post("output/search", [OutputController::class, 'searchOutputByDate']);
