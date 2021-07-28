@@ -15,8 +15,9 @@ class CreateOutputDetailsTable extends Migration
     {
         Schema::create('output_details', function (Blueprint $table) {
             $table->id();
-            $table->float('quantity');
-            $table->float('total');
+            $table->integer('quantity');
+            $table->decimal('budget_output',11,2);
+            $table->decimal('total',11,2);
             $table->foreignId('article_id')->constrained();
             $table->foreignId('output_id')->constrained();
             $table->timestamps();

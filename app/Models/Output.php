@@ -14,21 +14,27 @@ class Output extends Model
         'receipt',
         'order_number',
         'order_date',
-        'delivery_date'
+        'delivery_date',
+        'total'
     ];
 
     public function articles(){
-        return $this->belongsToMany(Article::class, "output_details", "output_id", "article_id");
+        return $this->belongsToMany(Article::class, "output_details", "output_id", "article_id")
+                    ->withTimestamps();;
     }
 
     public static function searchOutput($value='',$month,$year){
         if (!$value) {
-            return self::select('outputs.*')
-                        ->WhereMonth('created_at',$month)
-                        ->WhereYear('created_at',$year)->paginate(12);
+            return self::join('sections','outputs.section_id','sections.id')
+                        ->WhereMonth('order_date',$month)
+                        ->WhereYear('order_date',$year)
+                        ->select('outputs.*', 'sections.name')
+                        ->paginate(12);
         }
-        return self::select('outputs.*')
-                ->where('receipt','like',"%$value%")->paginate(12);
+        return self::join('sections','outputs.section_id','sections.id')
+                ->where('receipt','like',"%$value%")
+                ->select('outputs.*', 'sections.name')
+                ->paginate(12);
     }
 
     public static function boot() {

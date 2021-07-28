@@ -15,12 +15,12 @@ class OutputSeeder extends Seeder
      * @return void
      */
 
-        //php artisan db:seed --class=IncomeSeeder
+        //php artisan db:seed --class=OutputSeeder
         //Por si quieren ejecutar solo el seeder de Incomes
         public function run(){
 
         $dates=['2021-08-01','2021-07-12','2021-07-23','2021-07-04','2021-08-22','2021-08-12'];
-        $months = ['2021-01-01', '2021-12-01'];
+        $months = ['2017-01-01', '2021-12-01'];
 
             for ($i=0; $i < 50; $i++) {
                 if($i < 20){
@@ -28,9 +28,10 @@ class OutputSeeder extends Seeder
                         'section_id' =>'1',
                         'receipt' => rand(300,1000),
                         'order_number' => rand(100,700),
-                        'order_date' => Arr::random($dates),
+                        'order_date' => $months[0],
                         'delivery_date' => Arr::random($dates),
-                        'created_at' => $months[0]
+                        'created_at' => Arr::random($dates),
+                        'total' => rand(300000,900000)/100,
                         ]);
                     $this->addDetails($output);
                 }else {
@@ -38,9 +39,10 @@ class OutputSeeder extends Seeder
                         'section_id' =>'2',
                         'receipt' => rand(300,1000),
                         'order_number' => rand(100,700),
-                        'order_date' => Arr::random($dates),
+                        'order_date' => $months[1],
                         'delivery_date' => Arr::random($dates),
-                        'created_at' => $months[1]
+                        'total' => rand(300000,900000)/100,
+                        'created_at' => Arr::random($dates)
                     ]);
                     $this->addDetails($output);
                 }
@@ -53,6 +55,7 @@ class OutputSeeder extends Seeder
             foreach($articles as $article){
                 $output->articles()->attach($article,[
                                 'quantity'=>rand(1,100),
+                                'budget_output'=>rand(1000,6000)/100,
                                 'total'=>rand(10000,20000)/100,
                             ]);
             }
