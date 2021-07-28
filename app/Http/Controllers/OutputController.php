@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\OutputRequest;
 use App\Models\Article;
 use App\Models\Output;
 use App\Models\OutputDetail;
@@ -38,7 +39,7 @@ class OutputController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(OutputRequest $request)
     {
 
         $details = $request->only('details');
