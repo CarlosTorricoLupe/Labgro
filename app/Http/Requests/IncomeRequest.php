@@ -38,7 +38,7 @@ class IncomeRequest extends FormRequest
     public function attributes()
     {
         return [
-            'receipt' => 'Comprobante',
+            'receipt' => 'comprobante',
         ];
     }
 }
