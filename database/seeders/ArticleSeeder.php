@@ -57,6 +57,7 @@ class ArticleSeeder extends Seeder
                 'name_article' => 'Yogurt',
                 'category_id' => $categorie4->id,
                 'stock'=> '100',
+                'unit_price' =>50,
                 'unit_id'=> $units4[0]
             ]
         ];
