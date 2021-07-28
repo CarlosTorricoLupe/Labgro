@@ -55,9 +55,6 @@ Route::apiResource('sections',SectionController::class);
 /* Route::apiResource('incomes',IncomeController::class); */
 
 
-Route::apiResource('kardex' ,KardexController::class);
-Route::get('kardexPeriferico', [ArticleController::class, 'kardexPeriferico']);
-
 
 
 Route::get('/permission', function () {
