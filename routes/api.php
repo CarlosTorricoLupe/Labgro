@@ -63,17 +63,23 @@ Route::get('/permission', function () {
     dd($op);
     return $op;*/
 
-    $categorie1 = App\Models\Category::where('name','Material de escritorio')->first();
-    dd($categorie1->id);
+    //$categorie1 = App\Models\Category::where('name','Material de escritorio')->first();
+    //dd($categorie1->id);
 
+    $categories = Category::all('name');
+    return $categories;
 });
 
-Route::get("output/{section}", [OutputController::class, 'index']);
+Route::get("output/", [OutputController::class, 'index']);
 Route::get("output/getDetail/{output}", [OutputController::class, 'getDetailOutput']);
 Route::post("output/create", [OutputController::class, 'store']);
 Route::post("output/search", [OutputController::class, 'searchOutputByDate']);
 
 Route::get("output/articles/{section}", [OutputController::class, 'getArticles']);
+Route::put("output/update/{output}", [OutputController::class, 'update']);
+Route::delete("output/delete/{output}", [OutputController::class, 'destroy']);
+
+Route::get("prueba", [OutputController::class, 'prueba']);
 
 Route::get('/incomes',[IncomeController::class, 'index']);
 Route::post('/incomes',[IncomeController::class, 'store']);
