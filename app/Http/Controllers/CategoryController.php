@@ -17,7 +17,7 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        $categories=Category::where('Active','=',1)->get();
+        $categories=Category::all();
         if(count($categories)){
             return $categories;
         } else {
