@@ -14,11 +14,13 @@ class Output extends Model
         'receipt',
         'order_number',
         'order_date',
-        'delivery_date'
+        'delivery_date',
+        'total'
     ];
 
     public function articles(){
-        return $this->belongsToMany(Article::class, "output_details", "output_id", "article_id");
+        return $this->belongsToMany(Article::class, "output_details", "output_id", "article_id")
+                    ->withTimestamps();;
     }
 
     public static function searchOutput($value='',$month,$year){
