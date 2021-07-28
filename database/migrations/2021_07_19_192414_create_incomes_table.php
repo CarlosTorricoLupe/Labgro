@@ -19,7 +19,6 @@ class CreateIncomesTable extends Migration
             $table->decimal('total',11,2);
             $table->string('provider')->nullable();
             $table->integer('order_number')->nullable();
-            $table->foreignId('user_id')->constrained();
             $table->timestamps();
         });
     }

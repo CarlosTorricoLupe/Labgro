@@ -10,7 +10,6 @@ use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\SectionController;
 use App\Http\Controllers\UnitController;
 use App\Http\Controllers\IncomeController;
-use App\Http\Controllers\KardexController;
 use App\Http\Controllers\OutputController;
 /*
 |--------------------------------------------------------------------------
@@ -53,9 +52,8 @@ Route::apiResource('units',UnitController::class);
 Route::apiResource('sections',SectionController::class);
 
 
-Route::apiResource('incomes',IncomeController::class);
-Route::get('/incomes/getHeader', [IncomeController::class, 'getHeader']);
-Route::get('/incomes/getDetailsIncome', [IncomeController::class, 'getDetailsIncome']);
+/* Route::apiResource('incomes',IncomeController::class); */
+
 
 Route::apiResource('kardex' ,KardexController::class);
 Route::get('kardexPeriferico', [ArticleController::class, 'kardexPeriferico']);
@@ -68,20 +66,29 @@ Route::get('/permission', function () {
     dd($op);
     return $op;*/
 
-    $categorie1 = App\Models\Category::where('name','Material de escritorio')->first();
-    dd($categorie1->id);
+    //$categorie1 = App\Models\Category::where('name','Material de escritorio')->first();
+    //dd($categorie1->id);
 
+    $categories = Category::all('name');
+    return $categories;
 });
 
-/* 
-Route::get('/incomes',[IncomeController::class, 'index']);
-Route::post('/incomes',[IncomeController::class, 'store']); */
-Route::get("output/{section}", [OutputController::class, 'index']);
+Route::get("output/", [OutputController::class, 'index']);
 Route::get("output/getDetail/{output}", [OutputController::class, 'getDetailOutput']);
 Route::post("output/create", [OutputController::class, 'store']);
 Route::post("output/search", [OutputController::class, 'searchOutputByDate']);
 
 Route::get("output/articles/{section}", [OutputController::class, 'getArticles']);
+Route::put("output/update/{output}", [OutputController::class, 'update']);
+Route::delete("output/delete/{output}", [OutputController::class, 'destroy']);
 
+Route::get("prueba", [OutputController::class, 'prueba']);
+
+Route::get('/incomes',[IncomeController::class, 'index']);
+Route::post('/incomes',[IncomeController::class, 'store']);
+Route::get('/incomes/getDetailsIncome/', [IncomeController::class, 'getDetailsIncome']);
+Route::get('/incomes/{income}',[IncomeController::class, 'show']);
+Route::put('/incomes/{income}', [IncomeController::class, 'update']);
+Route::delete('/incomes/{income}', [IncomeController::class, 'destroy']);
 
 //https://www.youtube.com/watch?v=2f0ucOIQJko&list=PLwNeytHvRMPxnPxvEckKJ73c2FxvSoZyY&index=9

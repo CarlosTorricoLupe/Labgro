@@ -20,6 +20,7 @@ class CreateOutputsTable extends Migration
             $table->integer('order_number');//numero de pedido
             $table->date('order_date');//fecha de pedido
             $table->date('delivery_date');//fecha de entrega
+            $table->decimal('total',11,2);
             $table->timestamps();
         });
     }

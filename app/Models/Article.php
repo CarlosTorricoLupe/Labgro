@@ -20,7 +20,7 @@ class Article extends Model
         'cod_article',
         'name_article',
         'stock',
-        'item_unit_price',
+        'unit_price',
         'category_id',
         'unit_id',
         'created_at'
@@ -42,10 +42,8 @@ class Article extends Model
         return $this->belongsToMany(Income::class,'article_incomes')->withPivot('quantity','unit_price','total_price')->withTimestamps();
     }
     public function outputs(){
-        return $this->belongsToMany(Output::class, "output_details", "article_id", "output_id");
-    }
-    public function kardex(){
-        return $this->hasMany(Kardex::class);
+        return $this->belongsToMany(Output::class, "output_details", "article_id", "output_id")
+                    ->withTimestamps();;
     }
 
 }

@@ -17,7 +17,7 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        $categories=Category::where('Active','=',1)->get();
+        $categories=Category::all();
         if(count($categories)){
             return $categories;
         } else {
@@ -90,19 +90,18 @@ class CategoryController extends Controller
             ->get();
         if(count($articles)){
             return response()->json([
-                'success'=>true,
+                'success'=>false,
                 'message'=>'No se puede eliminar la categoria porque tiene los siguientes articulos',
                 'articles'=>$articles
             ],200);
         } else {
-            $category->update(['Active'=>0]);
+            Category::destroy($id);
             return response()->json([
                 'success'=>true,
-                'message'=>'Categoria eliminada correctamente'
+                'message'=>'Categoria eliminada correctamente',
             ],200);
         }
     }
-
 
     public function search($name)
     {

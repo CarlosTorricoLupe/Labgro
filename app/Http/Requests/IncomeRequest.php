@@ -24,14 +24,14 @@ class IncomeRequest extends FormRequest
     public function rules()
     {
         return [
-            'receipt' => 'required|iunique:incomes,receipt'
+            'receipt' => 'required|unique:incomes,receipt'
         ];
     }
     public function messages()
     {
         return [
             'receipt.required'   => 'El numero para el :attribute es obligatorio.',
-            'receipt.iunique'   => 'Esta :attribute ya existe, prueba otro numero.',
+            'receipt.unique'   => 'El nro de :attribute ya existe, pruebe con otro.',
         ];
     }
 

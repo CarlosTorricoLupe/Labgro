@@ -14,8 +14,8 @@ class CreateArticleIncomesTable extends Migration
     public function up()
     {
         Schema::create('article_incomes', function (Blueprint $table) {
-            $table->bigIncrements('id');
-            $table->integer('quantity');
+            $table->id();
+            $table->float('quantity');
             $table->decimal('unit_price',11,2);
             $table->decimal('total_price',11,2);
             $table->foreignId('income_id')->constrained();
