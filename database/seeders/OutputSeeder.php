@@ -30,7 +30,8 @@ class OutputSeeder extends Seeder
                         'order_number' => rand(100,700),
                         'order_date' => $months[0],
                         'delivery_date' => Arr::random($dates),
-                        'created_at' => Arr::random($dates)
+                        'created_at' => Arr::random($dates),
+                        'total' => rand(300000,900000)/100,
                         ]);
                     $this->addDetails($output);
                 }else {
@@ -40,6 +41,7 @@ class OutputSeeder extends Seeder
                         'order_number' => rand(100,700),
                         'order_date' => $months[1],
                         'delivery_date' => Arr::random($dates),
+                        'total' => rand(300000,900000)/100,
                         'created_at' => Arr::random($dates)
                     ]);
                     $this->addDetails($output);
@@ -53,6 +55,7 @@ class OutputSeeder extends Seeder
             foreach($articles as $article){
                 $output->articles()->attach($article,[
                                 'quantity'=>rand(1,100),
+                                'budget_output'=>rand(1000,6000)/100,
                                 'total'=>rand(10000,20000)/100,
                             ]);
             }
