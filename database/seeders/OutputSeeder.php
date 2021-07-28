@@ -15,7 +15,7 @@ class OutputSeeder extends Seeder
      * @return void
      */
 
-        //php artisan db:seed --class=IncomeSeeder
+        //php artisan db:seed --class=OutputSeeder
         //Por si quieren ejecutar solo el seeder de Incomes
         public function run(){
 
@@ -28,9 +28,9 @@ class OutputSeeder extends Seeder
                         'section_id' =>'1',
                         'receipt' => rand(300,1000),
                         'order_number' => rand(100,700),
-                        'order_date' => Arr::random($dates),
+                        'order_date' => $months[0],
                         'delivery_date' => Arr::random($dates),
-                        'created_at' => $months[0]
+                        'created_at' => Arr::random($dates)
                         ]);
                     $this->addDetails($output);
                 }else {
@@ -38,9 +38,9 @@ class OutputSeeder extends Seeder
                         'section_id' =>'2',
                         'receipt' => rand(300,1000),
                         'order_number' => rand(100,700),
-                        'order_date' => Arr::random($dates),
+                        'order_date' => $months[1],
                         'delivery_date' => Arr::random($dates),
-                        'created_at' => $months[1]
+                        'created_at' => Arr::random($dates)
                     ]);
                     $this->addDetails($output);
                 }
