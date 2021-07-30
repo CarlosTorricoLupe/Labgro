@@ -31,11 +31,11 @@ class Income extends Model
         if (!$value) {
             return self::select('incomes.id',
             'incomes.receipt','incomes.order_number','provider',
-            'total')->WhereMonth('created_at',$month)->WhereYear('created_at',$year)->paginate(12);
+            'total','created_at')->WhereMonth('created_at',$month)->WhereYear('created_at',$year)->paginate(12);
         }   
         return self::select('incomes.id',
         'incomes.receipt','incomes.order_number','provider',
-        'total')->where('receipt','like',"%$value%")->paginate(12);
+        'total','created_at')->where('receipt','like',"%$value%")->paginate(12);
     }
 
     public static function getIncome($id){

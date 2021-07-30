@@ -72,10 +72,20 @@ class UnitController extends Controller
      */
     public function destroy($id)
     {
+        $unit=Unit::findorfail($id);
+        $articles=Unit::join('articles','articles.unit_id','units.id')->where('units.id',$unit->id)->select('articles.cod_article','articles.name_article')->get();
+        if(count($articles)){
+            return response()->json([
+                'success'=>false,
+                'message'=>'No se puede eliminar la Unidad porque tiene los siguientes articulos',
+                'articles'=>$articles
+            ],200);
+        }else{
         Unit::destroy($id);
         return response()->json([
             'success' => true,
             'message' => 'Se elimino correctamente'
         ],200);
+        }
     }
 }

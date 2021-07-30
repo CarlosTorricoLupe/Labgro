@@ -15,18 +15,14 @@ class OutputController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index($section)
+    public function index(Request $request)
     {
-        $outputs = Output::where('section_id',$section)->get();
-
-        if(count($outputs)){
-            return $outputs;
-        } else {
+        $outputs = Output::searchOutput($request->outputvalue, $request->month, $request->year);
         return response()->json([
-            'success'=>false,
-            'message'=>'No se encontraron resultados'
-            ],404);
-         }
+            'success' => true,
+            'incomes'=> $outputs
+        ]);
+
     }
 
     public function getDetail($output){
@@ -110,12 +106,18 @@ class OutputController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param  Output  $output
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, $output)
     {
-        //
+        $result = Output::find($output);
+        $result->update($request->all());
+        return response()->json([
+            'sucess' => true,
+            'message' => 'Salida actualizada correctamente'
+        ],200);
+
     }
 
     /**
@@ -124,9 +126,10 @@ class OutputController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy($output)
     {
-        //
+        $result = Output::find($output);
+        $result->delete();
     }
 
     public function searchOutputByDate(Request $request){
@@ -157,10 +160,27 @@ class OutputController extends Controller
     }
 
     public function getArticles($section){
-        $articles = Article::whereHas('outputs', function (Builder $query) use ($section) {
+        /*$articles = Article::whereHas('outputs', function (Builder $query) use ($section) {
                 $query->where('section_id', $section);
         })->get();
 
         return $articles;
+    */
+        $articles = Article::join('categories','articles.category_id','=','categories.id')
+                            ->join('units', 'articles.unit_id', '=', 'units.id')
+                            ->join('output_details','output_details.article_id','=', 'articles.id' )
+                            ->join('outputs', 'output_details.output_id','=','outputs.id')
+                            ->where('outputs.section_id', $section)
+                            ->select('outputs.delivery_date', 'articles.name_article', 'output_details.quantity', 'units.unit_measure', 'categories.name')
+                            ->get();
+
+        return $articles;
+    }
+
+    public function prueba(){
+        $outputs = Output::whereTime('created_at', '>=', '23:07:00')
+                            ->whereTime('created_at','<=', '23:08:00')
+                            ->get();
+        return $outputs;
     }
 }
