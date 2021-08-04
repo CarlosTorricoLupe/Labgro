@@ -19,6 +19,7 @@ class CreateIncomesTable extends Migration
             $table->decimal('total',11,2);
             $table->string('provider')->nullable();
             $table->integer('order_number')->nullable();
+            $table->integer('invoice_number');
             $table->timestamps();
         });
     }

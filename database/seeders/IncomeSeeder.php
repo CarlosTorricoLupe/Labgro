@@ -27,7 +27,8 @@ class IncomeSeeder extends Seeder
                 'total' => rand(300000,900000)/100,
                 'provider' => 'pedro',
                 'order_number' => rand(100,700),
-                'created_at' => Arr::random($dates)]);
+                'created_at' => Arr::random($dates),
+                'invoice_number'=>rand(100,1000)]);
 
                 $articles=Article::inRandomOrder()->take(rand(1,3))->pluck('id');
                 foreach($articles as $article){
