@@ -19,7 +19,8 @@ class Income extends Model
         'provider',
         'total',
         'user_id',
-        'created_at'
+        'created_at',
+        'invoice_number'
     ];
 
     public function articles()
@@ -31,16 +32,16 @@ class Income extends Model
         if (!$value) {
             return self::select('incomes.id',
             'incomes.receipt','incomes.order_number','provider',
-            'total','created_at')->WhereMonth('created_at',$month)->WhereYear('created_at',$year)->paginate(12);
+            'total','invoice_number','created_at')->WhereMonth('created_at',$month)->WhereYear('created_at',$year)->paginate(12);
         }   
         return self::select('incomes.id',
         'incomes.receipt','incomes.order_number','provider',
-        'total','created_at')->where('receipt','like',"%$value%")->paginate(12);
+        'total','invoice_number','created_at')->where('receipt','like',"%$value%")->paginate(12);
     }
 
     public static function getIncome($id){
         return self::select('incomes.receipt','incomes.order_number','provider',
-        'total')->where('incomes.id',$id)->get();
+        'total','invoice_number')->where('incomes.id',$id)->get();
     }
 
     public static function getDetails($id){
