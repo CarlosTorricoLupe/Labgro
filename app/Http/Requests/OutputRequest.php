@@ -24,7 +24,7 @@ class OutputRequest extends FormRequest
     public function rules()
     {
         return [
-            'receipt' => 'required|iunique:outputs,receipt',
+            'receipt' => 'required|unique:outputs,receipt',
             'section_id' => 'required',
             'order_number' => 'required',
             'order_date' => 'required',
@@ -38,7 +38,7 @@ class OutputRequest extends FormRequest
     {
         return [
             'receipt.required'   => 'El numero para el :attribute es obligatorio.',
-            'receipt.iunique'   => 'Esta :attribute ya existe, prueba otro numero.',
+            'receipt.unique'   => 'Esta :attribute ya existe, prueba otro numero.',
             'section_id'  => 'El numero para el :attribute es obligatorio.',
             'order_date'  => 'El :attribute es obligatorio.',
             'delivery_date'  => 'El :attribute es obligatorio.',

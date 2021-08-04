@@ -100,8 +100,9 @@ class CategoryController extends Controller
                 'success'=>true,
                 'message'=>'Categoria eliminada correctamente',
             ],200);
+            }          
         }
-    }
+    
 
     public function search($name)
     {
