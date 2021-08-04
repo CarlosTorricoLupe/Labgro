@@ -23,7 +23,8 @@ class Article extends Model
         'unit_price',
         'category_id',
         'unit_id',
-        'created_at'
+        'created_at',
+        'stock_min'
     ];
     protected $hidden = [
         'updated_at',
