@@ -26,7 +26,7 @@ class OutputSeeder extends Seeder
                 if($i < 20){
                     $output = Output::create([
                         'section_id' =>'1',
-                        'receipt' => rand(300,1000),
+                        'receipt' => rand(300,10000),
                         'order_number' => rand(100,700),
                         'order_date' => $months[0],
                         'delivery_date' => Arr::random($dates),
@@ -37,7 +37,7 @@ class OutputSeeder extends Seeder
                 }else {
                     $output = Output::create([
                         'section_id' =>'2',
-                        'receipt' => rand(300,1000),
+                        'receipt' => rand(300,10000),
                         'order_number' => rand(100,700),
                         'order_date' => $months[1],
                         'delivery_date' => Arr::random($dates),

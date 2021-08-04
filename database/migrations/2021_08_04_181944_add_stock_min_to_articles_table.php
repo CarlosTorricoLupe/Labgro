@@ -14,7 +14,7 @@ class AddStockMinToArticlesTable extends Migration
     public function up()
     {
         Schema::table('articles', function (Blueprint $table) {
-            $table->float('stock_min');
+            $table->float('stock_min')->default(10);
         });
     }
 
