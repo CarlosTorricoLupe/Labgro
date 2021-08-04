@@ -14,7 +14,11 @@ class Article extends Model
 
     protected $casts = [
         'created_at' => "datetime:Y-m-d",
+        'stock' => 'integer',
+        'stock_min' => 'integer'
+
     ];
+
     protected $fillable = [
         'id',
         'cod_article',
@@ -47,5 +51,13 @@ class Article extends Model
                     ->withTimestamps();;
     }
 
+    //scopes
+    public function scopeArticlesStockMin($query)
+    {
+        return $query->join('categories','articles.category_id','=',"categories.id")
+            ->join('units','articles.unit_id','=',"units.id")
+            ->whereRaw('articles.stock <= articles.stock_min')
+            ->select('articles.*','categories.name', 'units.unit_measure','units.kind')
+            ->get();
+    }
 }
-
