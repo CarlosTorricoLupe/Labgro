@@ -17,8 +17,10 @@ class ArticleController extends Controller
     //GET listar registro
     public function index()
     {
-           $result =Article::ArticlesStockMin();
-           return $result;
+        $result = array();
+        $result['articles_without_stock'][] = Article::ArticlesWithoutStock();
+        $result['articles_with_stock'][] = Article::ArticlesWithStock();
+        return $result;
     }
 
     /**

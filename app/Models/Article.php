@@ -52,12 +52,26 @@ class Article extends Model
     }
 
     //scopes
-    public function scopeArticlesStockMin($query)
+    public function scopeArticlesWithoutStock($query)
     {
         return $query->join('categories','articles.category_id','=',"categories.id")
             ->join('units','articles.unit_id','=',"units.id")
             ->whereRaw('articles.stock <= articles.stock_min')
-            ->select('articles.*','categories.name', 'units.unit_measure','units.kind')
+
+            ->select('articles.name_article')
+//            ->select('articles.*','categories.name', 'units.unit_measure','units.kind')
+
+            ->get();
+    }
+
+    public function scopeArticlesWithStock($query)
+    {
+        return $query->join('categories','articles.category_id','=',"categories.id")
+            ->join('units','articles.unit_id','=',"units.id")
+            ->whereRaw('articles.stock > articles.stock_min')
+            ->select('articles.name_article')
+       //     ->select('articles.*','categories.name', 'units.unit_measure','units.kind')
+
             ->get();
     }
 }
