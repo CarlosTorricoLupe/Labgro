@@ -51,13 +51,26 @@ class Article extends Model
                     ->withTimestamps();;
     }
 
-    //scopes
-    public function scopeArticlesStockMin($query)
-    {
-        return $query->join('categories','articles.category_id','=',"categories.id")
-            ->join('units','articles.unit_id','=',"units.id")
-            ->whereRaw('articles.stock <= articles.stock_min')
-            ->select('articles.*','categories.name', 'units.unit_measure','units.kind')
-            ->get();
+    public function scopeUpdateStatusIsLow($query){
+        $articles = Article::all();
+        foreach ($articles as $article) {
+            $stock = $article->stock;
+            $stock_min = $article->stock_min;
+            if ( $stock <= $stock_min ){
+                $article->is_low = 1;
+            }else{
+                $article->is_low = 0;
+            }
+            $article->save();
+        }
+    }
+
+    public function scopeArticlesAll($query){
+         return $query->join('categories','articles.category_id','=',"categories.id")
+             ->join('units','articles.unit_id','=',"units.id")
+             ->select('articles.name_article')
+             ->orderBy('articles.is_low','DESC')
+             ->select('articles.*','categories.name', 'units.unit_measure','units.kind')
+             ->get();
     }
 }
