@@ -51,38 +51,26 @@ class Article extends Model
                     ->withTimestamps();;
     }
 
-    //scopes
-    public function scopeArticlesWithoutStock($query)
-    {
-        return $query->join('categories','articles.category_id','=',"categories.id")
-            ->join('units','articles.unit_id','=',"units.id")
-            ->whereRaw('articles.stock <= articles.stock_min')
-
-            ->select('articles.name_article')
-//            ->select('articles.*','categories.name', 'units.unit_measure','units.kind')
-
-            ->get();
-    }
-
-    public function scopeArticlesWithStock($query)
-    {
-        return $query->join('categories','articles.category_id','=',"categories.id")
-            ->join('units','articles.unit_id','=',"units.id")
-            ->whereRaw('articles.stock > articles.stock_min')
-            ->select('articles.name_article')
-       //     ->select('articles.*','categories.name', 'units.unit_measure','units.kind')
-
-            ->get();
-    }
-
     public function scopeUpdateStatusIsLow($query){
-        $query ->whereRaw('articles.stock < articles.stock_min')
-            ->update(['articles.is_low' =>1]);
+        $articles = Article::all();
+        foreach ($articles as $article) {
+            $stock = $article->stock;
+            $stock_min = $article->stock_min;
+            if ( $stock <= $stock_min ){
+                $article->is_low = 1;
+            }else{
+                $article->is_low = 0;
+            }
+            $article->save();
+        }
     }
 
     public function scopeArticlesAll($query){
-         return $query ->select('articles.name_article')
+         return $query->join('categories','articles.category_id','=',"categories.id")
+             ->join('units','articles.unit_id','=',"units.id")
+             ->select('articles.name_article')
              ->orderBy('articles.is_low','DESC')
+             ->select('articles.*','categories.name', 'units.unit_measure','units.kind')
              ->get();
     }
 }
