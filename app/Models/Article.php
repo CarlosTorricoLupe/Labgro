@@ -74,4 +74,15 @@ class Article extends Model
 
             ->get();
     }
+
+    public function scopeUpdateStatusIsLow($query){
+        $query ->whereRaw('articles.stock < articles.stock_min')
+            ->update(['articles.is_low' =>1]);
+    }
+
+    public function scopeArticlesAll($query){
+         return $query ->select('articles.name_article')
+             ->orderBy('articles.is_low','DESC')
+             ->get();
+    }
 }
