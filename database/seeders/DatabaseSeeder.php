@@ -24,6 +24,7 @@ class DatabaseSeeder extends Seeder
              ArticleSeeder::class,
              SectionSeeder::class,
              IncomeSeeder::class,
+             OutputSeeder::class,
          ]);
         //\App\Models\User::factory()->create();
     }

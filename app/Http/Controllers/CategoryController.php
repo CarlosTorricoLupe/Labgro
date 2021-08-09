@@ -17,7 +17,7 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        $categories=Category::where('Active','=',1)->get();
+        $categories=Category::all();
         if(count($categories)){
             return $categories;
         } else {
@@ -95,16 +95,10 @@ class CategoryController extends Controller
                 'articles'=>$articles
             ],200);
         } else {
-            if($category['Active']==true){
-                $category->update(['Active'=>0]);
-                $message="Categoria desactivada correctamente";
-            }else{
-                $category->update(['Active'=>1]);
-                $message="Categoria activada correctamente";
-            }
+            Category::destroy($id);
             return response()->json([
                 'success'=>true,
-                'message'=>$message,
+                'message'=>'Categoria eliminada correctamente',
             ],200);
         }
     }
