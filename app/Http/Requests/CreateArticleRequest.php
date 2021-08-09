@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class CreateArticuloRequest extends FormRequest
+class CreateArticleRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -23,27 +23,10 @@ class CreateArticuloRequest extends FormRequest
      */
     public function rules()
     {
-
-        $rules = [
+        return [
             'cod_article' => 'required|between:2,25|iunique:articles,cod_article',
             'name_article' => 'required|unique:articles,name_article'
         ];
-
-        switch ($this->method()) {
-            case 'GET':
-            case 'DELETE': {
-                    return [];
-                }
-            case 'POST': {
-                    return $rules;
-                }
-            case 'PUT':
-            case 'PATCH': {
-                    return $rules;
-                }
-            default:
-                break;
-        }
     }
 
     public function messages()
@@ -60,5 +43,4 @@ class CreateArticuloRequest extends FormRequest
             'cod_article' => 'codigo de articulo',
         ];
     }
-
 }
