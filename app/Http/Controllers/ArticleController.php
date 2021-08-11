@@ -1,10 +1,9 @@
 <?php
 
 namespace App\Http\Controllers;
-use App\Http\Requests\CreateArticuloRequest;
-use App\Http\Requests\UpdateArticuloRequest;
+use App\Http\Requests\CreateArticleRequest;
+use App\Http\Requests\UpdateArticleRequest;
 use App\Models\Article;
-use App\Models\Category;
 use Illuminate\Http\Request;
 
 class ArticleController extends Controller
@@ -14,7 +13,6 @@ class ArticleController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    //GET listar registro
     public function index()
     {
         Article::UpdateStatusIsLow();
@@ -28,8 +26,7 @@ class ArticleController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    //POST insertar datos
-    public function store(CreateArticuloRequest $request)
+    public function store(CreateArticleRequest $request)
     {
         Article::create($request->all());
         return response()->json([
@@ -44,7 +41,6 @@ class ArticleController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    //GET return un solo registro
     public function show(Article $article)
     {
         return response()->json([
@@ -60,8 +56,7 @@ class ArticleController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    //PUT actualizar registros
-    public function update(UpdateArticuloRequest $request, Article $article)
+    public function update(UpdateArticleRequest $request, Article $article)
     {
         $article->update($request->all());
         return response()->json([
@@ -76,7 +71,6 @@ class ArticleController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    //DELETE eliminar
     public function destroy($id)
     {
         Article::destroy($id);
@@ -117,7 +111,4 @@ class ArticleController extends Controller
             ],404);
         }
     }
-
-
-
 }
