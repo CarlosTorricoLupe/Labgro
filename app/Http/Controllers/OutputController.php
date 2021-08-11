@@ -7,7 +7,6 @@ use App\Models\Article;
 use App\Models\Output;
 use App\Models\OutputDetail;
 use Illuminate\Http\Request;
-use Illuminate\Database\Eloquent\Builder;
 
 class OutputController extends Controller
 {
@@ -26,70 +25,61 @@ class OutputController extends Controller
 
     }
 
-    public function getDetail($output){
-        $details  = OutputDetail::where('output_id', $output)->get();
-        foreach ($details as $detail){
-            $detail['article']= Article::find($detail['article_id']);
-        }
-        return $details;
-    }
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param OutputRequest $request
      * @return \Illuminate\Http\Response
      */
     public function store(OutputRequest $request)
     {
-
         $details = $request->only('details');
 
-        $result = $this->decrementStockArticle($details['details']);
-
         $response = array();
 
-        if(isset($result['details'])){
+        if( $this->verifyStockArticle($details['details']) ){
+
+            $this->decrementStockArticle($details['details']);
+
             $output = Output::create($request->except('details'));
 
-            $output->articles()->attach($result['details']);
+            $output->articles()->attach($details['details']);
+
+            $response['sucess'] = true;
+
+            $response['message'] = "Salida creada correctamente";
+        }else{
+            $response['sucess'] = false;
+
+            $response['errors'] = "Ningun articulo tiene el stock suficiente";
         }
 
-        if(isset($result['errors'])){
-
-            $response['errors'][] = $result['errors'];
-
-        }
-
-        return response()->json([
-            'sucess' =>true,
-            'message' =>'Salida creada correctamente',
-            'details' => $response,
-        ]);
+        return response()->json([$response]);
     }
-    public function decrementStockArticle($details){
-        $response = array();
+    public function verifyStockArticle($details){
+        $is_permit = true;
+
         foreach ($details as $detail){
-            $article = Article::find($detail['article_id']);//10
+            $article = Article::find($detail['article_id']);
 
             if($article) {
-                $stock = $article->stock;
-
-                $new_stock = $stock - $detail['quantity'];
-
-                if( $new_stock < 0 ){
-                    $response['errors'][] = "Articulo " . $article->name_article . " no tiene stock suficiente";
-
-                } else {
-                    $response['details'][] = $detail;
-
-                    $article->stock = $new_stock;
-
-                    $article->save();
+                if( ($article->stock - $detail['quantity']) < 0 ){
+                    $is_permit = false;
                 }
             }
         }
+        return $is_permit;
+    }
 
-        return $response;
+    public function decrementStockArticle($details){
+        foreach ($details as $detail){
+            $article = Article::find($detail['article_id']);
+
+            if($article) {
+                $article->stock = $article->stock - $detail['quantity'];
+                $article->save();
+            }
+        }
     }
 
     /**
@@ -161,12 +151,6 @@ class OutputController extends Controller
     }
 
     public function getArticles($section){
-        /*$articles = Article::whereHas('outputs', function (Builder $query) use ($section) {
-                $query->where('section_id', $section);
-        })->get();
-
-        return $articles;
-    */
         $articles = Article::join('categories','articles.category_id','=','categories.id')
                             ->join('units', 'articles.unit_id', '=', 'units.id')
                             ->join('output_details','output_details.article_id','=', 'articles.id' )
@@ -176,12 +160,5 @@ class OutputController extends Controller
                             ->get();
 
         return $articles;
-    }
-
-    public function prueba(){
-        $outputs = Output::whereTime('created_at', '>=', '23:07:00')
-                            ->whereTime('created_at','<=', '23:08:00')
-                            ->get();
-        return $outputs;
     }
 }
