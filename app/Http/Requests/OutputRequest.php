@@ -37,12 +37,12 @@ class OutputRequest extends FormRequest
     public function messages()
     {
         return [
-            'receipt.required'   => 'El numero para el :attribute es obligatorio.',
+            'receipt.required'   => 'El numero para el :attribute es requerido.',
             'receipt.iunique'   => 'Esta :attribute ya existe, prueba otro numero.',
-            'section_id'  => 'El numero para el :attribute es obligatorio.',
-            'order_date'  => 'El :attribute es obligatorio.',
-            'delivery_date'  => 'El :attribute es obligatorio.',
-            'total'  => 'El :attribute es obligatorio.',
+            'section_id'  => 'El :attribute es requerido.',
+            'order_date'  => 'El :attribute es requerido.',
+            'delivery_date'  => 'El :attribute es requerido.',
+            'total'  => 'El :attribute es requerido.',
 
         ];
     }
@@ -51,7 +51,7 @@ class OutputRequest extends FormRequest
     {
         return [
             'receipt' => 'Comprobante',
-            'section_id' => 'id seccion',
+            'section_id' => 'area',
             'order_number' => 'Numero de pedido',
             'order_date' => 'Fecha de pedido',
             'delivery_date' => 'Fecha de entrega',

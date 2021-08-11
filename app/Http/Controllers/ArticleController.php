@@ -17,12 +17,9 @@ class ArticleController extends Controller
     //GET listar registro
     public function index()
     {
-
-            $result =Article::join('categories','articles.category_id','=',"categories.id")->join('units','articles.unit_id','=',"units.id")
-
-            ->select('articles.*','name', 'unit_measure','kind')
-            ->get();
-           return $result;
+        Article::UpdateStatusIsLow();
+        $result = Article::ArticlesAll();
+        return $result;
     }
 
     /**
@@ -88,6 +85,7 @@ class ArticleController extends Controller
             'message' => 'Se elimino correctamente'
         ],200);
     }
+
     public function searchArticle(Request $request)
     {
         $result = Article::where('name_article', 'like',$request->txtBuscar.'%')->get();
