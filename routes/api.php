@@ -11,6 +11,8 @@ use App\Http\Controllers\SectionController;
 use App\Http\Controllers\UnitController;
 use App\Http\Controllers\IncomeController;
 use App\Http\Controllers\OutputController;
+use App\Http\Controllers\RawMaterialController;
+
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -51,6 +53,7 @@ Route::apiResource('units',UnitController::class);
 
 Route::apiResource('sections',SectionController::class);
 
+Route::apiResource('raw_material',RawMaterialController::class);
 
 /* Route::apiResource('incomes',IncomeController::class); */
 
