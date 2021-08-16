@@ -3,8 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\CreateRawMaterialRequest;
+use App\Http\Resources\ArticleByMonths;
+use App\Http\Resources\ArticleByMonthsResource;
+use App\Http\Resources\RawMaterialResource;
+use App\Models\Article;
 use App\Models\RawMaterial;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class RawMaterialController extends Controller
 {
@@ -65,5 +70,14 @@ class RawMaterialController extends Controller
     public function destroy($id)
     {
         //
+    }
+    public function apiPrueba()
+    {
+//        $result=RawMaterial::whereYear('created_at', '=', 2021)
+//            ->whereMonth('created_at', '=', 8)
+//            ->select('created_at')
+//            ->get();
+        $result = ArticleByMonthsResource::collection(Article::all());
+        return response()->json($result,200);
     }
 }

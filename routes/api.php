@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\RawMaterialController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
@@ -69,23 +70,29 @@ Route::get('/permission', function () {
     $categories = Category::all('name');
     return $categories;
 });
+Route::group(['prefix'=>'output'],function(){
+    Route::get("/", [OutputController::class, 'index']);
+    Route::get("/getDetail/{output}", [OutputController::class, 'getDetailOutput']);
+    Route::post("/create", [OutputController::class, 'store']);
+    Route::post("/search", [OutputController::class, 'searchOutputByDate']);
 
-Route::get("output/", [OutputController::class, 'index']);
-Route::get("output/getDetail/{output}", [OutputController::class, 'getDetailOutput']);
-Route::post("output/create", [OutputController::class, 'store']);
-Route::post("output/search", [OutputController::class, 'searchOutputByDate']);
-
-Route::get("output/articles/{section}", [OutputController::class, 'getArticles']);
-Route::put("output/update/{output}", [OutputController::class, 'update']);
-Route::delete("output/delete/{output}", [OutputController::class, 'destroy']);
+    Route::get("/articles/{section}", [OutputController::class, 'getArticles']);
+    Route::put("/update/{output}", [OutputController::class, 'update']);
+    Route::delete("/delete/{output}", [OutputController::class, 'destroy']);
+});
 
 Route::get("prueba", [OutputController::class, 'prueba']);
 
-Route::get('/incomes',[IncomeController::class, 'index']);
-Route::post('/incomes',[IncomeController::class, 'store']);
-Route::get('/incomes/getDetailsIncome/', [IncomeController::class, 'getDetailsIncome']);
-Route::get('/incomes/{income}',[IncomeController::class, 'show']);
-Route::put('/incomes/{income}', [IncomeController::class, 'update']);
-Route::delete('/incomes/{income}', [IncomeController::class, 'destroy']);
+Route::group(['prefix'=>'incomes'],function() {
+    Route::get('/',[IncomeController::class, 'index']);
+    Route::post('/',[IncomeController::class, 'store']);
+    Route::get('/getDetailsIncome/', [IncomeController::class, 'getDetailsIncome']);
+    Route::get('/{income}',[IncomeController::class, 'show']);
+    Route::put('/{income}', [IncomeController::class, 'update']);
+    Route::delete('/{income}', [IncomeController::class, 'destroy']);
+});
+
+
+Route::get('rawMaterial/getArticlesByDate',[RawMaterialController::class,'apiPrueba']);
 
 //https://www.youtube.com/watch?v=2f0ucOIQJko&list=PLwNeytHvRMPxnPxvEckKJ73c2FxvSoZyY&index=9
