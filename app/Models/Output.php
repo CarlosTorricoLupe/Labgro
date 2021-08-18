@@ -44,5 +44,4 @@ class Output extends Model
             $output->articles()->detach();
         });
     }
-
 }

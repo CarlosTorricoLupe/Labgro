@@ -21,6 +21,7 @@ class CreateArticleIncomesTable extends Migration
             $table->foreignId('income_id')->constrained();
             $table->foreignId('article_id')->constrained();
             $table->timestamps();
+            $table->boolean('is_consumed')->default(0);
         });
     }
 

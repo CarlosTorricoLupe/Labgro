@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\OutputRequest;
 use App\Models\Article;
+use App\Models\Article_income;
 use App\Models\Output;
 use App\Models\OutputDetail;
 use Illuminate\Http\Request;
@@ -31,11 +32,15 @@ class OutputController extends Controller
      * @param OutputRequest $request
      * @return \Illuminate\Http\Response
      */
+
+
     public function store(OutputRequest $request)
     {
+
         $details = $request->only('details');
 
         $response = array();
+
 
         if( $this->verifyStockArticle($details['details']) ){
 
@@ -56,20 +61,45 @@ class OutputController extends Controller
 
         return response()->json([$response]);
     }
+
     public function verifyStockArticle($details){
+
         $is_permit = true;
 
         foreach ($details as $detail){
             $article = Article::find($detail['article_id']);
 
-            if($article) {
-                if( ($article->stock - $detail['quantity']) < 0 ){
+            $stock_article = $article->stock;
+            $quantity_order = $detail['quantity'];
+
+            if( ($stock_article - $quantity_order) < 0 ){
+                if(($this->translateStockIncome($article, $quantity_order)) == false){
                     $is_permit = false;
                 }
             }
         }
         return $is_permit;
     }
+
+    public function translateStockIncome($article, $quantity_order){
+        $is_permit = false;
+
+        $income = Article_income::
+            where('article_id', $article->id )
+            ->where('is_consumed', '=' , 0)
+            ->first();
+
+        if( ($article->stock + $income->quantity) > $quantity_order) {
+            $article->stock = $article->stock + $income->quantity;
+            $income->is_consumed = 1;
+            $article->save();
+            $income->save();
+            $is_permit = true;
+        }
+
+        return $is_permit;
+    }
+
 
     public function decrementStockArticle($details){
         foreach ($details as $detail){
