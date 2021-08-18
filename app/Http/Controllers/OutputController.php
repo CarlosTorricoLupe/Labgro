@@ -191,4 +191,30 @@ class OutputController extends Controller
 
         return $articles;
     }
+
+    public function verififyPriceArticle($id){
+        $response = Array();
+        $article = Article::find($id);
+        $income = Article_income::where('article_id', $article->id )
+            ->where('is_consumed', '=' , 0)
+            ->first();
+
+        $actual_price = $article->unit_price;
+        $response ['actual']['stock'] = $article->stock;
+        $response ['actual']['price'] = $actual_price;
+
+
+        if($income){
+            $income_price = $income->unit_price;
+            $response ['income']['stock'] = $income->quantity;
+            $response ['income']['price'] = $income_price;
+            $response ['income']['date'] = $income->created_at;
+            $response['same_price'] = ($actual_price == $income_price);
+        }else{
+            $response['income'] = "No hay entrada para este articulo";
+        }
+
+        return $response;
+    }
+
 }

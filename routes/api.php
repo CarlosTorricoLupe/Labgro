@@ -92,6 +92,10 @@ Route::put('/incomes/{income}', [IncomeController::class, 'update']);
 Route::delete('/incomes/{income}', [IncomeController::class, 'destroy']);
 Route::get('/incomes/getIncomesArticle/{id}', [IncomeController::class, 'getIncomesArticle']);
 
+
+//VERIFIRY PRICE
+Route::get('/verifyPriceArticle/{id}', [OutputController::class, 'verififyPriceArticle']);
+
 //https://www.youtube.com/watch?v=2f0ucOIQJko&list=PLwNeytHvRMPxnPxvEckKJ73c2FxvSoZyY&index=9
 
 
