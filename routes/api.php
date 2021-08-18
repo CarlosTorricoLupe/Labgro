@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\PedidoMaterialesController;
 use App\Http\Controllers\RawMaterialController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -93,6 +94,7 @@ Route::group(['prefix'=>'incomes'],function() {
 });
 
 
+Route::post('materialsOrder/create',[PedidoMaterialesController::class,'store']);
 Route::get('rawMaterial/getArticlesByDate',[RawMaterialController::class,'apiPrueba']);
 
 //https://www.youtube.com/watch?v=2f0ucOIQJko&list=PLwNeytHvRMPxnPxvEckKJ73c2FxvSoZyY&index=9
