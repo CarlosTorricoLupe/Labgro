@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Output;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -23,8 +24,8 @@ class DatabaseSeeder extends Seeder
              UserSeeder::class,
              ArticleSeeder::class,
              SectionSeeder::class,
-             IncomeSeeder::class,
-             OutputSeeder::class,
+      //       IncomeSeeder::class,
+    //         OutputSeeder::class,
          ]);
         //\App\Models\User::factory()->create();
     }

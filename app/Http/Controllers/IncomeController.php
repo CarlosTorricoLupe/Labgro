@@ -48,15 +48,17 @@ class IncomeController extends Controller
             'success' => true,
             'message' => 'Entrada creada correctamente',
             'response' =>$response,
-        ]);
+        ],201);
     }
 
-   public function updateDataArticles($articles){
+   public function updateDataArticles($articles)
+   {
        $response = array();
         foreach($articles as $article){
             $articleUpdate=Article::find($article['article_id']);
             if($articleUpdate){
-                $articleUpdate->stock +=$article['quantity'];
+                $articleUpdate['stock_total'] = $article['quantity'] + $articleUpdate['stock'];
+                $article['is_consumed'] = 1;
                 $articleUpdate->saveOrFail();
                 $response['articles']="Stock de los articulos actualizados correctamente";
             }
@@ -77,7 +79,7 @@ class IncomeController extends Controller
             'success'=>true,
             'income'=>$incomes,
             'details'=>$details
-        ]);
+        ],200);
     }
 
     public function getDetailsIncome(Request $request){
@@ -125,17 +127,25 @@ class IncomeController extends Controller
         ],200);
     }
 
-    public function restoreDataArticles($details){
+    public function restoreDataArticles($details)
+    {
         $response = array();
          foreach($details as $detail){
              $articleUpdate=Article::find($detail['article_id']);
              if($articleUpdate){
-                 $articleUpdate->stock -=$detail['quantity'];
+                 $articleUpdate->stock_total -=$detail['quantity'];
                  $articleUpdate->saveOrFail();
                  $response['articles']="Stock de los articulos restaurados correctamente";
                 $articleUpdate->incomes()->detach($detail['income_id']);
              }
         }
         return $details;
+    }
+
+    public function getIncomesArticle($id){
+        $articles = Article_income::where('article_id', $id)
+            ->select('article_incomes.*')
+            ->get();
+        return $articles;
     }
 }

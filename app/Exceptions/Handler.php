@@ -40,10 +40,11 @@ class Handler extends ExceptionHandler
         });
     }
 
-//    public function render($request, Throwable $exception)
-//    {
-//        if($exception instanceof ModelNotFoundException){
-//            return response()->json(["sucess" => false, "message" => "Error modelo no encontrado"], 400);
-//        }
-//    }
+    /* public function render($request, Throwable $exception)
+    {
+        if($exception instanceof ModelNotFoundException){
+            return response()->json(["sucess" => false, "message" => "Error modelo no encontrado"], 400);
+        }
+
+    } */
 }
