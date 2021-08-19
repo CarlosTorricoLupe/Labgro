@@ -24,7 +24,7 @@ class OutputRequest extends FormRequest
     public function rules()
     {
         return [
-            'receipt' => 'required|iunique:outputs,receipt',
+            'receipt' => 'required|unique:outputs,receipt',
             'section_id' => 'required',
             'order_number' => 'required',
             'order_date' => 'required',
