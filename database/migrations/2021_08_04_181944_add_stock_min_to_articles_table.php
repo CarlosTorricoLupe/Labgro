@@ -16,6 +16,7 @@ class AddStockMinToArticlesTable extends Migration
         Schema::table('articles', function (Blueprint $table) {
             $table->float('stock_min')->default(10);
             $table->boolean('is_low')->default(0);
+            $table->float('stock_total')->default(0);
         });
     }
 
