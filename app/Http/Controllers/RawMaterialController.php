@@ -39,9 +39,12 @@ class RawMaterialController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(RawMaterial $rawMaterial)
     {
-        //
+        return response()->json([
+            'success'=> true,
+            'raw_material' =>$rawMaterial
+        ],200);
     }
 
     /**
@@ -51,9 +54,13 @@ class RawMaterialController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, RawMaterial $rawMaterial)
     {
-        //
+        $rawMaterial->update($request->all());
+        return response()->json([
+            'sucess' => true,
+            'message' => 'Materia Prima actualizada correctamente'
+        ],200);
     }
 
     /**
@@ -64,6 +71,10 @@ class RawMaterialController extends Controller
      */
     public function destroy($id)
     {
-        //
+        RawMaterial::destroy($id);
+        return response()->json([
+            'success' => true,
+            'message' => 'Se elimino correctamente'
+        ],200);
     }
 }
