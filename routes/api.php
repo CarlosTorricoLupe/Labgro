@@ -11,6 +11,8 @@ use App\Http\Controllers\SectionController;
 use App\Http\Controllers\UnitController;
 use App\Http\Controllers\IncomeController;
 use App\Http\Controllers\OutputController;
+use App\Http\Controllers\RawMaterialController;
+
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -51,6 +53,7 @@ Route::apiResource('units',UnitController::class);
 
 Route::apiResource('sections',SectionController::class);
 
+Route::apiResource('raw_material',RawMaterialController::class);
 
 /* Route::apiResource('incomes',IncomeController::class); */
 
@@ -71,13 +74,15 @@ Route::get('/permission', function () {
 });
 
 Route::get("output/", [OutputController::class, 'index']);
-Route::get("output/getDetail/{output}", [OutputController::class, 'getDetailOutput']);
+Route::get("output/getDetailOutput/", [OutputController::class, 'getDetailOutput']);
 Route::post("output/create", [OutputController::class, 'store']);
 Route::post("output/search", [OutputController::class, 'searchOutputByDate']);
 
 Route::get("output/articles/{section}", [OutputController::class, 'getArticles']);
 Route::put("output/update/{output}", [OutputController::class, 'update']);
 Route::delete("output/delete/{output}", [OutputController::class, 'destroy']);
+Route::get('/output/{output}',[OutputController::class, 'show']);
+Route::get('/output/by_article/{id}',[OutputController::class, 'outputsByArticle']);
 
 Route::get("prueba", [OutputController::class, 'prueba']);
 
@@ -87,5 +92,13 @@ Route::get('/incomes/getDetailsIncome/', [IncomeController::class, 'getDetailsIn
 Route::get('/incomes/{income}',[IncomeController::class, 'show']);
 Route::put('/incomes/{income}', [IncomeController::class, 'update']);
 Route::delete('/incomes/{income}', [IncomeController::class, 'destroy']);
+Route::get('/incomes/getIncomesArticle/{id}', [IncomeController::class, 'getIncomesArticle']);
+
+
+//VERIFIRY PRICE
+Route::get('/verifyPriceArticle/{id}', [OutputController::class, 'verififyPriceArticle']);
 
 //https://www.youtube.com/watch?v=2f0ucOIQJko&list=PLwNeytHvRMPxnPxvEckKJ73c2FxvSoZyY&index=9
+
+
+
