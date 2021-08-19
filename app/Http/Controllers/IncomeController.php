@@ -17,12 +17,12 @@ class IncomeController extends Controller
      */
     public function index(Request $request)
     {
-        $incomes=Income::searchIncome($request->incomevalue,$request->month,$request->year);   
+        $incomes=Income::searchIncome($request->incomevalue,$request->month,$request->year);
           return response()->json([
             'success' => true,
             'incomes'=> $incomes
         ]);
-        
+
     }
 
     /**
@@ -33,7 +33,7 @@ class IncomeController extends Controller
      */
     public function store(IncomeRequest $request)
     {
-        $income = new Income($request->all()); 
+        $income = new Income($request->all());
         $income->saveOrFail();
         $articles=$request->get('articles');
         $res=$this->updateDataArticles($articles);
@@ -82,13 +82,15 @@ class IncomeController extends Controller
         ],200);
     }
 
-    public function getDetailsIncome(Request $request)
-    {       
+
+    public function getDetailsIncome(Request $request){
+
         $details = Article_income::getDetails($request->id);
+
         return response()->json([
             'success'=> true,
             'details' => $details
-        ],200);  
+        ],200);
     }
 
     /**
@@ -99,7 +101,7 @@ class IncomeController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, Income $income)
-    {   
+    {
         $income->update($request->all());
         return response()->json([
             'sucess' => true,
@@ -115,12 +117,12 @@ class IncomeController extends Controller
      */
     public function destroy(Income $income)
     {
-        
+
         $details=Article_income::getDetails($income->id);
         $details=$this->restoreDataArticles($details);
         $income->delete();
         return response()->json([
-            'sucess' => true,           
+            'sucess' => true,
             'message' => 'Entrada eliminada correctamente'
         ],200);
     }
@@ -138,6 +140,13 @@ class IncomeController extends Controller
              }
         }
         return $details;
+    }
+   
+    public function getIncomesArticle($id){
+        $articles = Article_income::where('article_id', $id)
+            ->select('article_incomes.*')
+            ->get();
+        return $articles;
     }
 
     public function  getIncomeArticle(Request $request){
