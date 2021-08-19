@@ -15,7 +15,8 @@ class Article extends Model
     protected $casts = [
         'created_at' => "datetime:Y-m-d",
         'stock' => 'integer',
-        'stock_min' => 'integer'
+        'stock_min' => 'integer',
+        'stock_total' =>'integer'
 
     ];
 
