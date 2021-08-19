@@ -50,4 +50,17 @@ class Income extends Model
         ->where('article_incomes.income_id', '=', $id)
         ->get();
     }
+
+
+    public static function getArticleIncome($id,$monthone,$monthtwo,$year){
+
+        return self::join('article_incomes','article_incomes.income_id','incomes.id')
+        -> join('articles','article_incomes.article_id','articles.id')
+        ->select('article_incomes.total_price', 'articles.name_article','incomes.invoice_number','incomes.created_at')
+        ->where('article_incomes.article_id',$id)
+        ->WhereMonth('incomes.created_at', '>=',  $monthone)
+        ->WhereMonth('incomes.created_at', '<=', $monthtwo)
+        ->WhereYear('incomes.created_at', $year)
+        ->get();
+    }
 }

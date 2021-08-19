@@ -84,7 +84,7 @@ class IncomeController extends Controller
 
     public function getDetailsIncome(Request $request)
     {       
-        $details = Article_income::getDetails($request->id);
+        $details = Article_income::getDetails($request->id,$request->monthone,$request->monttwo,$request->year);
         return response()->json([
             'success'=> true,
             'details' => $details
@@ -138,5 +138,13 @@ class IncomeController extends Controller
              }
         }
         return $details;
+    }
+
+    public function  getIncomeArticle(Request $request){
+        $incomes = Income::getArticleIncome($request->articleid );
+        return response()->json([
+          'success'=>true,
+          'incomes'=>$incomes,
+        ],200);
     }
 }
