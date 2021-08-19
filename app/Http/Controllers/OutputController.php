@@ -107,6 +107,7 @@ class OutputController extends Controller
 
             if($article) {
                 $article->stock = $article->stock - $detail['quantity'];
+                $article->stock_total = $article->stock;
                 $article->save();
             }
         }
