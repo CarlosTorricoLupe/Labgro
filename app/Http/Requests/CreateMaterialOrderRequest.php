@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class CreateArticleRequest extends FormRequest
+class CreateMaterialOrderRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,23 +24,22 @@ class CreateArticleRequest extends FormRequest
     public function rules()
     {
         return [
-            'cod_article' => 'required|between:2,25|iunique:articles,cod_article',
-            'name_article' => 'required|unique:articles,name_article'
+            'request_amount'=>'required',
+            'article_id'=>'required'
         ];
     }
-
     public function messages()
     {
         return [
-            'cod_article.required'   => 'El :attribute es obligatorio.',
-            'cod_article.iunique'   => 'El :attribute es unico.',
+            'request_amount.required'=>'El :attribute es obligatorio',
+            'article_id.required'=>'El :attribute es obligatorio'
         ];
     }
-
     public function attributes()
     {
         return [
-            'cod_article' => 'codigo de articulo',
+            'request_amount' => 'CANTIDAD_REQUERIDA',
+            'article_id' => 'ID_ARTICULO'
         ];
     }
 }

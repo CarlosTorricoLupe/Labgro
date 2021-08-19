@@ -17,7 +17,7 @@ class ArticleController extends Controller
     {
         Article::UpdateStatusIsLow();
         $result = Article::ArticlesAll();
-        return $result;
+        return response()->json($result,200);
     }
 
     /**

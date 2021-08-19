@@ -2,17 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\CreateMaterialOrderRequest;
 use App\Models\MaterialsOrder;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Validator;
 
-class PedidoMaterialesController extends Controller
+class MaterialsOrderController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function index()
     {
         //
@@ -34,28 +29,14 @@ class PedidoMaterialesController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(CreateMaterialOrderRequest $request)
     {
-        $responseCode=200;
-        $v = Validator::make($request->all(), [
-            'request_amount' => 'required',
-            'article_id' => 'required'
-        ]);
-        if ($v && $v->fails()) {
-            $result = array(
-                'code' => 'ADDING MATERIALS ORDER UNSUCCESSFULLY',
-                'detail' => 'register unsuccessfully',
-                'errors' => $v->errors()
-            );
-            $responseCode = 409;
-        } else {
-            $result = MaterialsOrder::create([
-                'request_amount'=>(int)$request->request_amount,
-                'article_id'=>(int)$request->article_id,
-                'details'=>$request->details,
-            ]);
-        }
-        return response()->json($result,$responseCode);
+
+        MaterialsOrder::create($request->all());
+        return response()->json([
+            'success' => true,
+            'message' => 'Registro creado correctamente'
+        ],201);
     }
 
     /**

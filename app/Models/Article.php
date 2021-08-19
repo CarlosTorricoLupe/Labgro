@@ -20,7 +20,6 @@ class Article extends Model
     ];
 
     protected $fillable = [
-        'id',
         'cod_article',
         'name_article',
         'stock',
