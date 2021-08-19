@@ -40,6 +40,27 @@ class Output extends Model
         return self::select('outputs.*')->where('outputs.id',$id)->get();
     }
 
+    public static function getOutputsByArticle($id){
+        return self::join('output_details','output_details.output_id','outputs.id')
+            ->join('articles','output_details.article_id','articles.id')
+            ->select('outputs.section_id',
+                'outputs.section_id',
+                'outputs.receipt',
+                'outputs.order_number',
+                'outputs.order_date',
+                'outputs.delivery_date',
+                'outputs.total',
+                'output_details.article_id',
+                'articles.name_article',
+                'output_details.quantity',
+                'output_details.budget_output',
+                'output_details.total as price_total'
+            )
+            ->where('output_details.article_id',$id)
+            ->paginate(12);
+
+    }
+
     public static function boot() {
         parent::boot();
 

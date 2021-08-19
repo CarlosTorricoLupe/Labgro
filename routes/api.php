@@ -82,6 +82,7 @@ Route::get("output/articles/{section}", [OutputController::class, 'getArticles']
 Route::put("output/update/{output}", [OutputController::class, 'update']);
 Route::delete("output/delete/{output}", [OutputController::class, 'destroy']);
 Route::get('/output/{output}',[OutputController::class, 'show']);
+Route::get('/output/by_article/{id}',[OutputController::class, 'outputsByArticle']);
 
 Route::get("prueba", [OutputController::class, 'prueba']);
 

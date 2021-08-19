@@ -221,4 +221,12 @@ class OutputController extends Controller
         return $response;
     }
 
+    public function outputsByArticle($id){
+        $outputs = Output::getOutputsByArticle($id);
+
+        return response()->json([
+            'success'=> true,
+            'outputs' => $outputs
+        ],200);
+    }
 }
