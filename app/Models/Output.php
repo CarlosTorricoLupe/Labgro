@@ -36,6 +36,9 @@ class Output extends Model
                 ->select('outputs.*', 'sections.name')
                 ->paginate(12);
     }
+    public static function getOutput($id){
+        return self::select('outputs.*')->where('outputs.id',$id)->get();
+    }
 
     public static function boot() {
         parent::boot();

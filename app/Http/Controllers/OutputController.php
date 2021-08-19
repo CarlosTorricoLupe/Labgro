@@ -115,12 +115,19 @@ class OutputController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param  Output  $output
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Output $output)
     {
-        //
+        $outputs=Output::getOutput($output->id);
+        $details=OutputDetail::getDetails($output->id);
+
+        return response()->json([
+            'success'=>true,
+            'output'=>$outputs,
+            'details'=>$details
+        ]);
     }
 
     /**
@@ -168,16 +175,13 @@ class OutputController extends Controller
         }
     }
 
-    public function getDetailOutput($output){
-        $details = OutputDetail::where('output_id',$output)->get();
-        if(count($details)){
-            return $details;
-        } else {
-            return response()->json([
-                'success'=>false,
-                'message'=>'No se encontraron resultados'
-            ],404);
-        }
+    public function getDetailOutput(Request $request){
+        $details = Article_income::getDetails($request->id);
+
+        return response()->json([
+            'success'=> true,
+            'details' => $details
+        ],200);
     }
 
     public function getArticles($section){

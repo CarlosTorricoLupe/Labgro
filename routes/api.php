@@ -74,13 +74,14 @@ Route::get('/permission', function () {
 });
 
 Route::get("output/", [OutputController::class, 'index']);
-Route::get("output/getDetail/{output}", [OutputController::class, 'getDetailOutput']);
+Route::get("output/getDetailOutput/", [OutputController::class, 'getDetailOutput']);
 Route::post("output/create", [OutputController::class, 'store']);
 Route::post("output/search", [OutputController::class, 'searchOutputByDate']);
 
 Route::get("output/articles/{section}", [OutputController::class, 'getArticles']);
 Route::put("output/update/{output}", [OutputController::class, 'update']);
 Route::delete("output/delete/{output}", [OutputController::class, 'destroy']);
+Route::get('/output/{output}',[OutputController::class, 'show']);
 
 Route::get("prueba", [OutputController::class, 'prueba']);
 
