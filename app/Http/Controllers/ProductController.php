@@ -14,7 +14,15 @@ class ProductController extends Controller
      */
     public function index()
     {
-        //
+        $products=Product::all();
+        if(count($products)){
+            return $products;
+        } else {
+            return response()->json([
+                'success'=>false,
+                'message'=>'No se encontraron resultados'
+            ],404);
+        }
     }
 
     /**
@@ -28,7 +36,8 @@ class ProductController extends Controller
         $input = $request->all();
         if($request->hasFile('image')){
             $input['image'] = time() . '_' . $request->file('image')->getClientOriginalName();
-            $request->file('image')->storeAs('products', $input['image']);
+            //$request->file('image')->storeAs('products', $input['image']);
+            $request->image->move(public_path('products'), $input['image']);
         }
 
         Product::create($input);
@@ -42,24 +51,36 @@ class ProductController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param  Product  $product
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Product $product)
     {
-        //
+        return response()->json([
+            'success'=> true,
+            'product' =>$product
+        ],200);
     }
 
     /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param  Product  $product
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Product $product)
     {
-        //
+        $input = $request->all();
+        if ($request->hasFile("image")) {
+            $input['image'] = time() . '_' . $request->file('image')->getClientOriginalName();
+            $request->image->move(public_path('images'), $input['image']);
+        }
+        $product->update($input);
+        return response()->json([
+            'sucess' => true,
+            'message' => 'Producto actualizado correctamente'
+        ],200);
     }
 
     /**
@@ -70,6 +91,10 @@ class ProductController extends Controller
      */
     public function destroy($id)
     {
-        //
+        Product::destroy($id);
+        return response()->json([
+            'success' => true,
+            'message' => 'Producto elimininado correctamente'
+        ],200);
     }
 }
