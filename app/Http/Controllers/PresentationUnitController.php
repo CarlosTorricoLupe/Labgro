@@ -3,21 +3,37 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\PresentationUnitRequest;
-use App\Models\PresentationUnits;
+use App\Models\PresentationUnit;
 use App\Models\Product;
 use Illuminate\Http\Request;
 
-class PresentationUnitsController extends Controller
+class PresentationUnitController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index($id)
+    public function index()
+    {
+        $presentations=PresentationUnit::all();
+        if(count($presentations)){
+            return response()->json([
+                'success'=>true,
+                'presentations'=>$presentations
+            ],200);
+        } else {
+            return response()->json([
+                'success'=>false,
+                'message'=>'No se encontraron resultados'
+            ],404);
+        }
+    }
+
+    public function indexByProduct($id)
     {
         $product=Product::find($id);
-        $presentations=PresentationUnits::join('products','presentation_units.product_id','products.id')
+        $presentations=PresentationUnit::join('products','presentation_units.product_id','products.id')
                                           ->where('presentation_units.product_id',$product->id)
                                           ->get();
         if(count($presentations)){
@@ -32,7 +48,6 @@ class PresentationUnitsController extends Controller
             ],404);
         }
     }
-
     /**
      * Store a newly created resource in storage.
      *
@@ -41,7 +56,7 @@ class PresentationUnitsController extends Controller
      */
     public function store(PresentationUnitRequest $request)
     {
-        PresentationUnits::create($request->all());
+        PresentationUnit::create($request->only('name'));
         return response()->json([
             'sucess' =>true,
             'message' =>'Unidad de presentacion creada correctamente'
@@ -51,14 +66,14 @@ class PresentationUnitsController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\PresentationUnits  $presentationUnits
+     * @param  \App\Models\PresentationUnit  $presentationUnit
      * @return \Illuminate\Http\Response
      */
-    public function show(PresentationUnits $presentationUnits)
+    public function show(PresentationUnit $presentationUnit)
     {
         return response()->json([
             'success'=> true,
-            'presentation' =>$presentationUnits
+            'presentation' =>$presentationUnit
         ],200);
     }
 
@@ -66,12 +81,12 @@ class PresentationUnitsController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\PresentationUnits  $presentationUnits
+     * @param  \App\Models\PresentationUnit $presentationUnit
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, PresentationUnits $presentationUnits)
+    public function update(Request $request, PresentationUnit $presentationUnit)
     {
-        $presentationUnits->update($request->all());
+        $presentationUnit->update($request->all());
         return response()->json([
             'sucess' => true,
             'message' => 'Unidad de presentacion actualizada correctamente'
@@ -81,12 +96,12 @@ class PresentationUnitsController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\PresentationUnits  $presentationUnits
+     * @param  \App\Models\PresentationUnit  $presentationUnit
      * @return \Illuminate\Http\Response
      */
-    public function destroy(PresentationUnits $presentationUnits)
+    public function destroy(PresentationUnit $presentationUnit)
     {
-        $result = PresentationUnits::find($presentationUnits);
+        $result = PresentationUnit::find($presentationUnit);
         $result->delete();
     }
 }

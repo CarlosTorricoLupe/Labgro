@@ -16,9 +16,6 @@ class CreatePresentationUnitsTable extends Migration
         Schema::create('presentation_units', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->decimal('unit_cost_production',11,2);
-            $table->decimal('unit_price_sale',11,2);
-            $table->foreignId('product_id')->constrained();
             $table->timestamps();
         });
     }
