@@ -2,11 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\PresentationUnit;
+use App\Models\Material;
 use Illuminate\Http\Request;
-use App\Models\Product;
 
-class ProductController extends Controller
+class MaterialController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -15,9 +14,9 @@ class ProductController extends Controller
      */
     public function index()
     {
-        $products=Product::all();
-        if(count($products)){
-            return $products;
+        $materials = Material::all();
+        if(count($materials)){
+            return $materials;
         } else {
             return response()->json([
                 'success'=>false,
@@ -34,32 +33,24 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
-        $input = $request->all();
-        if($request->hasFile('image')){
-            $input['image'] = time() . '_' . $request->file('image')->getClientOriginalName();
-            //$request->file('image')->storeAs('products', $input['image']);
-            $request->image->move(public_path('products'), $input['image']);
-        }
-
-        Product::create($input);
-
+        Material::create($request->all());
         return response()->json([
             'sucess' =>true,
-            'message' =>'Producto creado correctamente'
+            'message' =>'Materia creada correctamente'
         ],201);
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  Product  $product
+     * @param  Material  $material
      * @return \Illuminate\Http\Response
      */
-    public function show(Product $product)
+    public function show(Material $material)
     {
         return response()->json([
             'success'=> true,
-            'product' =>$product
+            'materia' =>$material
         ],200);
     }
 
@@ -67,20 +58,15 @@ class ProductController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  Product  $product
+     * @param  Material  $material
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Product $product)
+    public function update(Request $request, Material $material)
     {
-        $input = $request->all();
-        if ($request->hasFile("image")) {
-            $input['image'] = time() . '_' . $request->file('image')->getClientOriginalName();
-            $request->image->move(public_path('images'), $input['image']);
-        }
-        $product->update($input);
+        $material->update($request->all());
         return response()->json([
             'sucess' => true,
-            'message' => 'Producto actualizado correctamente'
+            'message' => 'Materia actualizada correctamente'
         ],200);
     }
 
@@ -92,10 +78,10 @@ class ProductController extends Controller
      */
     public function destroy($id)
     {
-        Product::destroy($id);
+        Material::destroy($id);
         return response()->json([
             'success' => true,
-            'message' => 'Producto elimininado correctamente'
+            'message' => 'Materia eliminada correctamente'
         ],200);
     }
 }
