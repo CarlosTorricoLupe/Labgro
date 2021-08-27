@@ -34,10 +34,11 @@ class ProductController extends Controller
     public function store(Request $request)
     {
         $input = $request->all();
+
         if($request->hasFile('image')){
             $input['image'] = time() . '_' . $request->file('image')->getClientOriginalName();
-            //$request->file('image')->storeAs('products', $input['image']);
-            $request->image->move(public_path('products'), $input['image']);
+            $request->file('image')->storeAs('products', $input['image']);
+            //$request->image->move(public_path('products'), $input['image']);
         }
 
         Product::create($input);

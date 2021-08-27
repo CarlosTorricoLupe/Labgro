@@ -31,21 +31,42 @@ class Order extends Model
         parent::boot();
 
         static::deleting(function($order) { // before delete() method call this
-            $order->articles()->detach();
+            $order->materials()->detach();
         });
     }
 
-    public function scopeGetOrder($query, $id){
-        return $query
-            ->select(   'id',
+    public static function getOrder($id){
+        return self::select(
+                        'id',
                         'receipt',
                         'order_number',
                         'date_issue',
                         'is_approved',
                         'section_id',
                         'created_at')
-            ->where('id',$id);
+            ->where('id',$id)
+            ->get();
     }
 
+    public static function getDetails($id){
+        return self::
+            join('order_materials', 'order_materials.order_id','orders.id')
+            ->join('materials','order_materials.material_id','materials.id')
+            ->join('articles','materials.article_id','articles.id')
+            ->join('units','articles.unit_id', 'units.id')
+            ->select('order_materials.order_id',
+                'order_materials.material_id',
+                'order_materials.quantity',
+                'materials.code',
+                'materials.color',
+                'materials.is_a',
+                'materials.article_id',
+                'articles.name_article',
+                'materials.article_id',
+                'units.unit_measure'
 
+            )
+            ->where('order_materials.order_id',$id)
+            ->get();
+    }
 }
