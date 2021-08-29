@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\PresentationUnit;
 use Illuminate\Http\Request;
 use App\Models\Product;
+use Image;
+use File;
 
 class ProductController extends Controller
 {
@@ -36,9 +38,9 @@ class ProductController extends Controller
     {
         $input = $request->all();
         if($request->hasFile('image')){
-            $input['image'] = time() . '_' . $request->file('image')->getClientOriginalName();
-            //$request->file('image')->storeAs('products', $input['image']);
-            $request->image->move(public_path('products'), $input['image']);
+            $image = $request->file('image');
+            $this->uploadImage($image);
+            $input['image'] = time().'_'.$image->getClientOriginalName();
         }
 
         Product::create($input);
@@ -47,6 +49,23 @@ class ProductController extends Controller
             'sucess' =>true,
             'message' =>'Producto creado correctamente'
         ],201);
+    }
+
+    public function uploadImage($request_image){
+        $image = Image::make($request_image);
+
+        $path = public_path('products/');
+
+        if (!File::exists($path)) {
+            File::makeDirectory($path);
+        }
+        $image_name= time().'_'.$request_image->getClientOriginalName();
+
+        $image->resize(null, 500, function($constraint) {
+            $constraint->aspectRatio();
+        });
+
+        $image->save($path.$image_name);
     }
 
     /**
@@ -74,8 +93,9 @@ class ProductController extends Controller
     {
         $input = $request->all();
         if ($request->hasFile("image")) {
-            $input['image'] = time() . '_' . $request->file('image')->getClientOriginalName();
-            $request->image->move(public_path('images'), $input['image']);
+            $image = $request->file('image');
+            $this->uploadImage($image);
+            $input['image'] = time().'_'.$image->getClientOriginalName();
         }
         $product->update($input);
         return response()->json([
@@ -98,4 +118,6 @@ class ProductController extends Controller
             'message' => 'Producto elimininado correctamente'
         ],200);
     }
+
+
 }

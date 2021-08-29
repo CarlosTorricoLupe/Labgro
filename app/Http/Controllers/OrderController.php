@@ -12,9 +12,13 @@ class OrderController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        $orders=Order::all();
+        return response()->json([
+            'success' => true,
+            'orders'=> $orders
+        ]);
     }
 
     /**
@@ -41,16 +45,19 @@ class OrderController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  Order  $order
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show(Order $order)
+    public function show($id)
     {
-        $order = Order::GetOrder($order->id)->get();
+        $order = Order::getOrder($id);
+        $details = Order::GetDetails($id);
+
 
         return response()->json([
             'success'=>true,
             'order'=>$order,
+            'details' =>$details
         ]);
     }
 
@@ -58,12 +65,16 @@ class OrderController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param  Order  $order
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Order $order)
     {
-        //
+        $order->update($request->all());
+        return response()->json([
+            'sucess' => true,
+            'message' => 'Pedido actualizado correctamente'
+        ],200);
     }
 
     /**
@@ -76,5 +87,9 @@ class OrderController extends Controller
     {
         $result = Order::find($id);
         $result->delete();
+        return response()->json([
+            'sucess' => true,
+            'message' => 'Pedido eliminado correctamente'
+        ],200);
     }
 }
