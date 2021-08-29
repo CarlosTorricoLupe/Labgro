@@ -28,7 +28,9 @@ class ArticleController extends Controller
      */
     public function store(CreateArticleRequest $request)
     {
-        Article::create($request->all());
+        $article=new Article($request->all());
+        $article->stock_total=$article->stock;
+        $article->save();
         return response()->json([
             'sucess' => true,
             'message' => 'Registro creado correctamente'
