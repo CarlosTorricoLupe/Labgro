@@ -36,6 +36,7 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
+        $response=array();
         $input = $request->all();
         if($request->hasFile('image')){
             $image = $request->file('image');
@@ -43,12 +44,25 @@ class ProductController extends Controller
             $input['image'] = time().'_'.$image->getClientOriginalName();
         }
 
-        Product::create($input);
+        $presentations=$request->get('presentations');
+        $ingredients=$request->get('ingredients'); 
 
-        return response()->json([
-            'sucess' =>true,
-            'message' =>'Producto creado correctamente'
-        ],201);
+         if(isset($presentations)){
+            if (isset($ingredients)) {
+                $product=Product::create($input);
+                $product->presentations()->sync($presentations);
+                $product->ingredients()->sync($ingredients);
+                $response['sucess'] = true;
+                $response['message'] = "Producto creado correctamente";
+            }else{
+                $response['sucess'] = false;
+                $response['error'] = "No se agregaron Ingredientes";
+            }
+        }else{
+            $response['sucess'] = false;
+            $response['error'] = "No se agregaron Presentaciones";
+        } 
+        return response()->json([$response],201);
     }
 
     public function uploadImage($request_image){
