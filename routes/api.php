@@ -11,6 +11,7 @@ use App\Http\Controllers\SectionController;
 use App\Http\Controllers\UnitController;
 use App\Http\Controllers\IncomeController;
 use App\Http\Controllers\OutputController;
+use App\Http\Controllers\PresentationUnitController;
 use App\Http\Controllers\RawMaterialController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\MaterialController;
@@ -65,6 +66,8 @@ Route::apiResource('materials',MaterialController::class);
 
 Route::apiResource('orders', OrderController::class);
 
+Route::apiResource('presentations', PresentationUnitController::class);
+
 /* Route::apiResource('incomes',IncomeController::class); */
 
 
@@ -107,6 +110,8 @@ Route::get('/incomes/getIncomesArticle/{id}', [IncomeController::class, 'getInco
 
 //VERIFIRY PRICE
 Route::get('/verifyPriceArticle/{id}', [OutputController::class, 'verififyPriceArticle']);
+
+
 
 //https://www.youtube.com/watch?v=2f0ucOIQJko&list=PLwNeytHvRMPxnPxvEckKJ73c2FxvSoZyY&index=9
 

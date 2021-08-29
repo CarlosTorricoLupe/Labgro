@@ -15,4 +15,10 @@ class Product extends Model
         'description',
         'image'
     ];
+
+    public function presentations()
+    {
+        return $this->belongsToMany(PresentationUnit::class,'presentation_unit_products',"presentation_unit_id","product_id")->withPivot('unit_cost_production','unit_price_sale')->withTimestamps();
+    }
+
 }
