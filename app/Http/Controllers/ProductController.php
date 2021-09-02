@@ -13,9 +13,9 @@ class ProductController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $products=Product::all();
+        $products=Product::searchProducts($request->value,$request->month,$request->year);
         if(count($products)){
             return $products;
         } else {
@@ -43,7 +43,7 @@ class ProductController extends Controller
         }
 
         $presentations=$request->get('presentations');
-        $ingredients=$request->get('ingredients'); 
+        $ingredients=$request->get('ingredients');
 
          if(isset($presentations)){
             if (isset($ingredients)) {
@@ -59,7 +59,7 @@ class ProductController extends Controller
         }else{
             $response['sucess'] = false;
             $response['error'] = "No se agregaron Presentaciones";
-        } 
+        }
         return response()->json([$response],201);
     }
 
