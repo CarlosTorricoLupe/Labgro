@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\PresentationUnitRequest;
 use App\Models\PresentationUnit;
+use App\Models\PresentationUnit_product;
 use App\Models\Product;
 use Illuminate\Http\Request;
 
@@ -32,10 +33,7 @@ class PresentationUnitController extends Controller
 
     public function indexByProduct($id)
     {
-        $product=Product::find($id);
-        $presentations=PresentationUnit::join('products','presentation_units.product_id','products.id')
-                                          ->where('presentation_units.product_id',$product->id)
-                                          ->get();
+        $presentations = PresentationUnit_product::join('products','presentation_unit_products.product_id','products.id')->join('presentation_units','presentation_unit_products.presentation_unit_id','presentation_units.id')->select('presentation_units.name','presentation_unit_products.unit_cost_production','presentation_unit_products.unit_price_sale')->where('presentation_unit_products.product_id',$id)->get();
         if(count($presentations)){
             return response()->json([
                 'success'=>true,

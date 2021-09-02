@@ -68,6 +68,8 @@ Route::apiResource('orders', OrderController::class);
 
 Route::apiResource('presentations', PresentationUnitController::class);
 
+Route::get("product/{id}/presentations", [PresentationUnitController::class, 'indexByProduct']);
+
 /* Route::apiResource('incomes',IncomeController::class); */
 
 
