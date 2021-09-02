@@ -30,7 +30,6 @@ class MaterialSeeder extends Seeder
                 'color' => '#FFFFFF',
                 'article_id' => 1,
                 'is_a' =>'raw_material'
-
             ],
             [
                 'code' => 'COD125',

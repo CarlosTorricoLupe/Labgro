@@ -16,7 +16,7 @@ use App\Http\Controllers\RawMaterialController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\MaterialController;
 use App\Http\Controllers\OrderController;
-
+use App\Http\Controllers\ProductMaterialController;
 
 /*
 |--------------------------------------------------------------------------
@@ -68,8 +68,7 @@ Route::apiResource('orders', OrderController::class);
 
 Route::apiResource('presentations', PresentationUnitController::class);
 
-Route::get("product/{id}/presentations", [PresentationUnitController::class, 'indexByProduct']);
-
+Route::apiResource('product.materials',ProductMaterialController::class);
 /* Route::apiResource('incomes',IncomeController::class); */
 
 

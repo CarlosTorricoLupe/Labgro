@@ -21,8 +21,33 @@ class Product extends Model
         return $this->belongsToMany(PresentationUnit::class,'presentation_unit_products')->withPivot('unit_cost_production','unit_price_sale')->withTimestamps();
     }
 
-    public function ingredients()
+  /*  public function ingredients()
     {
         return $this->belongsToMany(Material::class,'material_products')->withPivot('quantity')->withTimestamps();
+    }
+*/
+    public function materials()
+    {
+        return $this->belongsToMany(Material::class,'product_materials', 'product_id', 'material_id');
+    }
+
+    public static function searchProducts($value='',$month,$year){
+        if (!$value) {
+            return self::select('products.id',
+                'products.name',
+                'products.description',
+                'products.image',
+                'products.created_at')
+                ->WhereMonth('products.created_at',$month)
+                ->WhereYear('products.created_at',$year)
+                ->paginate(12);
+        }
+        return self::select('products.id',
+            'products.name',
+            'products.description',
+            'products.image',
+            'products.created_at')
+            ->where('products.name','like',"%$value%")
+            ->paginate(12);
     }
 }
