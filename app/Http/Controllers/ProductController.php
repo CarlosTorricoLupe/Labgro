@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Material_product;
 use App\Models\PresentationUnit;
+use App\Models\PresentationUnit_product;
 use Illuminate\Http\Request;
 use App\Models\Product;
 use Image;
@@ -90,9 +92,13 @@ class ProductController extends Controller
      */
     public function show(Product $product)
     {
+        $presentations=PresentationUnit_product::getPresentations($product->id);
+        $materials=Material_product::getMaterials($product->id);
         return response()->json([
             'success'=> true,
-            'product' =>$product
+            'product' => $product,
+            'presentations' => $presentations,
+            'materials' => $materials
         ],200);
     }
 

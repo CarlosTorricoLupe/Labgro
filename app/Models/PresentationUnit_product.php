@@ -15,4 +15,11 @@ class PresentationUnit_product extends Model
         'presentation_unit_id',
         'product_id'
     ];
+
+    public static function getPresentations($id){
+        return self::join('products','presentation_unit_products.product_id','products.id')
+        ->join('presentation_units','presentation_unit_products.presentation_unit_id','presentation_units.id')->select('presentation_units.name','presentation_unit_products.unit_cost_production','presentation_unit_products.unit_price_sale')
+        ->where('presentation_unit_products.product_id',$id)
+        ->get();
+    }
 }
