@@ -2,12 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Material_product;
+use App\Models\PresentationUnit_product;
 use App\Models\Product;
-use App\Models\ProductMaterial;
 use Illuminate\Http\Request;
 
-class ProductMaterialController extends Controller
+class ProductPresentationController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -16,9 +15,9 @@ class ProductMaterialController extends Controller
      */
     public function index($id)
     {
-        $materials = Material_product::where('product_id',$id)->get();
-        if(count($materials)){
-            return $materials;
+        $presentations = PresentationUnit_product::where('product_id',$id)->get();
+        if(count($presentations)){
+            return $presentations;
         } else {
             return response()->json([
                 'success'=>false,
@@ -33,16 +32,19 @@ class ProductMaterialController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request, $id)
+    public function store(Request $request,$id)
     {
-        $input = $request->all();
+        $response=array();
         $product = Product::find($id);
-        $product->materials()->sync($input);
-
-        return response()->json([
-            'sucess' =>true,
-            'message' =>'Materia prima/insumo creada correctamente'
-        ],201);
+        if (! $product->presentations->contains($request->presentation_unit_id)) {
+            $product->presentations()->attach($request->presentation_unit_id,['unit_cost_production'=>$request->unit_cost_production,'unit_price_sale'=>$request->unit_price_sale]);
+            $response['sucess'] = true;
+            $response['message'] = "Presentacion agregada correctamente";
+        }else{
+            $response['sucess'] = false;
+            $response['error'] = "La unidad de presentacion ya existe";
+        }
+        return response()->json($response,201);
     }
 
     /**

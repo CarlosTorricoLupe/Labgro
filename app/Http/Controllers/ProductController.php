@@ -48,12 +48,11 @@ class ProductController extends Controller
 
         $presentations=$request->get('presentations');
         $ingredients=$request->get('ingredients');
-
          if(isset($presentations)){
             if (isset($ingredients)) {
                 $product=Product::create($input);
                 $product->presentations()->sync($presentations);
-                $product->ingredients()->sync($ingredients);
+                $product->materials()->sync($ingredients);
                 $response['sucess'] = true;
                 $response['message'] = "Producto creado correctamente";
             }else{
