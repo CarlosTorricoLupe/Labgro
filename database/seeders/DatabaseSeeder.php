@@ -28,7 +28,8 @@ class DatabaseSeeder extends Seeder
              IncomeSeeder::class,
              OutputSeeder::class,
              MaterialSeeder::class,
-             PresentationUnitsSeeder::class
+             PresentationUnitsSeeder::class,
+             ProductSeeder::class,
          ]);
         //\App\Models\User::factory()->create();
     }

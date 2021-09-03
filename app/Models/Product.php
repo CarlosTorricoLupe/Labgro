@@ -18,11 +18,31 @@ class Product extends Model
 
     public function presentations()
     {
-        return $this->belongsToMany(PresentationUnit::class,'presentation_unit_products',"presentation_unit_id","product_id")->withPivot('unit_cost_production','unit_price_sale')->withTimestamps();
+        return $this->belongsToMany(PresentationUnit::class,'presentation_unit_products')->withPivot('unit_cost_production','unit_price_sale')->withTimestamps();
     }
 
     public function ingredients()
     {
-        return $this->belongsToMany(Material::class,'material_products',"material_id","product_id")->withPivot('quantity')->withTimestamps();
+        return $this->belongsToMany(Material::class,'material_products')->withPivot('quantity')->withTimestamps();
+    }
+
+    public static function searchProducts($value='',$month,$year){
+        if (!$value) {
+            return self::select('products.id',
+                'products.name',
+                'products.description',
+                'products.image',
+                'products.created_at')
+                ->WhereMonth('products.created_at',$month)
+                ->WhereYear('products.created_at',$year)
+                ->paginate(12);
+        }
+        return self::select('products.id',
+            'products.name',
+            'products.description',
+            'products.image',
+            'products.created_at')
+            ->where('products.name','like',"%$value%")
+            ->paginate(12);
     }
 }

@@ -22,7 +22,7 @@ class OutputSeeder extends Seeder
         $dates=['2021-08-01','2021-07-12','2021-07-23','2021-07-04','2021-08-22','2021-08-12'];
         $months = ['2017-01-01', '2021-12-01'];
 
-            for ($i=0; $i < 50; $i++) {
+            for ($i=0; $i < 5; $i++) {
                 if($i < 20){
                     $output = Output::create([
                         'section_id' =>'1',

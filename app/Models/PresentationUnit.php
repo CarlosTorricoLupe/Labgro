@@ -15,6 +15,6 @@ class PresentationUnit extends Model
 
     public function products()
     {
-        return $this->belongsToMany(Product::class,'presentation_unit_products',"product_id","presentation_unit_id")->withPivot('unit_cost_production','unit_price_sale')->withTimestamps();
+        return $this->belongsToMany(Product::class,'presentation_unit_products')->withPivot('unit_cost_production','unit_price_sale')->withTimestamps();
     }
 }

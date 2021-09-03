@@ -20,7 +20,7 @@ class CreateMaterialsTable extends Migration
             $table->float('stock_min');
             $table->string('color')->default('#85CE36');
             $table->foreignId('article_id')->constrained();
-            $table->enum('is_a',['raw_material', 'supplies']);
+            $table->enum('is_a',['raw_material', 'supplies'])->default('raw_material');
             $table->timestamps();
         });
     }

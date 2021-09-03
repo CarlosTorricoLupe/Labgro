@@ -21,7 +21,7 @@ class IncomeSeeder extends Seeder
     {      
         $dates=['2021-08-01','2021-07-12','2021-07-23','2021-07-04','2021-08-22','2021-08-12'];
 
-        for ($i=0; $i < 15; $i++) { 
+        for ($i=0; $i < 5; $i++) { 
             $incom=Income::create([
                 'receipt' => rand(300,1000),
                 'total' => rand(300000,900000)/100,

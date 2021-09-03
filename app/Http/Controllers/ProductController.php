@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Material_product;
 use App\Models\PresentationUnit;
+use App\Models\PresentationUnit_product;
 use Illuminate\Http\Request;
 use App\Models\Product;
 use Image;
@@ -15,9 +17,9 @@ class ProductController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $products=Product::all();
+        $products=Product::searchProducts($request->value,$request->month,$request->year);
         if(count($products)){
             return $products;
         } else {
@@ -45,8 +47,7 @@ class ProductController extends Controller
         }
 
         $presentations=$request->get('presentations');
-        $ingredients=$request->get('ingredients'); 
-
+        $ingredients=$request->get('ingredients');
          if(isset($presentations)){
             if (isset($ingredients)) {
                 $product=Product::create($input);
@@ -61,7 +62,7 @@ class ProductController extends Controller
         }else{
             $response['sucess'] = false;
             $response['error'] = "No se agregaron Presentaciones";
-        } 
+        }
         return response()->json([$response],201);
     }
 
@@ -90,9 +91,13 @@ class ProductController extends Controller
      */
     public function show(Product $product)
     {
+        $presentations=PresentationUnit_product::getPresentations($product->id);
+        $materials=Material_product::getDetailMaterial($product->id);
         return response()->json([
             'success'=> true,
-            'product' =>$product
+            'product' => $product,
+            'presentations' => $presentations,
+            'materials' => $materials
         ],200);
     }
 
