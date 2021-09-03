@@ -21,14 +21,9 @@ class Product extends Model
         return $this->belongsToMany(PresentationUnit::class,'presentation_unit_products')->withPivot('unit_cost_production','unit_price_sale')->withTimestamps();
     }
 
-  /*  public function ingredients()
+    public function ingredients()
     {
         return $this->belongsToMany(Material::class,'material_products')->withPivot('quantity')->withTimestamps();
-    }
-*/
-    public function materials()
-    {
-        return $this->belongsToMany(Material::class,'material_products', 'product_id', 'material_id')->withPivot('quantity')->withTimestamps();
     }
 
     public static function searchProducts($value='',$month,$year){
