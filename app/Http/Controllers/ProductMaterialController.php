@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Product;
+use App\Models\Material_product;
 use App\Models\ProductMaterial;
 use Illuminate\Http\Request;
 
@@ -15,7 +15,7 @@ class ProductMaterialController extends Controller
      */
     public function index($id)
     {
-        $materials = ProductMaterial::where('product_id',$id)->get();
+        $materials = Material_product::getDetailMaterial($id);
         if(count($materials)){
             return $materials;
         } else {
@@ -35,8 +35,8 @@ class ProductMaterialController extends Controller
     public function store(Request $request, $id)
     {
         $input = $request->all();
-        $product = Product::find($id);
-        $product->materials()->sync($input);
+        $input['product_id'] = $id;
+        Material_product::create($input);
 
         return response()->json([
             'sucess' =>true,
@@ -59,22 +59,36 @@ class ProductMaterialController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param  int  $product_id
+     * @param  int  $material_id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, $product_id, $material_id)
     {
-        //
+        Material_product::where('product_id', $product_id)
+            ->where('material_id',$material_id)
+            ->update($request->all());
+        return response()->json([
+            'sucess' => true,
+            'message' => 'Se actualizo correctamente'
+        ],200);
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param  int  $product_id
+     * @param  int  $material_id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy($product_id, $material_id)
     {
-        //
+        Material_product::where('product_id', $product_id)
+            ->where('material_id',$material_id)
+            ->delete();
+        return response()->json([
+            'sucess' => true,
+            'message' => 'Se elimino correctamente'
+        ],200);
     }
 }
