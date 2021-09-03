@@ -52,7 +52,7 @@ class ProductController extends Controller
             if (isset($ingredients)) {
                 $product=Product::create($input);
                 $product->presentations()->sync($presentations);
-                $product->materials()->sync($ingredients);
+                $product->ingredients()->sync($ingredients);
                 $response['sucess'] = true;
                 $response['message'] = "Producto creado correctamente";
             }else{
@@ -92,7 +92,7 @@ class ProductController extends Controller
     public function show(Product $product)
     {
         $presentations=PresentationUnit_product::getPresentations($product->id);
-        $materials=Material_product::getMaterials($product->id);
+        $materials=Material_product::getDetailMaterial($product->id);
         return response()->json([
             'success'=> true,
             'product' => $product,

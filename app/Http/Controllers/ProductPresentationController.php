@@ -65,9 +65,15 @@ class ProductPresentationController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, $product_id, $presentation_unit_id)
     {
-        //
+        PresentationUnit_product::where('product_id', $product_id)
+            ->where('presentation_unit_id',$presentation_unit_id)
+            ->update($request->all());
+        return response()->json([
+            'sucess' => true,
+            'message' => 'Se actualizo correctamente'
+        ],200);
     }
 
     /**
@@ -76,8 +82,14 @@ class ProductPresentationController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy($product_id, $presentation_unit_id)
     {
-        //
+        PresentationUnit_product::where('product_id', $product_id)
+            ->where('presentation_unit_id',$presentation_unit_id)
+            ->delete();
+        return response()->json([
+            'sucess' => true,
+            'message' => 'Se elimino correctamente'
+        ],200);
     }
 }
