@@ -22,4 +22,11 @@ class PresentationUnit_product extends Model
         ->where('presentation_unit_products.product_id',$id)
         ->get();
     }
+
+    public static function getProducts($id){
+        return self::join('products','presentation_unit_products.product_id','products.id')
+        ->join('presentation_units','presentation_unit_products.presentation_unit_id','presentation_units.id')->select('products.name')
+        ->where('presentation_unit_products.presentation_unit_id',$id)
+        ->get();
+    }
 }
