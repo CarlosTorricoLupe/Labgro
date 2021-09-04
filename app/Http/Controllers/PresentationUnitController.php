@@ -67,11 +67,12 @@ class PresentationUnitController extends Controller
      * @param  \App\Models\PresentationUnit  $presentationUnit
      * @return \Illuminate\Http\Response
      */
-    public function show(PresentationUnit $presentationUnit)
+    public function show(PresentationUnit $presentationUnit,$id)
     {
+        $presentation=PresentationUnit::find($id);
         return response()->json([
             'success'=> true,
-            'presentation' =>$presentationUnit
+            'presentation' =>$presentation
         ],200);
     }
 
@@ -82,8 +83,9 @@ class PresentationUnitController extends Controller
      * @param  \App\Models\PresentationUnit $presentationUnit
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, PresentationUnit $presentationUnit)
+    public function update(PresentationUnitRequest $request, $id)
     {
+        $presentationUnit=PresentationUnit::findOrFail($id);
         $presentationUnit->update($request->all());
         return response()->json([
             'sucess' => true,
@@ -97,9 +99,22 @@ class PresentationUnitController extends Controller
      * @param  \App\Models\PresentationUnit  $presentationUnit
      * @return \Illuminate\Http\Response
      */
-    public function destroy(PresentationUnit $presentationUnit)
+    public function destroy($id)
     {
-        $result = PresentationUnit::find($presentationUnit);
-        $result->delete();
+        $presentation=PresentationUnit::findOrFail($id);
+        $products =PresentationUnit_product::getProducts($presentation->id);
+        if(count($products)){
+            return response()->json([
+                'success'=>false,
+                'message'=>'No se puede eliminar la presentacion porque tiene los siguientes productos',
+                'products'=>$products
+            ],200);
+        } else {
+            PresentationUnit::destroy($id);
+            return response()->json([
+                'success'=>true,
+                'message'=>'Presentacion eliminada correctamente',
+            ],200);
+            }
     }
 }

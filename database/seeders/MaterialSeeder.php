@@ -28,21 +28,21 @@ class MaterialSeeder extends Seeder
                 'stock_start' => '20',
                 'stock_min' => '10',
                 'color' => '#FFFFFF',
-                'article_id' => 1,
+                'article_id' => 2,
                 'is_a' =>'raw_material'
             ],
             [
                 'code' => 'COD125',
                 'stock_start' => '20',
                 'stock_min' => '10',
-                'article_id' => 2,
+                'article_id' => 3,
                 'is_a' =>'supplies'
             ],
             [
                 'code' => 'COD126',
                 'stock_start' => '20',
                 'stock_min' => '10',
-                'article_id' => 3,
+                'article_id' => 4,
                 'is_a' =>'supplies'
             ]
         ];
