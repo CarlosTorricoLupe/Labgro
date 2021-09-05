@@ -15,7 +15,7 @@ class ProductPresentationController extends Controller
      */
     public function index($id)
     {
-        $presentations = PresentationUnit_product::where('product_id',$id)->get();
+        $presentations = PresentationUnit_product::getPresentations($id);
         if(count($presentations)){
             return $presentations;
         } else {
