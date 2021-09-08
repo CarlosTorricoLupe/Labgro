@@ -13,7 +13,7 @@ class CreateMaterialRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**
@@ -24,7 +24,7 @@ class CreateMaterialRequest extends FormRequest
     public function rules()
     {
         return [
-            'code' => 'required|between:2,25|iunique:raw_materials,code',
+            'code' => 'required|between:2,25|iunique:materials,code',
             'stock_start' => 'required',
             'stock_min' => 'required',
             'color' => 'required',
