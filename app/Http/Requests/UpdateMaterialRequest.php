@@ -24,7 +24,7 @@ class UpdateMaterialRequest extends FormRequest
     public function rules()
     {
         return [
-            'code' => 'required|between:2,25|iunique:raw_materials,code' .$this->route('raw_material')->id,
+            'code' => 'required|between:2,25|iunique:materials,code' .$this->route('raw_material')->id,
             'stock_start' => 'required',
             'stock_min' => 'required',
             'color' => 'required',

@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\CreateMaterialRequest;
+use App\Http\Requests\UpdateMaterialRequest;
 use App\Models\Material;
 use Illuminate\Http\Request;
 
@@ -31,9 +33,11 @@ class MaterialController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(CreateMaterialRequest $request)
     {
-        Material::create($request->all());
+        $material =  Material::create($request->all());
+        //Material::UpdateCategoryMaterial($material, $material->article_id);
+
         return response()->json([
             'sucess' =>true,
             'message' =>'Materia creada correctamente'
@@ -61,7 +65,7 @@ class MaterialController extends Controller
      * @param  Material  $material
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Material $material)
+    public function update(UpdateMaterialRequest $request, Material $material)
     {
         $material->update($request->all());
         return response()->json([
