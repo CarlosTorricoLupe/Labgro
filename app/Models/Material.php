@@ -42,6 +42,9 @@ class Material extends Model
             $material->is_a = "supplies";
         }
         $material->save();
+    }
 
+    public function scopeGetTypeMaterial($query, $name){
+        return $query->where('is_a', $name);
     }
 }

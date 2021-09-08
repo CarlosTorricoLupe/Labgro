@@ -16,15 +16,15 @@ class MaterialController extends Controller
      */
     public function index()
     {
-        $materials = Material::all();
-        if(count($materials)){
-            return $materials;
-        } else {
-            return response()->json([
-                'success'=>false,
-                'message'=>'No se encontraron resultados'
-            ],404);
-        }
+        $raw_materials = Material::GetTypeMaterial('raw_material')->get();
+        $supplies = Material::GetTypeMaterial('supplies')->get();
+
+        return response()->json([
+            'success'=> true,
+            'raw_material' =>$raw_materials,
+            'supplies' => $supplies
+        ],200);
+
     }
 
     /**
@@ -36,7 +36,7 @@ class MaterialController extends Controller
     public function store(CreateMaterialRequest $request)
     {
         $material =  Material::create($request->all());
-        //Material::UpdateCategoryMaterial($material, $material->article_id);
+        Material::UpdateCategoryMaterial($material, $material->article_id);
 
         return response()->json([
             'sucess' =>true,
@@ -54,7 +54,7 @@ class MaterialController extends Controller
     {
         return response()->json([
             'success'=> true,
-            'materia' =>$material
+            'material' =>$material
         ],200);
     }
 
