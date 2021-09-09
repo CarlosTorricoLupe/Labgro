@@ -30,7 +30,7 @@ class MaterialController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  CreateMaterialRequest  $request
      * @return \Illuminate\Http\Response
      */
     public function store(CreateMaterialRequest $request)
@@ -61,7 +61,7 @@ class MaterialController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  UpdateMaterialRequest  $request
      * @param  Material  $material
      * @return \Illuminate\Http\Response
      */
