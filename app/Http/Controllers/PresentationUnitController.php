@@ -17,7 +17,8 @@ class PresentationUnitController extends Controller
      */
     public function index()
     {
-        $presentations=PresentationUnit::all();
+        $presentations=PresentationUnit::where('role_id',auth()->user()->role_id)->get();
+        
         if(count($presentations)){
             return response()->json([
                 'success'=>true,
@@ -54,7 +55,9 @@ class PresentationUnitController extends Controller
      */
     public function store(PresentationUnitRequest $request)
     {
-        PresentationUnit::create($request->only('name'));
+        $data= $request->all();
+        $data['role_id'] = auth()->user()->role_id;
+        PresentationUnit::create($data);
         return response()->json([
             'sucess' =>true,
             'message' =>'Unidad de presentacion creada correctamente'
@@ -86,7 +89,9 @@ class PresentationUnitController extends Controller
     public function update(PresentationUnitRequest $request, $id)
     {
         $presentationUnit=PresentationUnit::findOrFail($id);
-        $presentationUnit->update($request->all());
+        $data=$request->all();
+        $data['role_id']= auth()->user()->role_id;
+        $presentationUnit->update($data);
         return response()->json([
             'sucess' => true,
             'message' => 'Unidad de presentacion actualizada correctamente'

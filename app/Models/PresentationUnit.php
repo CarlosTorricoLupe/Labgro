@@ -11,6 +11,9 @@ class PresentationUnit extends Model
 
     protected $fillable = [
         'name',
+        'role_id',
+        'quantity',
+        'stock_min'
     ];
 
     public function products()
