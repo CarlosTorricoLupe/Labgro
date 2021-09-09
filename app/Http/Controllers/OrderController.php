@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\CreateOrderRequest;
+use App\Http\Requests\UpdateOrderRequest;
 use App\Models\Order;
 use Illuminate\Http\Request;
 
@@ -12,7 +14,7 @@ class OrderController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Request $request)
+    public function index()
     {
         $orders=Order::all();
         return response()->json([
@@ -24,10 +26,10 @@ class OrderController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @param  CreateOrderRequest  $request
+     * @return Response
      */
-    public function store(Request $request)
+    public function store(CreateOrderRequest $request)
     {
         $order = Order::create($request->except('details'));
 
@@ -53,7 +55,6 @@ class OrderController extends Controller
         $order = Order::getOrder($id);
         $details = Order::GetDetails($id);
 
-
         return response()->json([
             'success'=>true,
             'order'=>$order,
@@ -64,11 +65,11 @@ class OrderController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  UpdateOrderRequest  $request
      * @param  Order  $order
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
-    public function update(Request $request, Order $order)
+    public function update(UpdateOrderRequest $request, Order $order)
     {
         $order->update($request->all());
         return response()->json([
