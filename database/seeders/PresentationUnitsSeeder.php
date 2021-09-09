@@ -16,16 +16,28 @@ class PresentationUnitsSeeder extends Seeder
     {
         $presentationUnits= [
             [
-                'name' => 'Bolsa 500 cc.'
+                'name' => 'Bolsa 500 cc.',
+                'role_id'=>2
             ],
             [
-                'name' => 'Bolsa 700 cc.'
+                'name' => 'Bolsa 700 cc.',
+                'role_id'=>2
             ],
             [
-                'name' => 'Botella 1L'
+                'name' => 'Botella 1L',
+                'role_id'=>5
             ],
             [
-                'name' => 'Botella 2L'
+                'name' => 'Botella 2L',
+                'role_id'=>5
+            ],
+            [
+                'name' => 'Bolsa 1kg',
+                'role_id'=>4
+            ],
+            [
+                'name' => 'Bolsa 2kg',
+                'role_id'=>4
             ]
         ];
         foreach($presentationUnits as $key => $value){
