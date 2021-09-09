@@ -15,6 +15,7 @@ class ArticleController extends Controller
      */
     public function index()
     {
+       // $this->authorize('view', User::class);
         Article::UpdateStatusIsLow();
         $result = Article::ArticlesAll();
         return $result;
