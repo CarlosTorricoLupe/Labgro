@@ -15,12 +15,10 @@ class RolePermissionSeeder extends Seeder
     public function run()
     {
         $super_admin = Role::where('name','Super_Admin')->first();
-        $super_admin ->permissions()->sync([1,2,3]);
+        $super_admin ->permissions()->sync([1,2,3,4]);
 
         $users = Role::where('name','Almacenes')->first();
-        $users ->permissions()->sync([2,3]);
+        $users ->permissions()->sync([1,2,3,4]);
 
-        $viewers = Role::where('name','Almacenes')->first();
-        $viewers ->permissions()->sync([3]);
     }
 }

@@ -47,14 +47,15 @@ class MaterialController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  Material  $material
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
     public function show(Material $material)
     {
+        $result = Material::GetTypeMaterialById($material->id)->get();
         return response()->json([
             'success'=> true,
-            'material' =>$material
+            'material' =>$result
         ],200);
     }
 

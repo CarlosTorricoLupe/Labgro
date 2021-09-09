@@ -50,4 +50,11 @@ class Material extends Model
             ->select('materials.*', 'articles.name_article','units.unit_measure')
             ->where('is_a', $name);
     }
+
+    public function scopeGetTypeMaterialById($query, $id){
+        return $query->join('articles','materials.article_id','articles.id')
+            ->join('units','articles.unit_id','units.id')
+            ->select('materials.*', 'articles.name_article','units.unit_measure')
+            ->where('materials.id', $id);
+    }
 }

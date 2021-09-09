@@ -16,16 +16,19 @@ class PermissionSeeder extends Seeder
     public function run()
     {
         $items = [
+            //ALMACEN
             [
-                'name' => 'ver_articulos' 
-            ],           
-            [
-                'name' => 'administrar_articulos'
+                'name' => 'view_articles'
             ],
             [
-                'name' => 'administrar_usuarios'
-            ]
-
+                'name' => 'manage_articles'
+            ],
+            [
+                'name' => 'view_categories'
+            ],
+            [
+                'name' => 'manage_categories'
+            ],
         ];
 
         foreach ($items as $key => $value) {
