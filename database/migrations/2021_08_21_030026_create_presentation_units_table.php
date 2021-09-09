@@ -16,6 +16,8 @@ class CreatePresentationUnitsTable extends Migration
         Schema::create('presentation_units', function (Blueprint $table) {
             $table->id();
             $table->string('name');
+            $table->integer('quantity');
+            $table->integer('stock_min');
             $table->foreignId('role_id')->constrained();
             $table->timestamps();
         });
