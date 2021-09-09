@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\CreateArticleRequest;
+use App\Http\Requests\CreateProductMaterialRequest;
+use App\Http\Requests\UpdateProductMaterialRequest;
 use App\Models\Material_product;
 use App\Models\ProductMaterial;
 use Illuminate\Http\Request;
@@ -32,7 +35,7 @@ class ProductMaterialController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request, $id)
+    public function store(CreateProductMaterialRequest $request, $id)
     {
         $input = $request->all();
         $input['product_id'] = $id;
@@ -58,12 +61,12 @@ class ProductMaterialController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  UpdateProductMaterialRequest  $request
      * @param  int  $product_id
      * @param  int  $material_id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $product_id, $material_id)
+    public function update(UpdateProductMaterialRequest  $request, $product_id, $material_id)
     {
         Material_product::where('product_id', $product_id)
             ->where('material_id',$material_id)
