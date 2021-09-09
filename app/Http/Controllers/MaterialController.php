@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Http\Requests\CreateMaterialRequest;
 use App\Http\Requests\UpdateMaterialRequest;
 use App\Models\Material;
-use Illuminate\Http\Request;
 
 class MaterialController extends Controller
 {
@@ -31,7 +30,7 @@ class MaterialController extends Controller
      * Store a newly created resource in storage.
      *
      * @param  CreateMaterialRequest  $request
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function store(CreateMaterialRequest $request)
     {
@@ -48,7 +47,7 @@ class MaterialController extends Controller
      * Display the specified resource.
      *
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function show(Material $material)
     {
@@ -64,11 +63,12 @@ class MaterialController extends Controller
      *
      * @param  UpdateMaterialRequest  $request
      * @param  Material  $material
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function update(UpdateMaterialRequest $request, Material $material)
     {
         $material->update($request->all());
+        Material::UpdateCategoryMaterial($material, $material->article_id);
         return response()->json([
             'sucess' => true,
             'message' => 'Materia actualizada correctamente'
@@ -79,7 +79,7 @@ class MaterialController extends Controller
      * Remove the specified resource from storage.
      *
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function destroy($id)
     {

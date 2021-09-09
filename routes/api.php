@@ -36,7 +36,7 @@ use App\Http\Controllers\ProductPresentationController;
 Route::post('login', [AuthController::class, 'login']);
 Route::post('register', [AuthController::class, 'register']);
 
-Route::group(['middleware' => ['api']], function() {
+Route::group(['middleware' => ['auth:api']], function() {
     Route::get('logout', [AuthController::class, 'logout']);
     Route::get('get_user', [AuthController::class, 'get_user']);
     Route::post('refresh', [AuthController::class, 'refresh']);
@@ -44,10 +44,10 @@ Route::group(['middleware' => ['api']], function() {
     Route::post('users/create', [UserController::class, 'store']);
     Route::put('users/update/{user}', [UserController::class, 'update']);
     Route::delete('users/delete/{user}',  [UserController::class, 'destroy']);
+    Route::apiResource('articles', ArticleController::class);
 });
 
 
-Route::apiResource('articles',ArticleController::class);
 Route::apiResource('categories',CategoryController::class);
 Route::get('search/category/{name}', [CategoryController::class,'search']);
 
