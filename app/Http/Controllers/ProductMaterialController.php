@@ -24,7 +24,7 @@ class ProductMaterialController extends Controller
         } else {
             return response()->json([
                 'success'=>false,
-                'message'=>'No se encontraron resultados'
+                'message'=>'No se encontro resultados'
             ],404);
         }
     }
