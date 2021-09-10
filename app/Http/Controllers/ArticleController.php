@@ -15,7 +15,7 @@ class ArticleController extends Controller
      */
     public function index()
     {
-        $this->authorize('view', Article::class);
+        //$this->authorize('view', Article::class);
         Article::UpdateStatusIsLow();
         $result = Article::ArticlesAll();
         return $result;
@@ -29,7 +29,7 @@ class ArticleController extends Controller
      */
     public function store(CreateArticleRequest $request)
     {
-        $this->authorize('manage', Article::class);
+        //$this->authorize('manage', Article::class);
         $article=new Article($request->all());
         $article->stock_total=$article->stock;
         $article->save();
@@ -62,7 +62,7 @@ class ArticleController extends Controller
      */
     public function update(UpdateArticleRequest $request, Article $article)
     {
-        $this->authorize('manage', Article::class);
+        //$this->authorize('manage', Article::class);
         $article->update($request->all());
         return response()->json([
             'res' => true,
@@ -78,7 +78,7 @@ class ArticleController extends Controller
      */
     public function destroy($id)
     {
-        $this->authorize('manage', Article::class);
+        //$this->authorize('manage', Article::class);
         Article::destroy($id);
         return response()->json([
             'success' => true,
