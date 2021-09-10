@@ -20,12 +20,14 @@ class ProductSeeder extends Seeder
         $name=['Gelatina','Yogurt','Jugo'];
         $cod=['Gel12','Yog','Jug'];
         $descr=['Desc1','Desc2','Desc3'];
+        $roles=[4,2,5];
 
         for ($i=0; $i <3 ; $i++) { 
             $prd=Product::create([
                 'name' => Arr::get($name,$i),
                 'code'=> Arr::get($cod,$i),
                 'description' => Arr::get($descr,$i),
+                'role_id'=>Arr::get($roles,$i),
                 'image'=> 'https://picsum.photos/700/400?random',
             ]);
             $presentations=PresentationUnit::inRandomOrder()->take(rand(1,3))->pluck('id');

@@ -19,6 +19,7 @@ class CreateProductsTable extends Migration
             $table->string('code');
             $table->string('description');
             $table->string('image');
+            $table->foreignId('role_id')->constrained();
             $table->timestamps();
         });
     }

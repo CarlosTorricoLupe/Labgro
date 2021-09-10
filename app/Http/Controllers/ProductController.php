@@ -40,6 +40,7 @@ class ProductController extends Controller
     {
         $response=array();
         $input = $request->all();
+        $input['role_id'] = auth()->user()->role_id;
         if($request->hasFile('image')){
             $image = $request->file('image');
             $this->uploadImage($image);
@@ -111,6 +112,7 @@ class ProductController extends Controller
     public function update(Request $request, Product $product)
     {
         $input = $request->all();
+        $input['role_id']=auth()->user()->role_id;
         if ($request->hasFile("image")) {
             $image = $request->file('image');
             $this->uploadImage($image);

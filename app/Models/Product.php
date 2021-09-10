@@ -13,7 +13,8 @@ class Product extends Model
         'name',
         'code',
         'description',
-        'image'
+        'image',
+        'role_id'
     ];
 
     public function presentations()
@@ -35,6 +36,7 @@ class Product extends Model
                 'products.created_at')
                 ->WhereMonth('products.created_at',$month)
                 ->WhereYear('products.created_at',$year)
+                ->Where('role_id',auth()->user()->role_id)
                 ->paginate(12);
         }
         return self::select('products.id',
