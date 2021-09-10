@@ -2,12 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\CreateArticleRequest;
 use App\Http\Requests\CreateProductMaterialRequest;
 use App\Http\Requests\UpdateProductMaterialRequest;
 use App\Models\Material_product;
 use App\Models\ProductMaterial;
-use Illuminate\Http\Request;
 
 class ProductMaterialController extends Controller
 {
@@ -32,19 +30,25 @@ class ProductMaterialController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @param  CreateProductMaterialRequest  $request
+     * @return Response
      */
     public function store(CreateProductMaterialRequest $request, $id)
     {
         $input = $request->all();
         $input['product_id'] = $id;
-        Material_product::create($input);
+        $verify = Material_product::where('product_id', $id)
+                                    ->where('material_id', $input['material_id'])->get();
+        if(count($verify) == 0){
+            Material_product::create($input);
+            $response['sucess'] = true;
+            $response['message'] = "La Materia agregada correctamente";
+        }else{
+            $response['sucess'] = false;
+            $response['error'] = "La Materia de presentacion ya existe";
+        }
 
-        return response()->json([
-            'sucess' =>true,
-            'message' =>'Materia prima/insumo creada correctamente'
-        ],201);
+        return response()->json($response,201);
     }
 
     /**
@@ -64,7 +68,7 @@ class ProductMaterialController extends Controller
      * @param  UpdateProductMaterialRequest  $request
      * @param  int  $product_id
      * @param  int  $material_id
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function update(UpdateProductMaterialRequest  $request, $product_id, $material_id)
     {
@@ -82,7 +86,7 @@ class ProductMaterialController extends Controller
      *
      * @param  int  $product_id
      * @param  int  $material_id
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function destroy($product_id, $material_id)
     {

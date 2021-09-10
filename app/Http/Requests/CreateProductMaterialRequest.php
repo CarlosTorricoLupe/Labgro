@@ -24,7 +24,7 @@ class CreateProductMaterialRequest extends FormRequest
     public function rules()
     {
         return [
-            'material_id' => 'required|iunique:material_products,material_id',
+            'material_id' => 'required',
             'quantity' => 'required',
         ];
     }
@@ -32,7 +32,6 @@ class CreateProductMaterialRequest extends FormRequest
     {
         return [
             'material_id.required'   => 'El :attribute es obligatorio.',
-            'material_id.iunique'   => 'Este :attribute ya existe, intente de nuevo.',
             'quantity.required'   => 'La :attribute es obligatorio.',
         ];
     }
