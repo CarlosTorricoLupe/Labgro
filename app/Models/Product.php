@@ -31,6 +31,7 @@ class Product extends Model
         if (!$value) {
             return self::select('products.id',
                 'products.name',
+                'products.code',
                 'products.description',
                 'products.image',
                 'products.created_at')
