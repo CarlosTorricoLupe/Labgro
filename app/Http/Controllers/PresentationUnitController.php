@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\PresentationUnitRequest;
+use App\Http\Requests\UpdatePresentationUnitRequest;
 use App\Models\PresentationUnit;
 use App\Models\PresentationUnit_product;
 use App\Models\Product;
@@ -86,7 +87,7 @@ class PresentationUnitController extends Controller
      * @param  \App\Models\PresentationUnit $presentationUnit
      * @return \Illuminate\Http\Response
      */
-    public function update(PresentationUnitRequest $request, $id)
+    public function update(UpdatePresentationUnitRequest $request, $id)
     {
         $presentationUnit=PresentationUnit::findOrFail($id);
         $data=$request->all();
