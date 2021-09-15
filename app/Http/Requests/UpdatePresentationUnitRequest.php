@@ -26,8 +26,8 @@ class UpdatePresentationUnitRequest extends FormRequest
     public function rules()
     {
         return [
-             /* 'name' => 'required|iunique:presentation_units,name,'.$this->presentation_units->id, */ 
-            'name' => ['required',ValidationRule::unique('presentation_units')->ignore($this->presentation)],
+             'name' => 'required|iunique:presentation_units,name,'.$this->presentation->id, 
+            /* 'name' => ['required',ValidationRule::unique('presentation_units')->ignore($this->presentation)], */
             'quantity' => 'required',
             'stock_min' => 'required'
         ];

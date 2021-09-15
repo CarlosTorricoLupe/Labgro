@@ -71,9 +71,8 @@ class PresentationUnitController extends Controller
      * @param  \App\Models\PresentationUnit  $presentationUnit
      * @return \Illuminate\Http\Response
      */
-    public function show(PresentationUnit $presentationUnit,$id)
+    public function show(PresentationUnit $presentation)
     {
-        $presentation=PresentationUnit::find($id);
         return response()->json([
             'success'=> true,
             'presentation' =>$presentation
@@ -87,12 +86,11 @@ class PresentationUnitController extends Controller
      * @param  \App\Models\PresentationUnit $presentationUnit
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdatePresentationUnitRequest $request, $id)
+    public function update(UpdatePresentationUnitRequest $request, PresentationUnit $presentation)
     {
-        $presentationUnit=PresentationUnit::findOrFail($id);
         $data=$request->all();
         $data['role_id']= auth()->user()->role_id;
-        $presentationUnit->update($data);
+        $presentation->update($data);
         return response()->json([
             'sucess' => true,
             'message' => 'Unidad de presentacion actualizada correctamente'
