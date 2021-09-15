@@ -19,7 +19,7 @@ class PresentationUnitController extends Controller
     public function index()
     {
         $presentations=PresentationUnit::where('role_id',auth()->user()->role_id)->get();
-        
+
         if(count($presentations)){
             return response()->json([
                 'success'=>true,
@@ -96,7 +96,7 @@ class PresentationUnitController extends Controller
         return response()->json([
             'sucess' => true,
             'message' => 'Unidad de presentacion actualizada correctamente'
-        ],200); 
+        ],200);
     }
 
     /**

@@ -35,7 +35,7 @@ class CreateMaterialRequest extends FormRequest
     {
         return [
             'code.required'   => 'El codigo para el :attribute es obligatorio.',
-            'code.iunique'   => 'Esta :attribute ya existe, intente de nuevo.',
+            'code.iunique'   => 'Este :attribute ya existe, intente de nuevo.',
             'stock_start'  => 'El :attribute es obligatorio.',
             'stock_min'  => 'El :attribute es obligatorio.',
             'color'  => 'El :attribute es obligatorio.',
