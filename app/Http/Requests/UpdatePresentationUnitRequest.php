@@ -2,9 +2,11 @@
 
 namespace App\Http\Requests;
 
+use Illuminate\Contracts\Validation\Rule;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule as ValidationRule;
 
-class PresentationUnitRequest extends FormRequest
+class UpdatePresentationUnitRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -23,29 +25,13 @@ class PresentationUnitRequest extends FormRequest
      */
     public function rules()
     {
-        $rules = [
-            'name' => 'required|iunique:presentation_units,name',
+        return [
+             'name' => 'required|iunique:presentation_units,name,'.$this->presentation->id, 
+            /* 'name' => ['required',ValidationRule::unique('presentation_units')->ignore($this->presentation)], */
             'quantity' => 'required',
             'stock_min' => 'required'
         ];
-
-        switch ($this->method()) {
-            case 'GET':
-            case 'DELETE': {
-                    return [];
-                }
-            case 'POST': {
-                    return $rules;
-                }
-            case 'PUT':
-            case 'PATCH': {
-                    return $rules;
-                }
-            default:
-                break;
-        }
     }
-
     public function messages()
     {
         return [
@@ -64,5 +50,4 @@ class PresentationUnitRequest extends FormRequest
             'stock_min' => 'cantidad minima'
         ];
     }
-    
 }
