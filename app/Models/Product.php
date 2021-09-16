@@ -47,4 +47,13 @@ class Product extends Model
             ->where('products.name','like',"%$value%")
             ->paginate(12);
     }
+
+    public static function boot() {
+        parent::boot();
+
+        static::deleting(function($product) { // before delete() method call this
+            $product->presentations()->detach();
+            $product->ingredients()->detach();
+        });
+    }
 }
