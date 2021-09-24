@@ -70,6 +70,8 @@ Route::apiResource('orders', OrderController::class);
 Route::apiResource('presentations', PresentationUnitController::class);
 
 Route::apiResource('product.materials',ProductMaterialController::class);
+
+Route::get('product/{id}/incomes', [ProductMaterialController::class, 'getIncomeMaterials']);
 /* Route::apiResource('incomes',IncomeController::class); */
 
 Route::apiResource('product.presentations',ProductPresentationController::class);

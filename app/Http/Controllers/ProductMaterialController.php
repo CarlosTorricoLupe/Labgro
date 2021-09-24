@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\CreateProductMaterialRequest;
 use App\Http\Requests\UpdateProductMaterialRequest;
 use App\Models\Material_product;
+use App\Models\Order;
 use App\Models\ProductMaterial;
 
 class ProductMaterialController extends Controller
@@ -97,5 +98,17 @@ class ProductMaterialController extends Controller
             'sucess' => true,
             'message' => 'Se elimino correctamente'
         ],200);
+    }
+
+    public function getIncomeMaterials($id){
+      $orders =  Order::getIncomesAllOrders($id);
+        if(count($orders)){
+            return $orders;
+        } else {
+            return response()->json([
+                'success'=>false,
+                'message'=>'No se encontro resultados'
+            ],404);
+        }
     }
 }

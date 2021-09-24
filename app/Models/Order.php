@@ -20,11 +20,12 @@ class Order extends Model
         'date_issue',
         'is_approved',
         'section_id',
+        'role_id'
     ];
 
     public function materials()
     {
-        return $this->belongsToMany(Material::class,'order_materials', 'order_id', 'material_id');
+        return $this->belongsToMany(Material::class,'order_materials', 'order_id', 'material_id')->withPivot('quantity')->withTimestamps();
     }
 
     public static function boot() {
@@ -64,9 +65,22 @@ class Order extends Model
                 'articles.name_article',
                 'materials.article_id',
                 'units.unit_measure'
-
             )
             ->where('order_materials.order_id',$id)
+            ->get();
+    }
+
+    public static function getIncomesAllOrders($id){
+        return self::
+        join('order_materials', 'order_materials.order_id','orders.id')
+            ->join('materials','order_materials.material_id','materials.id')
+            ->join('articles','materials.article_id','articles.id')
+            ->join('units','articles.unit_id', 'units.id')
+            ->select('orders.id as id_order','articles.name_article','orders.updated_at as date_of_admission', 'order_materials.quantity', 'units.unit_measure' )
+            ->where('order_materials.material_id', $id)
+            ->where('orders.is_approved', 1)
+            ->where('role_id', auth()->user()->role_id)
+            ->orderBy('orders.updated_at', 'desc')
             ->get();
     }
 }

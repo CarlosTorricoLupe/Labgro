@@ -20,7 +20,7 @@ class Material extends Model
 
     public function orders()
     {
-        return $this->belongsToMany(Order::class,'order_materials', 'material_id','order_id');
+        return $this->belongsToMany(Order::class,'order_materials', 'material_id','order_id')->withTimestamps();;
     }
 
     public function products()
