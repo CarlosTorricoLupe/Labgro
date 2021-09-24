@@ -92,10 +92,12 @@ Route::get("prueba", [OutputController::class, 'prueba']);
 Route::get('/incomes',[IncomeController::class, 'index']);
 Route::post('/incomes',[IncomeController::class, 'store']);
 Route::get('/incomes/getDetailsIncome/', [IncomeController::class, 'getDetailsIncome']);
+Route::get('/incomes/byDetails/', [IncomeController::class, 'getDetailsIncome']);
 Route::get('/incomes/{income}',[IncomeController::class, 'show']);
 Route::put('/incomes/{income}', [IncomeController::class, 'update']);
 Route::delete('/incomes/{income}', [IncomeController::class, 'destroy']);
 Route::get('/incomes/getIncomesArticle/{id}', [IncomeController::class, 'getIncomesArticle']);
+Route::get('/peripheralReport', [ArticleController::class, 'peripheralReport']);
 
 
 //VERIFIRY PRICE
