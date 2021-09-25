@@ -29,7 +29,6 @@ class ProductionController extends Controller
      */
     public function store(Request $request)
     {
-        $exist_production = false;
         $production=Production::create($request->all());
         $products=$request->get('products');
         if(isset($products)){
@@ -64,7 +63,7 @@ class ProductionController extends Controller
      */
     public function update(Request $request, Production $production)
     {
-        //
+    
     }
 
     /**
