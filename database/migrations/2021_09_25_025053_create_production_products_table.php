@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateDateProductionsTable extends Migration
+class CreateProductionProductsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,9 +13,9 @@ class CreateDateProductionsTable extends Migration
      */
     public function up()
     {
-        Schema::create('date_productions', function (Blueprint $table) {
+        Schema::create('production_products', function (Blueprint $table) {
             $table->id();
-            $table->date('date_production');
+            $table->float('quantity');
             $table->foreignId('product_id')->constrained();
             $table->foreignId('production_id')->constrained();
             $table->timestamps();
@@ -29,6 +29,6 @@ class CreateDateProductionsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('date_productions');
+        Schema::dropIfExists('production_products');
     }
 }

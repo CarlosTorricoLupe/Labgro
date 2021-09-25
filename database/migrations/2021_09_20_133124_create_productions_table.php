@@ -15,7 +15,7 @@ class CreateProductionsTable extends Migration
     {
         Schema::create('productions', function (Blueprint $table) {
             $table->id();
-            $table->float('quantity');
+            $table->date('date_production');
             $table->timestamps();
         });
     }
