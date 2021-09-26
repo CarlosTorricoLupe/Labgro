@@ -2,7 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Material;
+use App\Models\Material_product;
 use App\Models\Production;
+use App\Models\Production_product;
 use Illuminate\Http\Request;
 
 class ProductionProductController extends Controller
@@ -12,9 +15,13 @@ class ProductionProductController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index($id)
     {
-        //
+        $productions=Production::indexProductsByProduction($id);
+          return response()->json([
+            'success' => true,
+            'productions'=> $productions
+        ]);
     }
 
     /**
@@ -27,16 +34,39 @@ class ProductionProductController extends Controller
     {
         $response = array();
         $production = Production::find($id);
-        if (isset($production)) {
+        $materials = Material_product::getDetailMaterial($request->product_id)->toArray();
+        dd($materials);
+        if ($production) {
+            if( $this->verifyStockMaterial($materials,$request->quantity) ){
             $production->products()->attach($request->product_id, ['quantity' => $request->quantity]);
             $response['sucess'] = true;
             $response['message'] = "Producto agregado a la produccion correctamente";
+            }
         } else {
             $response['sucess'] = false;
             $response['error'] = "No tiene una produccion registrada";
         }
         return response()->json($response, 201);
     }
+
+
+    public function verifyStockMaterial($materials,$quantity){
+
+        $is_permit = true;
+
+        foreach ($materials as $material){
+            $mat = Material::find($material['id']);
+
+            $stock_material = $mat->stock_start;
+            $quantity_order = $material['quantity'];
+
+            if( ($quantity_order*$quantity) < $stock_material ){
+                    $is_permit = false;
+            }
+        }
+        return $is_permit;
+    }
+
 
     /**
      * Display the specified resource.

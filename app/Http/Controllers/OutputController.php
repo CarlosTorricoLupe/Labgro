@@ -40,7 +40,7 @@ class OutputController extends Controller
         $details = $request->only('details');
 
         $response = array();
-
+        dd($details['details']);
 
         if( $this->verifyStockArticle($details['details']) ){
 

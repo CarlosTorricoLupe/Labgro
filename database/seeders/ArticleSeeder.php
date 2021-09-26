@@ -28,18 +28,18 @@ class ArticleSeeder extends Seeder
 
         $articles= [
             [
-                'cod_article' => 'Emb',
-                'name_article' => 'Embase de 700 cc',
+                'cod_article' => 'Plp',
+                'name_article' => 'Pulpa',
                 'category_id' => $categorie2->id,
                 'stock'=> '50',
                 'unit_price'=>40,
                 'stock_total'=>'50',
-                'unit_id'=> $units1[0]
+                'unit_id'=> $units2[0]
 
             ],
             [
-                'cod_article' => 'Esc',
-                'name_article' => 'Hojas bond tamaño carta',
+                'cod_article' => 'AcdNit',
+                'name_article' => 'Acido Nitrico',
                 'category_id' => $categorie1->id,
                 'stock'=> '15',
                 'unit_price'=>50,
@@ -47,22 +47,22 @@ class ArticleSeeder extends Seeder
                 'unit_id'=> $units2[0]
             ],
             [
-                'cod_article' => 'lch',
-                'name_article' => 'Leche',
+                'cod_article' => 'Azc',
+                'name_article' => 'Azucar',
                 'category_id'  => $categorie3->id,
                 'stock'=> '100',
                 'unit_price'=>70,
                 'stock_total'=>'100',
-                'unit_id'=> $units3[0]
+                'unit_id'=> $units1[0]
             ],
             [
-                'cod_article' => 'ygt',
-                'name_article' => 'Yogurt',
+                'cod_article' => 'Consv',
+                'name_article' => 'Conservante',
                 'category_id' => $categorie4->id,
                 'stock'=> '100',
                 'unit_price'=>60,
                 'stock_total'=>'100',
-                'unit_id'=> $units4[0]
+                'unit_id'=> $units1[0]
             ]
         ];
         foreach($articles as $key => $value){

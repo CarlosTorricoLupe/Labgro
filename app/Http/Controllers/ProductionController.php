@@ -14,11 +14,11 @@ class ProductionController extends Controller
      */
     public function index(Request $request)
     {
-        $productions=Production::indexProductionsByMonth($request->month,$request->year);
-          return response()->json([
-            'success' => true,
-            'incomes'=> $productions
-        ]);
+        $productions=Production::select('date_production')->WhereMonth('date_production',$request->month)->WhereYear('date_production',$request->year)->get();
+            return response()->json([
+                'success'=>true,
+                'productions'=>$productions
+            ],404);
     }
 
     /**
