@@ -27,6 +27,11 @@ class Product extends Model
         return $this->belongsToMany(Material::class,'material_products')->withPivot('quantity')->withTimestamps();
     }
 
+    public function productions()
+    {
+        return $this->belongsToMany(Production::class,'production_products')->withPivot('quantity')->withTimestamps();
+    }
+
     public static function searchProducts($value='',$month,$year){
         if (!$value) {
             return self::select('products.id',

@@ -15,6 +15,8 @@ use App\Http\Controllers\RawMaterialController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\MaterialController;
 use App\Http\Controllers\OrderController;
+use App\Http\Controllers\ProductionController;
+use App\Http\Controllers\ProductionProductController;
 use App\Http\Controllers\ProductMaterialController;
 use App\Http\Controllers\ProductPresentationController;
 
@@ -70,11 +72,18 @@ Route::apiResource('orders', OrderController::class);
 Route::apiResource('presentations', PresentationUnitController::class);
 
 Route::apiResource('product.materials',ProductMaterialController::class);
+<<<<<<< HEAD
 
 Route::get('product/{id}/incomes', [ProductMaterialController::class, 'getIncomeMaterials']);
 /* Route::apiResource('incomes',IncomeController::class); */
+=======
+>>>>>>> 7c4e8c4e4af418ec207582f730ab6c612dfb229e
 
 Route::apiResource('product.presentations',ProductPresentationController::class);
+
+Route::apiResource('productions', ProductionController::class);
+
+Route::apiResource('production.products',ProductionProductController::class);
 
 
 

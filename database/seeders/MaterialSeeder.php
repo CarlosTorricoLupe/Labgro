@@ -16,7 +16,7 @@ class MaterialSeeder extends Seeder
     {
         $materials = [
             [
-                'code' => 'COD123',
+                'code' => 'Pulp',
                 'stock_start' => '20',
                 'stock_min' => '10',
                 'color' => '#FFFFFF',
@@ -24,7 +24,7 @@ class MaterialSeeder extends Seeder
                 'is_a' =>'raw_material'
             ],
             [
-                'code' => 'COD124',
+                'code' => 'Acid',
                 'stock_start' => '20',
                 'stock_min' => '10',
                 'color' => '#FFFFFF',
@@ -32,14 +32,14 @@ class MaterialSeeder extends Seeder
                 'is_a' =>'raw_material'
             ],
             [
-                'code' => 'COD125',
+                'code' => 'Azcr',
                 'stock_start' => '20',
                 'stock_min' => '10',
                 'article_id' => 3,
                 'is_a' =>'supplies'
             ],
             [
-                'code' => 'COD126',
+                'code' => 'Cnsvt',
                 'stock_start' => '20',
                 'stock_min' => '10',
                 'article_id' => 4,
