@@ -4,8 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\CreateProductMaterialRequest;
 use App\Http\Requests\UpdateProductMaterialRequest;
+use App\Models\Material;
 use App\Models\Material_product;
 use App\Models\Order;
+use App\Models\Output;
 use App\Models\ProductMaterial;
 
 class ProductMaterialController extends Controller
@@ -101,7 +103,9 @@ class ProductMaterialController extends Controller
     }
 
     public function getIncomeMaterials($id){
-      $orders =  Order::getIncomesAllOrders($id);
+        $material = Material::find($id);
+        $orders =  Output::getDetailsOutputsMaterials($material->article_id);
+
         if(count($orders)){
             return $orders;
         } else {
