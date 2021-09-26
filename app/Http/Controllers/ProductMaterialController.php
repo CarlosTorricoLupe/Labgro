@@ -8,6 +8,7 @@ use App\Models\Material;
 use App\Models\Material_product;
 use App\Models\Order;
 use App\Models\Output;
+use App\Models\Production;
 use App\Models\ProductMaterial;
 
 class ProductMaterialController extends Controller
@@ -114,5 +115,26 @@ class ProductMaterialController extends Controller
                 'message'=>'No se encontro resultados'
             ],404);
         }
+    }
+
+    public function getOutputsMaterials($id){
+        $productions = Production::getProductsContainMaterialId($id);
+        $material = Material::GetTypeMaterialById($id)->get();
+
+        $result = array();
+        foreach ($productions as $production){
+            $quantity_required = $production['quantity_required'];//materials
+            $quantity_produced = $production['quantity'];
+            $result[] = [
+                'date_of_admission' => $production['created_at'],
+                'production_id' => $production['production_id'],
+                'product_id' => $production['product_id'],
+                'quantity' => $quantity_required*$quantity_produced,
+                'unit_measure' => $material[0]['unit_measure'],
+                'control' => 198.99 .' '. $material[0]['unit_measure']
+
+            ];
+        }
+        return $result;
     }
 }
