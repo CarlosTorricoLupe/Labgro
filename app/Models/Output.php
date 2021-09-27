@@ -68,4 +68,18 @@ class Output extends Model
             $output->articles()->detach();
         });
     }
+
+    public static function getDetailsOutputsMaterials($id){
+        return self::join('output_details','output_details.output_id','outputs.id')
+            ->join('articles','output_details.article_id','articles.id')
+            ->join('units','articles.unit_id', 'units.id')
+            ->select('outputs.id as order_id',
+                'outputs.created_at as date_of_admission',
+                'articles.name_article',
+                'output_details.quantity',
+                'units.unit_measure'
+            )
+            ->where('output_details.article_id',$id)
+            ->get();
+    }
 }

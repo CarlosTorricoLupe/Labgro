@@ -20,11 +20,12 @@ class Order extends Model
         'date_issue',
         'is_approved',
         'section_id',
+        'role_id'
     ];
 
     public function materials()
     {
-        return $this->belongsToMany(Material::class,'order_materials', 'order_id', 'material_id');
+        return $this->belongsToMany(Material::class,'order_materials', 'order_id', 'material_id')->withPivot('quantity')->withTimestamps();
     }
 
     public static function boot() {
@@ -64,7 +65,6 @@ class Order extends Model
                 'articles.name_article',
                 'materials.article_id',
                 'units.unit_measure'
-
             )
             ->where('order_materials.order_id',$id)
             ->get();

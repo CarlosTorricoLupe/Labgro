@@ -31,7 +31,10 @@ class OrderController extends Controller
      */
     public function store(CreateOrderRequest $request)
     {
-        $order = Order::create($request->except('details'));
+        $input = $request->except('details');
+        $input['role_id'] = auth()->user()->role_id;
+
+        $order = Order::create($input);
 
         $details = $request->only('details');
 

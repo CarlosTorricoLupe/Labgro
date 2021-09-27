@@ -4,7 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\CreateProductMaterialRequest;
 use App\Http\Requests\UpdateProductMaterialRequest;
+use App\Models\Material;
 use App\Models\Material_product;
+use App\Models\Order;
+use App\Models\Output;
+use App\Models\Production;
 use App\Models\ProductMaterial;
 
 class ProductMaterialController extends Controller
@@ -97,5 +101,40 @@ class ProductMaterialController extends Controller
             'sucess' => true,
             'message' => 'Se elimino correctamente'
         ],200);
+    }
+
+    public function getIncomeMaterials($id){
+        $material = Material::find($id);
+        $orders =  Output::getDetailsOutputsMaterials($material->article_id);
+
+        if(count($orders)){
+            return $orders;
+        } else {
+            return response()->json([
+                'success'=>false,
+                'message'=>'No se encontro resultados'
+            ],404);
+        }
+    }
+
+    public function getOutputsMaterials($id){
+        $productions = Production::getProductsContainMaterialId($id);
+        $material = Material::GetTypeMaterialById($id)->get();
+
+        $result = array();
+        foreach ($productions as $production){
+            $quantity_required = $production['quantity_required'];//materials
+            $quantity_produced = $production['quantity'];
+            $result[] = [
+                'date_of_admission' => $production['created_at'],
+                'production_id' => $production['production_id'],
+                'product_id' => $production['product_id'],
+                'quantity' => $quantity_required*$quantity_produced,
+                'unit_measure' => $material[0]['unit_measure'],
+                'control' => 198.99 .' '. $material[0]['unit_measure']
+
+            ];
+        }
+        return $result;
     }
 }

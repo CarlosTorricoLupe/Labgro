@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\OutputRequest;
 use App\Models\Article;
 use App\Models\Article_income;
+use App\Models\Material;
 use App\Models\Output;
 use App\Models\OutputDetail;
 use Illuminate\Http\Request;
@@ -36,11 +37,8 @@ class OutputController extends Controller
 
     public function store(OutputRequest $request)
     {
-
         $details = $request->only('details');
-
         $response = array();
-        dd($details['details']);
 
         if( $this->verifyStockArticle($details['details']) ){
 
@@ -49,6 +47,7 @@ class OutputController extends Controller
             $output = Output::create($request->except('details'));
 
             $output->articles()->attach($details['details']);
+            $this->updateStockMaterials($details['details']);
 
             $response['sucess'] = true;
 
@@ -112,6 +111,19 @@ class OutputController extends Controller
             }
         }
     }
+
+    public function updateStockMaterials($details){
+        foreach ($details as $detail){
+            $material = Material::find($detail['article_id']);
+            if ($material){
+                $stock_material = $material->stock_start;
+                $quantity_order = $detail['quantity'];
+                $material->stock_start = $stock_material + $quantity_order;
+                $material->save();
+            }
+        }
+    }
+
 
     /**
      * Display the specified resource.
@@ -230,4 +242,5 @@ class OutputController extends Controller
             'outputs' => $outputs
         ],200);
     }
+
 }
