@@ -69,7 +69,7 @@ class Output extends Model
         });
     }
 
-    public static function getDetailsOutputsMaterials($id){
+    public static function getDetailsOutputsMaterials($id, $year){
         return self::join('output_details','output_details.output_id','outputs.id')
             ->join('articles','output_details.article_id','articles.id')
             ->join('units','articles.unit_id', 'units.id')
@@ -80,6 +80,7 @@ class Output extends Model
                 'units.unit_measure'
             )
             ->where('output_details.article_id',$id)
+            ->whereYear('outputs.created_at',$year)
             ->get();
     }
 }

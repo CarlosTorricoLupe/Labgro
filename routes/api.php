@@ -74,8 +74,8 @@ Route::apiResource('presentations', PresentationUnitController::class);
 Route::apiResource('product.materials',ProductMaterialController::class);
 
 
-Route::get('product/{id}/incomes', [ProductMaterialController::class, 'getIncomeMaterials']);
-Route::get('product/{id}/outputs', [ProductMaterialController::class, 'getOutputsMaterials']);
+Route::get('material/{id}/incomes', [ProductMaterialController::class, 'getIncomeMaterials']);
+Route::get('material/{id}/outputs', [ProductMaterialController::class, 'getOutputsMaterials']);
 
 /* Route::apiResource('incomes',IncomeController::class); */
 

@@ -10,6 +10,7 @@ use App\Models\Order;
 use App\Models\Output;
 use App\Models\Production;
 use App\Models\ProductMaterial;
+use Illuminate\Http\Request;
 
 class ProductMaterialController extends Controller
 {
@@ -103,9 +104,10 @@ class ProductMaterialController extends Controller
         ],200);
     }
 
-    public function getIncomeMaterials($id){
+    public function getIncomeMaterials(Request $request, $id){
+
         $material = Material::find($id);
-        $orders =  Output::getDetailsOutputsMaterials($material->article_id);
+        $orders =  Output::getDetailsOutputsMaterials($material->article_id, $request->year);
 
         if(count($orders)){
             return $orders;
@@ -117,8 +119,8 @@ class ProductMaterialController extends Controller
         }
     }
 
-    public function getOutputsMaterials($id){
-        $productions = Production::getProductsContainMaterialId($id);
+    public function getOutputsMaterials($id, Request $request){
+        $productions = Production::getProductsContainMaterialId($id, $request->year);
         $material = Material::GetTypeMaterialById($id)->get();
 
         $result = array();
