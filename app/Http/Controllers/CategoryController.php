@@ -38,6 +38,7 @@ class CategoryController extends Controller
      */
     public function store(CreateCategoryRequest $request)
     {
+
         Category::create($request->all());
         return response()->json([
             'sucess' =>true,
@@ -68,11 +69,20 @@ class CategoryController extends Controller
      */
     public function update(CreateCategoryRequest $request, Category $category)
     {
-         $category->update($request->all());
-        return response()->json([
-            'sucess' => true,
-            'message' => 'Categoria actualizada correctamente'
-        ],200); 
+        $name = $category->name;
+        if ($name == "Materia Prima" || $name == "Insumos"){
+            $response = [
+                'success' => false,
+                'message' =>'No permitido, su uso esta en Producción'
+            ];
+        }else{
+            $category->update($request->all());
+            $response = [
+                'success' => true,
+                'message' =>'Categoria actualizada correctamente'
+            ];
+        }
+        return response()->json($response,200);
     }
 
     /**
@@ -100,9 +110,9 @@ class CategoryController extends Controller
                 'success'=>true,
                 'message'=>'Categoria eliminada correctamente',
             ],200);
-            }          
+            }
         }
-    
+
 
     public function search($name)
     {
