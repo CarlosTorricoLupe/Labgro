@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\UpdatePresentationUnit_productRequest;
 use App\Models\PresentationUnit_product;
 use App\Models\Product;
 use Carbon\Carbon;
@@ -33,7 +34,7 @@ class ProductPresentationController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request, $id)
+    public function store(UpdatePresentationUnit_productRequest $request, $id)
     {
         $response = array();
         $product = Product::find($id);
@@ -66,7 +67,7 @@ class ProductPresentationController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $product_id, $presentation_unit_id)
+    public function update(UpdatePresentationUnit_productRequest $request, $product_id, $presentation_unit_id)
     {
         $pres = PresentationUnit_product::where('product_id', $product_id)
             ->where('presentation_unit_id', $presentation_unit_id)->get();
