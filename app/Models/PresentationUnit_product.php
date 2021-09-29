@@ -9,6 +9,10 @@ class PresentationUnit_product extends Model
 {
     use HasFactory;
 
+    protected $casts = [
+        'created_at' => "datetime:Y-m-d",
+    ];
+
     protected $fillable = [
         'unit_cost_production',
         'unit_price_sale',
