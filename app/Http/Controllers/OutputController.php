@@ -171,6 +171,10 @@ class OutputController extends Controller
     {
         $result = Output::find($output);
         $result->delete();
+        return response()->json([
+            'success' => true,
+            'message' =>'Eliminada correctamente'
+        ],200);
     }
 
     public function searchOutputByDate(Request $request){
