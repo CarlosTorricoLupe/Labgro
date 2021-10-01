@@ -48,7 +48,7 @@ class Product extends Model
                 ->WhereMonth('products.created_at',$month)
                 ->WhereYear('products.created_at',$year)
                 ->Where('role_id',auth()->user()->role_id)
-                ->paginate(12);
+                ->get();
         }
         return self::select('products.id',
             'products.name',
@@ -57,7 +57,7 @@ class Product extends Model
             'products.created_at')
             ->where('products.name','like',"%$value%")
             ->Where('role_id',auth()->user()->role_id)
-            ->paginate(12);
+            ->get();
     }
 
     public static function boot() {
