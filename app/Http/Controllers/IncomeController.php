@@ -148,4 +148,13 @@ class IncomeController extends Controller
             ->get();
         return $articles;
     }
+
+    public function  getIncomeArticleByDate(Request $request){
+        $incomes = Income::searchArticleByDate($request->id,$request->mounthone,$request->mounttwo,$request->year);
+        return response()->json([
+            'success'=>true,
+            'incomes'=>$incomes,
+        ],200);
+    }
+
 }

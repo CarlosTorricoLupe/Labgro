@@ -247,4 +247,11 @@ class OutputController extends Controller
         ],200);
     }
 
+    public function getOutputArticleByDate(Request $request){
+        $outputs = Output::searchArticleByDate($request->id,$request->mounthone,$request->mounttwo,$request->year);
+        return response()->json([
+            'success'=> true,
+            'outputs' => $outputs]);
+    }
+
 }

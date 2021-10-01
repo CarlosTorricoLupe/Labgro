@@ -83,4 +83,54 @@ class Output extends Model
             ->whereYear('outputs.created_at',$year)
             ->get();
     }
+
+    public static function searchArticleByDate($id,$month=0,$monthtwo=0,$year=0){
+        if($month == 0 && $monthtwo == 0 && $year == 0 ){
+            return self::join('output_details','output_details.output_id','outputs.id')
+                ->join('articles','output_details.article_id','articles.id')
+                ->join('sections','outputs.section_id','sections.id')
+                ->select(
+                    'outputs.receipt',
+                    'outputs.order_number',
+                    'outputs.order_date',
+                    'outputs.delivery_date',
+                    'outputs.total',
+                    'output_details.article_id',
+                    'articles.name_article',
+                    'output_details.quantity',
+                    'output_details.budget_output',
+                    'output_details.total',
+                    'sections.name',
+                    'articles.unit_price',
+                    'outputs.id'
+                )
+                ->where('output_details.article_id',$id)
+                ->paginate(12);
+        }else{
+            return self::join('output_details','output_details.output_id','outputs.id')
+                ->join('articles','output_details.article_id','articles.id')
+                ->join('sections','outputs.section_id','sections.id')
+                ->select(
+                    'outputs.receipt',
+                    'outputs.order_number',
+                    'outputs.order_date',
+                    'outputs.delivery_date',
+                    'outputs.total',
+                    'output_details.article_id',
+                    'articles.name_article',
+                    'output_details.quantity',
+                    'output_details.budget_output',
+                    'output_details.total',
+                    'sections.name',
+                    'articles.unit_price',
+                    'outputs.id'
+                )
+                ->where('output_details.article_id',$id)
+                ->WhereMonth('outputs.delivery_date', '>=',  $month)
+                ->WhereMonth('outputs.delivery_date', '<=', $monthtwo)
+                ->WhereYear('outputs.delivery_date', $year)
+                ->paginate(12);
+        }
+    }
+
 }
