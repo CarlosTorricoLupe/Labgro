@@ -35,7 +35,7 @@ class ProductionProductController extends Controller
         $response = array();
         $production = Production::find($id);
         $materials = Material_product::getDetailMaterial($request->product_id)->toArray();
-        if ($this->verifyStockMaterial($materials, $request->quantity)) {
+        if ($this->verifyIsPermit($materials, $request->quantity)) {
             if ($production) {
                 $production->products()->attach($request->product_id, ['quantity' => $request->quantity]);
                 $response['sucess'] = true;
@@ -52,12 +52,10 @@ class ProductionProductController extends Controller
     }
 
 
-    public function verifyStockMaterial($materials, $quantity)
+    public function verifyIsPermit($materials, $quantity)
     {
-
         $is_permit = true;
         foreach ($materials as $material) {
-            $is_permit = true;
             $mat = Material::find($material['id']);
             $stock_material = $mat->stock_start;
             $quantity_order = $material['quantity'];
@@ -66,6 +64,30 @@ class ProductionProductController extends Controller
             }
         }
         return $is_permit;
+    }
+
+    public function verifyStockMaterial(Request $request)
+    {
+        $materials = Material_product::getDetailMaterial($request->product_id)->toArray();
+        $quantity = $request->quantity;
+
+        foreach ($materials as $material) {
+            $is_permit = true;
+            $mat = Material::find($material['id']);
+            $stock_material = $mat->stock_start;
+            $quantity_order = $material['quantity'];
+            if (($quantity_order * $quantity) > $stock_material) {
+                $is_permit = false;
+            }
+            $result[] = [
+                'material_id' => $material['id'],
+                'nombre' => $material['name_article'],
+                'stock_almacen' => $stock_material.' '. $material['unit_measure'],
+                'stock_requerid' => $quantity_order*$quantity.' '.$material['unit_measure'],
+                'is_permit' => $is_permit
+            ];
+        }
+    return $result;
     }
 
 
@@ -98,8 +120,14 @@ class ProductionProductController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy($production_id,$product_id)
     {
-        //
+        Production_product::where('production_id', $production_id)
+        ->where('product_id',$product_id)
+        ->delete(); 
+        return response()->json([
+            'sucess' => true,
+            'message' => 'Se elimino correctamente'
+        ],200);
     }
 }
