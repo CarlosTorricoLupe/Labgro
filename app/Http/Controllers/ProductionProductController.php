@@ -17,10 +17,10 @@ class ProductionProductController extends Controller
      */
     public function index($id)
     {
-        $productions=Production::indexProductsByProduction($id);
-          return response()->json([
+        $productions = Production::indexProductsByProduction($id);
+        return response()->json([
             'success' => true,
-            'productions'=> $productions
+            'productions' => $productions
         ]);
     }
 
@@ -30,38 +30,39 @@ class ProductionProductController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request,$id)
+    public function store(Request $request, $id)
     {
         $response = array();
         $production = Production::find($id);
         $materials = Material_product::getDetailMaterial($request->product_id)->toArray();
-        dd($materials);
-        if ($production) {
-            if( $this->verifyStockMaterial($materials,$request->quantity) ){
-            $production->products()->attach($request->product_id, ['quantity' => $request->quantity]);
-            $response['sucess'] = true;
-            $response['message'] = "Producto agregado a la produccion correctamente";
+        if ($this->verifyStockMaterial($materials, $request->quantity)) {
+            if ($production) {
+                $production->products()->attach($request->product_id, ['quantity' => $request->quantity]);
+                $response['sucess'] = true;
+                $response['message'] = "Producto agregado a la produccion correctamente";
+            } else {
+                $response['sucess'] = false;
+                $response['error'] = "No tiene una produccion registrada";
             }
-        } else {
+        }else{
             $response['sucess'] = false;
-            $response['error'] = "No tiene una produccion registrada";
+            $response['error'] = "No tiene stock suficiente";
         }
         return response()->json($response, 201);
     }
 
 
-    public function verifyStockMaterial($materials,$quantity){
+    public function verifyStockMaterial($materials, $quantity)
+    {
 
         $is_permit = true;
-
-        foreach ($materials as $material){
+        foreach ($materials as $material) {
+            $is_permit = true;
             $mat = Material::find($material['id']);
-
             $stock_material = $mat->stock_start;
             $quantity_order = $material['quantity'];
-
-            if( ($quantity_order*$quantity) < $stock_material ){
-                    $is_permit = false;
+            if (($quantity_order * $quantity) > $stock_material) {
+                $is_permit = false;
             }
         }
         return $is_permit;

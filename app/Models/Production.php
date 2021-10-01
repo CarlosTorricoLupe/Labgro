@@ -20,7 +20,7 @@ class Production extends Model
 
     public static function indexProductsByProduction($production_id){
         return self::join('production_products','productions.id','production_products.production_id')
-                    ->join('products','production_products.product_id','products.id')->select('products.name','production_products.quantity','productions.date_production')->where('production_products.production_id',$production_id)->paginate(12);
+                    ->join('products','production_products.product_id','products.id')->select('products.id','products.name','production_products.quantity','productions.date_production')->where('production_products.production_id',$production_id)->get();
     }
     public static function getProductsContainMaterialId($material_id, $year){
         return self::join('production_products','productions.id','production_products.production_id')
