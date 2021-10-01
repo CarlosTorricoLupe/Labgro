@@ -37,6 +37,7 @@ class ProductionProductController extends Controller
         $materials = Material_product::getDetailMaterial($request->product_id)->toArray();
         if ($this->verifyIsPermit($materials, $request->quantity)) {
             if ($production) {
+                $this->decrementStock($materials,$request->quantity);
                 $production->products()->attach($request->product_id, ['quantity' => $request->quantity]);
                 $response['sucess'] = true;
                 $response['message'] = "Producto agregado a la produccion correctamente";
@@ -64,6 +65,17 @@ class ProductionProductController extends Controller
             }
         }
         return $is_permit;
+    }
+
+    public function decrementStock($materials,$quantity)
+    {
+        foreach ($materials as $material) {
+            $mat = Material::find($material['id']);
+            if($mat) {
+                $mat->stock_start = $mat->stock_start - ($material['quantity']*$quantity);
+                $mat->save();
+            }
+        }
     }
 
     public function verifyStockMaterial(Request $request)
