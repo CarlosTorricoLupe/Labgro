@@ -40,11 +40,34 @@ class Output extends Model
         return self::select('outputs.*')->where('outputs.id',$id)->get();
     }
 
-    public static function getOutputsByArticle($id){
-        return self::join('output_details','output_details.output_id','outputs.id')
+    public static function getOutputsByArticle($id,$month=0,$monthtwo=0,$year=0){
+
+        if($month == 0 && $monthtwo == 0 && $year == 0 ){
+            return self::join('output_details','output_details.output_id','outputs.id')
+                ->join('articles','output_details.article_id','articles.id')
+                ->join('sections','outputs.section_id','sections.id')
+                ->select(
+                    'outputs.receipt',
+                    'outputs.order_number',
+                    'outputs.order_date',
+                    'outputs.delivery_date',
+                    'outputs.total',
+                    'output_details.article_id',
+                    'articles.name_article',
+                    'output_details.quantity',
+                    'output_details.budget_output',
+                    'output_details.total',
+                    'sections.name',
+                    'articles.unit_price',
+                    'outputs.id'
+                )
+                ->where('output_details.article_id',$id)
+                ->paginate(12);
+        }else{
+            return self::join('output_details','output_details.output_id','outputs.id')
             ->join('articles','output_details.article_id','articles.id')
-            ->select('outputs.section_id',
-                'outputs.section_id',
+            ->join('sections','outputs.section_id','sections.id')
+            ->select(
                 'outputs.receipt',
                 'outputs.order_number',
                 'outputs.order_date',
@@ -54,11 +77,17 @@ class Output extends Model
                 'articles.name_article',
                 'output_details.quantity',
                 'output_details.budget_output',
-                'output_details.total as price_total'
+                'output_details.total',
+                'sections.name',
+                'articles.unit_price',
+                'outputs.id'
             )
-            ->where('output_details.article_id',$id)
+            ->where('article_incomes.article_id',$id)
+            ->WhereMonth('incomes.created_at', '>=',  $month)
+            ->WhereMonth('incomes.created_at', '<=', $monthtwo)
+            ->WhereYear('incomes.created_at', $year)
             ->paginate(12);
-
+        }
     }
 
     public static function boot() {

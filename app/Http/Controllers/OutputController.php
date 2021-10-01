@@ -222,9 +222,8 @@ class OutputController extends Controller
         return $response;
     }
 
-    public function outputsByArticle($id){
-        $outputs = Output::getOutputsByArticle($id);
-
+    public function outputsByArticle(){
+        $outputs = Output::getOutputsByArticle($request->id,$request->mounthone,$request->mounttwo,$request->year);
         return response()->json([
             'success'=> true,
             'outputs' => $outputs

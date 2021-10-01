@@ -85,7 +85,7 @@ Route::get("output/articles/{section}", [OutputController::class, 'getArticles']
 Route::put("output/update/{output}", [OutputController::class, 'update']);
 Route::delete("output/delete/{output}", [OutputController::class, 'destroy']);
 Route::get('/output/{output}',[OutputController::class, 'show']);
-Route::get('/output/by_article/{id}',[OutputController::class, 'outputsByArticle']);
+Route::get('/output/by_article/',[OutputController::class, 'outputsByArticle']);
 
 Route::get("prueba", [OutputController::class, 'prueba']);
 
@@ -95,8 +95,8 @@ Route::get('/incomes/getDetailsIncome/', [IncomeController::class, 'getDetailsIn
 Route::get('/incomes/{income}',[IncomeController::class, 'show']);
 Route::put('/incomes/{income}', [IncomeController::class, 'update']);
 Route::delete('/incomes/{income}', [IncomeController::class, 'destroy']);
-Route::get('/incomes/getIncomesArticle/{id}', [IncomeController::class, 'getIncomesArticle']);
-
+Route::get('/incomes/getIncomesArticle/', [IncomeController::class, 'getDetailsIncome']);
+Route::get('/incomes/by_article/', [IncomeController::class , 'getIncomeArticle']);
 
 //VERIFIRY PRICE
 Route::get('/verifyPriceArticle/{id}', [OutputController::class, 'verififyPriceArticle']);

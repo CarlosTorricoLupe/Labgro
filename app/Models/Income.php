@@ -20,7 +20,7 @@ class Income extends Model
         'total',
         'user_id',
         'created_at',
-        'invoice_number'
+        'm<b'
     ];
 
     public function articles()
@@ -45,9 +45,54 @@ class Income extends Model
     }
 
     public static function getDetails($id){
-        return self::join('articles','article_incomes.article_id','articles.id')->join('units','articles.unit_id',"units.id")
+        return 
+        self::join('articles','article_incomes.article_id','articles.id')
+        ->join('units','articles.unit_id',"units.id")
         ->select('article_incomes.quantity','article_incomes.unit_price','article_incomes.total_price', 'articles.name_article','unit_measure')
         ->where('article_incomes.income_id', '=', $id)
         ->get();
     }
+
+    public static function getArticleIncome($id,$month=0,$monthtwo=0,$year=0){
+ 
+      if($month == 0 && $monthtwo == 0 && $year == 0 ){
+             
+        return self::join('article_incomes','article_incomes.income_id','incomes.id')
+              -> join('articles','article_incomes.article_id','articles.id')
+              ->select('article_incomes.total_price',
+               'articles.name_article',
+               'incomes.invoice_number',
+               'article_incomes.unit_price',
+               'article_incomes.total_price',
+               'incomes.created_at',
+               'article_incomes.quantity',
+               'incomes.invoice_number',
+               'incomes.receipt',
+                'incomes.id'
+               )
+              ->where('article_incomes.article_id',$id)
+               ->get();
+        }else{
+            return self::join('article_incomes','article_incomes.income_id','incomes.id')
+              -> join('articles','article_incomes.article_id','articles.id')
+              ->select('article_incomes.total_price',
+               'articles.name_article',
+               'incomes.invoice_number',
+               'article_incomes.unit_price',
+               'article_incomes.total_price',
+               'incomes.created_at',
+               'article_incomes.quantity',
+               'incomes.invoice_number',
+               'incomes.receipt',
+               'incomes.id'
+               )
+              ->where('article_incomes.article_id',$id)
+              ->WhereMonth('incomes.created_at', '>=',  $month)
+              ->WhereMonth('incomes.created_at', '<=', $monthtwo)
+              ->WhereYear('incomes.created_at', $year)
+              ->get();
+         }
+          
+        
+      }
 }

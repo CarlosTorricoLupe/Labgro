@@ -143,9 +143,22 @@ class IncomeController extends Controller
     }
 
     public function getIncomesArticle($id){
-        $articles = Article_income::where('article_id', $id)
-            ->select('article_incomes.*')
-            ->get();
-        return $articles;
+      //  $articles = Article_income::where('article_id', $id)
+     //       ->select('article_incomes.*')
+     //       ->get();
+     //   return $articles;
+     return "hello";
     }
+
+
+
+    public function  getIncomeArticle(Request $request){
+          $incomes = Income::getArticleIncome($request->id,$request->mounthone,$request->mounttwo,$request->year);
+          return response()->json([
+            'success'=>true,
+            'incomes'=>$incomes,
+          ],200);
+        
+        
+     }
 }
