@@ -22,7 +22,7 @@ class ProductSeeder extends Seeder
         $descr=['Desc1','Desc2','Desc3'];
         $roles=[4,2,5];
 
-        for ($i=0; $i <3 ; $i++) { 
+        for ($i=0; $i <2 ; $i++) { 
             $prd=Product::create([
                 'name' => Arr::get($name,$i),
                 'code'=> Arr::get($cod,$i),
@@ -39,5 +39,17 @@ class ProductSeeder extends Seeder
                 $prd->ingredients()->attach($mat,['quantity'=>rand(1,100)]);
             }
         }
+
+        $jug=Product::create([
+            'name' => Arr::get($name,2),
+            'code'=> Arr::get($cod,2),
+            'description' => Arr::get($descr,2),
+            'role_id'=>Arr::get($roles,2),
+            'image'=> 'https://picsum.photos/700/400?random',
+        ]);
+        $jug->ingredients()->attach(1,['quantity'=>0.1]);
+        $jug->ingredients()->attach(2,['quantity'=>0.09]);
+        $jug->ingredients()->attach(3,['quantity'=>0.666666]);
+        $jug->ingredients()->attach(4,['quantity'=>0.25]);
     }
 }

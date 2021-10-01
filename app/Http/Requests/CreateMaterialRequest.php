@@ -28,19 +28,19 @@ class CreateMaterialRequest extends FormRequest
             'stock_start' => 'required',
             'stock_min' => 'required',
             'color' => 'required',
-            'article_id' => 'required'
+            'article_id' => 'required|iunique:materials,article_id'
         ];
     }
     public function messages()
     {
         return [
             'code.required'   => 'El codigo para el :attribute es obligatorio.',
-            'code.iunique'   => 'Esta :attribute ya existe, intente de nuevo.',
+            'code.iunique'   => 'Este :attribute ya existe, intente de nuevo.',
             'stock_start'  => 'El :attribute es obligatorio.',
             'stock_min'  => 'El :attribute es obligatorio.',
             'color'  => 'El :attribute es obligatorio.',
-            'article_id'  => 'El :attribute es obligatorio.',
-
+            'article_id.required'  => 'El :attribute es obligatorio.',
+            'article_id.iunique'  => 'El :attribute ya fue seleccionado.',
         ];
     }
 
@@ -51,7 +51,7 @@ class CreateMaterialRequest extends FormRequest
             'stock_start' => 'Stock inicial',
             'stock_min' => 'Stock minimo',
             'color' => 'Color',
-            'article_id' => 'id articulo',
+            'article_id' => 'articulo',
         ];
     }
 }

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\CreateArticleRequest;
 use App\Http\Requests\UpdateArticleRequest;
 use App\Models\Article;
+use App\Models\Unit;
 use Illuminate\Http\Request;
 
 class ArticleController extends Controller
@@ -30,6 +31,7 @@ class ArticleController extends Controller
     public function store(CreateArticleRequest $request)
     {
         //$this->authorize('manage', Article::class);
+
         $article=new Article($request->all());
         $article->stock_total=$article->stock;
         $article->save();
@@ -38,6 +40,7 @@ class ArticleController extends Controller
             'message' => 'Registro creado correctamente'
         ],201);
     }
+
 
     /**
      * Display the specified resource.

@@ -27,7 +27,22 @@ class Product extends Model
         return $this->belongsToMany(Material::class,'material_products')->withPivot('quantity')->withTimestamps();
     }
 
+    public function productions()
+    {
+        return $this->belongsToMany(Production::class,'production_products')->withPivot('quantity')->withTimestamps();
+    }
+
     public static function searchProducts($value='',$month,$year){
+        if (!$value && !$month && !$year) {
+            return self::select('products.id',
+                'products.name',
+                'products.code',
+                'products.description',
+                'products.image',
+                'products.created_at')
+                ->Where('role_id',auth()->user()->role_id)
+                ->get();
+        }
         if (!$value) {
             return self::select('products.id',
                 'products.name',
@@ -46,6 +61,7 @@ class Product extends Model
             'products.image',
             'products.created_at')
             ->where('products.name','like',"%$value%")
+            ->Where('role_id',auth()->user()->role_id)
             ->paginate(12);
     }
 
