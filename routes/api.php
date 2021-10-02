@@ -84,6 +84,7 @@ Route::apiResource('product.presentations',ProductPresentationController::class)
 Route::apiResource('productions', ProductionController::class);
 
 Route::apiResource('production.products',ProductionProductController::class);
+Route::get('verifyMaterials', [ProductionProductController::class, 'verifyStockMaterial']);
 
 
 
