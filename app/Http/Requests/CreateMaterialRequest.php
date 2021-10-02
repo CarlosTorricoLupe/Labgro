@@ -28,14 +28,14 @@ class CreateMaterialRequest extends FormRequest
             'stock_start' => 'required',
             'stock_min' => 'required',
             'color' => 'required',
-            'article_id' => 'required|iunique:materials,article_id'
+            'article_id' => 'required|unique:materials,article_id'
         ];
     }
     public function messages()
     {
         return [
             'code.required'   => 'El codigo para el :attribute es obligatorio.',
-            'code.iunique'   => 'Este :attribute ya existe, intente de nuevo.',
+            'code.unique'   => 'Este :attribute ya existe, intente de nuevo.',
             'stock_start'  => 'El :attribute es obligatorio.',
             'stock_min'  => 'El :attribute es obligatorio.',
             'color'  => 'El :attribute es obligatorio.',
