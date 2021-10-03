@@ -6,9 +6,9 @@ use App\Http\Requests\CreateProductMaterialRequest;
 use App\Http\Requests\UpdateProductMaterialRequest;
 use App\Models\Material;
 use App\Models\Material_product;
-use App\Models\Order;
 use App\Models\Output;
 use App\Models\Production;
+use App\Models\ProductionMaterial;
 use App\Models\ProductMaterial;
 use Illuminate\Http\Request;
 
@@ -120,18 +120,16 @@ class ProductMaterialController extends Controller
     }
 
     public function getOutputsMaterials($id, Request $request){
+
         $productions = Production::getProductsContainMaterialId($id, $request->year);
         $material = Material::GetTypeMaterialById($id)->get();
 
         $result = array();
         foreach ($productions as $production){
-            $quantity_required = $production['quantity_required'];//materials
-            $quantity_produced = $production['quantity'];
             $result[] = [
                 'date_of_admission' => $production['created_at'],
                 'production_id' => $production['production_id'],
-                'product_id' => $production['product_id'],
-                'quantity' => $quantity_required*$quantity_produced,
+                'quantity' => $production['quantity_required'],
                 'unit_measure' => $material[0]['unit_measure'],
                 'control' => 198.99 .' '. $material[0]['unit_measure']
 

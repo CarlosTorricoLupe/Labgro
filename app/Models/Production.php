@@ -23,11 +23,9 @@ class Production extends Model
                     ->join('products','production_products.product_id','products.id')->select('products.id','products.name','production_products.quantity','productions.date_production')->where('production_products.production_id',$production_id)->get();
     }
     public static function getProductsContainMaterialId($material_id, $year){
-        return self::join('production_products','productions.id','production_products.production_id')
-            ->join('products','production_products.product_id','products.id')
-            ->join('material_products','products.id','material_products.product_id')
-            ->select('productions.id as production_id','products.id as product_id','products.name',  'production_products.quantity','material_products.quantity as quantity_required' ,'productions.created_at')
-            ->where('material_products.material_id', $material_id)
+        return self::join('material_production','material_production.production_id','productions.id')
+            ->select('productions.id as production_id', 'material_production.quantity_required', 'productions.created_at')
+            ->where('material_production.material_id', $material_id)
             ->whereYear('productions.created_at', $year)
             ->get();
     }
