@@ -15,6 +15,7 @@ use App\Http\Controllers\RawMaterialController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\MaterialController;
 use App\Http\Controllers\OrderController;
+use App\Http\Controllers\PresentationProductionProductController;
 use App\Http\Controllers\ProductionController;
 use App\Http\Controllers\ProductionProductController;
 use App\Http\Controllers\ProductMaterialController;
@@ -85,6 +86,7 @@ Route::apiResource('productions', ProductionController::class);
 
 Route::apiResource('production.products',ProductionProductController::class);
 Route::get('verifyMaterials', [ProductionProductController::class, 'verifyStockMaterial']);
+Route::apiResource('production.product.presentations',PresentationProductionProductController::class);
 
 
 
