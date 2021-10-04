@@ -28,6 +28,11 @@ class Material extends Model
         return $this->belongsToMany(Product::class,'material_products', 'material_id', 'product_id')->withPivot('quantity')->withTimestamps();
     }
 
+    public function productions()
+    {
+        return $this->belongsToMany(Production::class,'material_production', 'material_id', 'production_id')->withPivot('quantity_required')->withTimestamps();
+    }
+
     public function scopeUpdateCategoryMaterial($query, $material, $article_id){
         $category = Article::join('categories','articles.category_id','categories.id')
                     ->where('articles.id',$article_id)

@@ -17,11 +17,12 @@ class ProductionProductController extends Controller
      */
     public function index($id)
     {
-        $productions = Production::indexProductsByProduction($id);
+        /* $productions = Production::indexProductsByProduction($id); */
+        $productions=Production::with('products:id,name')->get(['id','date_production']);
         return response()->json([
-            'sucess' => true,
-            'productions' => $productions
-        ],201);
+            'sucess'=>true,
+            'productions'=>$productions
+        ]);
     }
 
     /**
