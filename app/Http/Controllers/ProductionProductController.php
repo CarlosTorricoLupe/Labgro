@@ -17,10 +17,11 @@ class ProductionProductController extends Controller
      */
     public function index($id)
     {
-        $productions = Production::indexProductsByProduction($id);
+        /* $productions = Production::indexProductsByProduction($id); */
+        $productions=Production::with('products:id,name')->get(['id','date_production']); 
         return response()->json([
-            'success' => true,
-            'productions' => $productions
+            'sucess'=>true,
+            'productions'=>$productions
         ]);
     }
 
@@ -37,8 +38,9 @@ class ProductionProductController extends Controller
         $materials = Material_product::getDetailMaterial($request->product_id)->toArray();
         if ($this->verifyIsPermit($materials, $request->quantity)) {
             if ($production) {
-                $this->decrementStock($materials,$request->quantity);
                 $production->products()->attach($request->product_id, ['quantity' => $request->quantity]);
+                $pr=Production_product::where('product_id',$request->product_id)->where('production_id',$id)->get();
+                $this->decrementStock($materials,$request->quantity,$pr);
                 $response['sucess'] = true;
                 $response['message'] = "Producto agregado a la produccion correctamente";
             } else {
@@ -67,12 +69,14 @@ class ProductionProductController extends Controller
         return $is_permit;
     }
 
-    public function decrementStock($materials,$quantity)
+    public function decrementStock($materials,$quantity,$pr)
     {
         foreach ($materials as $material) {
             $mat = Material::find($material['id']);
             if($mat) {
-                $mat->stock_start = $mat->stock_start - ($material['quantity']*$quantity);
+                $quantity_req=$material['quantity']*$quantity;
+                $pr[0]->materiales()->attach($mat->id, ['quantity_required' => $quantity_req]);
+                $mat->stock_start = $mat    ->stock_start - $quantity_req;
                 $mat->save();
             }
         }
