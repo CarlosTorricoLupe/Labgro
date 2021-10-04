@@ -15,10 +15,10 @@ class ProductionController extends Controller
     public function index(Request $request)
     {
         $productions=Production::select('date_production')->WhereMonth('date_production',$request->month)->WhereYear('date_production',$request->year)->get();
-            return response()->json([
-                'success'=>true,
-                'productions'=>$productions
-            ],404);
+        return response()->json([
+            'sucess'=>true,
+            'productions'=>$productions
+        ],200);
     }
 
     /**
@@ -32,14 +32,15 @@ class ProductionController extends Controller
         $production=Production::create($request->all());
         $products=$request->get('products');
         if(isset($products)){
-            $production->product()->sync($products);
+            $production=$production->product()->sync($products);
             $exist_production=true;
         }else{
             $exist_production=false;
              }
         return response()->json([
             'sucess' =>true,
-            'message' =>'Produccion creada correctamente'
+            'message' =>'Produccion creada correctamente',
+            'production'=>$production
         ],201);
     }
 
@@ -63,7 +64,7 @@ class ProductionController extends Controller
      */
     public function update(Request $request, Production $production)
     {
-    
+
     }
 
     /**

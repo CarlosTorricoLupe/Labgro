@@ -19,9 +19,9 @@ class ProductionProductController extends Controller
     {
         $productions = Production::indexProductsByProduction($id);
         return response()->json([
-            'success' => true,
+            'sucess' => true,
             'productions' => $productions
-        ]);
+        ],201);
     }
 
     /**
@@ -136,7 +136,7 @@ class ProductionProductController extends Controller
     {
         Production_product::where('production_id', $production_id)
         ->where('product_id',$product_id)
-        ->delete(); 
+        ->delete();
         return response()->json([
             'sucess' => true,
             'message' => 'Se elimino correctamente'
