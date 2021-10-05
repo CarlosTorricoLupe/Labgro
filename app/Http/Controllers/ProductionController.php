@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Production;
+use App\Models\Production_product;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class ProductionController extends Controller
 {
@@ -75,5 +77,27 @@ class ProductionController extends Controller
     public function destroy(Production $production)
     {
         //
+    }
+
+    public function GetConsolidate(Request $request){
+     $productions=Production::getProductsProducedByMonth($request->month,$request->year);
+     $result = array();
+        foreach ($productions as $production){
+            $import =  $production->units_produced*$production->unit_cost_production; 
+            $result[] = [
+                'Producto' => $production->product_name,
+                'Unidad/Presentación' => $production->presentation_name,
+                'Costo Unitario de Producción' => $production->unit_cost_production,
+                'Precio Unitario de Venta' => $production->unit_price_sale,
+                'Unidades Producidas' => $production->units_produced,
+                'Importe' =>$import,
+                'Cantidad unidades dañadas' =>0,
+                'Importe unidades dañadas' =>0,
+                'Cantidad unidades vendidas' =>0,
+                'Importe unidades vendidas' =>0,
+                'Total Utilidad'=>$import
+            ];  
+        }
+        return $result;
     }
 }
