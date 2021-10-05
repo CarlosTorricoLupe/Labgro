@@ -40,7 +40,7 @@ class ProductionProductController extends Controller
             if ($production) {
                 $production->products()->attach($request->product_id, ['quantity' => $request->quantity]);
                 $pr=Production_product::where('product_id',$request->product_id)->where('production_id',$id)->get();
-                $this->decrementStock($materials,$request->quantity,$pr);
+                $this->decrementStock($materials,$request->quantity, $pr);
                 $response['sucess'] = true;
                 $response['message'] = "Producto agregado a la produccion correctamente";
             } else {
@@ -69,16 +69,15 @@ class ProductionProductController extends Controller
         return $is_permit;
     }
 
-    public function decrementStock($materials,$quantity,$pr)
+    public function decrementStock($materials,$quantity, $pr)
     {
         foreach ($materials as $material) {
             $mat = Material::find($material['id']);
             if($mat) {
-
                 $quantity_req=$material['quantity']*$quantity;
                 $control = $mat->stock_start - $quantity_req;
                 $mat->stock_start = $control;
-                $mat->save();
+
                 $pr[0]->materiales()->attach($mat->id, ['quantity_required' => $quantity_req, 'control' => $control]);
             }
         }
