@@ -73,8 +73,12 @@ class ProductionProductController extends Controller
         foreach ($materials as $material) {
             $mat = Material::find($material['id']);
             if($mat) {
-                $mat->stock_start = $mat->stock_start - ($material['quantity']*$quantity);
+
+                $quantity_req=$material['quantity']*$quantity;
+                $control = $mat->stock_start - $quantity_req;
+                $mat->stock_start = $control;
                 $mat->save();
+                $pr[0]->materiales()->attach($mat->id, ['quantity_required' => $quantity_req, 'control' => $control]);
             }
         }
     }
