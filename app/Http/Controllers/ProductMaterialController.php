@@ -131,7 +131,7 @@ class ProductMaterialController extends Controller
                 'production_id' => $production['production_id'],
                 'quantity' => $production['quantity_required'],
                 'unit_measure' => $material[0]['unit_measure'],
-                'control' => 198.99 .' '. $material[0]['unit_measure']
+                'control' => $production['control'] .' '. $material[0]['unit_measure']
 
             ];
         }

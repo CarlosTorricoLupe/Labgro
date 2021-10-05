@@ -16,6 +16,7 @@ class CreateMaterialProductionProductTable extends Migration
         Schema::create('material_production_product', function (Blueprint $table) {
             $table->id();
             $table->float('quantity_required');
+            $table->float('control');
             $table->foreignId('material_id')->constrained();
             $table->foreignId('production_product_id')->constrained();
             $table->timestamps();

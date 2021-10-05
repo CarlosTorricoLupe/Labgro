@@ -18,7 +18,7 @@ class ProductionProductController extends Controller
     public function index($id)
     {
         /* $productions = Production::indexProductsByProduction($id); */
-        $productions=Production::with('products:id,name')->get(['id','date_production']); 
+        $productions=Production::with('products:id,name')->get(['id','date_production']);
         return response()->json([
             'sucess'=>true,
             'productions'=>$productions
@@ -74,10 +74,12 @@ class ProductionProductController extends Controller
         foreach ($materials as $material) {
             $mat = Material::find($material['id']);
             if($mat) {
+
                 $quantity_req=$material['quantity']*$quantity;
-                $pr[0]->materiales()->attach($mat->id, ['quantity_required' => $quantity_req]);
-                $mat->stock_start = $mat    ->stock_start - $quantity_req;
+                $control = $mat->stock_start - $quantity_req;
+                $mat->stock_start = $control;
                 $mat->save();
+                $pr[0]->materiales()->attach($mat->id, ['quantity_required' => $quantity_req, 'control' => $control]);
             }
         }
     }
@@ -140,7 +142,7 @@ class ProductionProductController extends Controller
     {
         Production_product::where('production_id', $production_id)
         ->where('product_id',$product_id)
-        ->delete(); 
+        ->delete();
         return response()->json([
             'sucess' => true,
             'message' => 'Se elimino correctamente'
