@@ -84,20 +84,21 @@ class ProductionController extends Controller
      $productions=Production::getProductsProducedByMonth($request->month,$request->year);
      $result = array();
         foreach ($productions as $production){
-            $import =  $production->units_produced*$production->unit_cost_production; 
+            $import =  $production->units_produced*$production->unit_cost_production;
             $result[] = [
+                'production_id'=>$production->production_id,
                 'Producto' => $production->product_name,
-                'Unidad/Presentación' => $production->presentation_name,
-                'Costo Unitario de Producción' => $production->unit_cost_production,
-                'Precio Unitario de Venta' => $production->unit_price_sale,
-                'Unidades Producidas' => $production->units_produced,
+                'Unidad_Presentacion' => $production->presentation_name,
+                'Costo_Unitario_Produccion' => $production->unit_cost_production,
+                'Precio_Unitario_Venta' => $production->unit_price_sale,
+                'Unidades_Producidas' => $production->units_produced,
                 'Importe' =>$import,
-                'Cantidad unidades dañadas' =>0,
-                'Importe unidades dañadas' =>0,
-                'Cantidad unidades vendidas' =>0,
-                'Importe unidades vendidas' =>0,
-                'Total Utilidad'=>$import
-            ];  
+                'Cantidad_unidades_daniadas' =>0,
+                'Importe_unidades_daniadas' =>0,
+                'Cantidad_unidades_vendidas' =>0,
+                'Importe_unidades_vendidas' =>0,
+                'Total_Utilidad'=>$import
+            ];
         }
         return $result;
     }
