@@ -42,9 +42,14 @@ class UnitSeeder extends Seeder
             [
                 'unit_measure' => 'Gal',
                 'kind' => 'Capacidad'
-            ]
+            ],
+            [
+            'unit_measure' => 'Sobres',
+            'kind' => 'Otro'
+            ],
+
         ];
-    
+
         foreach($units as $key => $value){
             Unit::create($value);
         }
