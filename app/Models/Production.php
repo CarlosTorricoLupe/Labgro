@@ -55,4 +55,12 @@ class Production extends Model
        ->groupBy('presentations','presentation_name','product_name','unit_cost_production','unit_price_sale')
        ->get();
     }
+
+    public static function getProductionsById($id_product, $year){
+        return self::join('production_products', 'productions.id', 'production_products.production_id')
+                ->where('production_products.product_id', $id_product)
+                ->whereYear('productions.created_at', $year)
+                ->select('productions.created_at', 'production_products.quantity' )
+                ->get();
+    }
 }
