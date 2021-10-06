@@ -87,6 +87,7 @@ Route::get('getConsolidate',[ProductionController::class,'GetConsolidate']);
 
 Route::apiResource('production.products',ProductionProductController::class);
 Route::get('verifyMaterials', [ProductionProductController::class, 'verifyStockMaterial']);
+Route::get('productions_details/{id}', [ProductionProductController::class, 'getProductionsById']);
 Route::apiResource('production.product.presentations',PresentationProductionProductController::class);
 
 
