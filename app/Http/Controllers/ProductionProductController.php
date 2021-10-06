@@ -147,4 +147,8 @@ class ProductionProductController extends Controller
             'message' => 'Se elimino correctamente'
         ],200);
     }
+
+    public function getProductionsById($id, Request $request){
+        return Production::getProductionsById($id, $request->year);
+    }
 }
