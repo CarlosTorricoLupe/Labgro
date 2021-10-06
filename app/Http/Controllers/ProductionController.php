@@ -86,7 +86,6 @@ class ProductionController extends Controller
         foreach ($productions as $production){
             $import =  $production->units_produced*$production->unit_cost_production;
             $result[] = [
-                'production_id'=>$production->production_id,
                 'Producto' => $production->product_name,
                 'Unidad_Presentacion' => $production->presentation_name,
                 'Costo_Unitario_Produccion' => $production->unit_cost_production,

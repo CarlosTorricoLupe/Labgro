@@ -41,26 +41,21 @@ class Production extends Model
 
     public static function getProductsProducedByMonth($month, $year){
         return DB::table('presentation_production_product')
-        ->crossJoin('products')
-        ->crossJoin('presentation_units')
-        ->crossJoin('production_products')
-        ->crossJoin('productions')
-         ->whereRaw('presentation_production_product.presentation_unit_id = presentation_units.id')
-         ->whereRaw('presentation_production_product.production_product_id = production_products.id')
-         ->whereRaw('production_products.product_id = products.id')
-         ->whereRaw('production_products.production_id = productions.id')
-        ->whereMonth('productions.created_at','=',$month)
-        ->whereYear('productions.created_at',$year)
-        ->select('presentation_production_product.presentation_unit_id as presentations',
-            'products.name as product_name',
-            'presentation_units.name AS presentation_name',
-            DB::raw('SUM(presentation_production_product.quantity) as units_produced'),
-            'presentation_production_product.unit_cost_production as unit_cost_production',
-            'presentation_production_product.unit_price_sale as unit_price_sale',
-            'production_products.production_id as production_id',
-        )
-       ->groupBy('presentations','presentation_name','product_name','unit_cost_production','unit_price_sale', 'production_id')
-       ->get();
+            ->join('presentation_units','presentation_units.id','presentation_production_product.presentation_unit_id')
+            ->join('production_products','production_products.id','presentation_production_product.production_product_id')
+            ->join('productions','productions.id','production_products.production_id')
+            ->join('products','products.id','production_products.product_id')
+            ->whereMonth('productions.created_at','=',$month)
+            ->whereYear('productions.created_at',$year)
+            ->select('presentation_production_product.presentation_unit_id as presentations',
+                'products.name as product_name',
+                'presentation_units.name as presentation_name',
+                DB::raw('SUM(presentation_production_product.quantity) as units_produced'),
+                'presentation_production_product.unit_cost_production as unit_cost_production',
+                'presentation_production_product.unit_price_sale as unit_price_sale',
+            )
+           ->groupBy('presentations','presentation_name','product_name','unit_cost_production','unit_price_sale')
+           ->get();
     }
 
     public static function getProductionsById($id_product, $year){
