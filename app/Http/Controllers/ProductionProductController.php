@@ -4,9 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Models\Material;
 use App\Models\Material_product;
+use App\Models\Material_production_product;
 use App\Models\Production;
 use App\Models\Production_product;
 use Illuminate\Http\Request;
+use Illuminate\Support\Arr;
 
 class ProductionProductController extends Controller
 {
@@ -150,5 +152,20 @@ class ProductionProductController extends Controller
 
     public function getProductionsById($id, Request $request){
         return Production::getProductionsById($id, $request->year);
+    }
+
+    public function showProductionByDay(Request $request)
+    {
+        $mate=array();
+        $r=array();
+        $productions=Production::whereDate('date_production',$request->date)->first();
+        $products=Production::indexProductsByProduction($productions->id)->toArray();
+        foreach($products as $product){
+            $pr=Production_product::where('product_id',$product['id'])->where('production_id',$productions->id)->first()->id;
+            $materials=Material_production_product::getMaterialsByProduction($pr)->toArray();
+            $mate['materials']=$materials;
+            $r=Arr::collapse([$product,$mate]);
+        }
+        var_dump($r);
     }
 }
