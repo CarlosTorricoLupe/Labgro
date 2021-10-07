@@ -21,11 +21,11 @@ class ArticleSeeder extends Seeder
         $categorie3 = Category::where('name','Materia Prima')->first();
         $categorie4 = Category::where('name','Insumos')->first();
 
-        $units1 = Unit::where('unit_measure','Unidad')->orWhere('kind','Otro')->pluck('id');
-        $units2 = Unit::where('unit_measure','Kg')->orWhere('kind','Peso')->pluck('id');
-        $units3 = Unit::where('unit_measure','Ltr')->orWhere('kind','Volumen')->pluck('id');
-        $units4 = Unit::where('unit_measure','Caja')->orWhere('kind','Otro')->pluck('id');
-        $units5 = Unit::where('unit_measure','Sobres')->orWhere('kind','Peso')->pluck('id');
+        $unit = Unit::where('unit_measure','Unidad')->first();
+        $kg = Unit::where('unit_measure','Kg')->first();
+        $ltr = Unit::where('unit_measure','Ltr')->first();
+        $caja = Unit::where('unit_measure','Caja')->first();
+        $sobre = Unit::where('unit_measure','Sobres')->first();
 
         $articles= [
             //Jugos
@@ -36,7 +36,7 @@ class ArticleSeeder extends Seeder
                 'stock'=> '50',
                 'unit_price'=>40,
                 'stock_total'=>'50',
-                'unit_id'=> $units2[0]
+                'unit_id'=> $kg->id,
 
             ],
             [
@@ -46,7 +46,7 @@ class ArticleSeeder extends Seeder
                 'stock'=> '15',
                 'unit_price'=>50,
                 'stock_total'=>'15',
-                'unit_id'=> $units2[0]
+                'unit_id'=> $kg->id,
             ],
             [
                 'cod_article' => 'Azc',
@@ -55,7 +55,7 @@ class ArticleSeeder extends Seeder
                 'stock'=> '100',
                 'unit_price'=>70,
                 'stock_total'=>'100',
-                'unit_id'=> $units2[0]
+                'unit_id'=> $kg->id,
             ],
             [
                 'cod_article' => 'Consv',
@@ -64,7 +64,7 @@ class ArticleSeeder extends Seeder
                 'stock'=> '100',
                 'unit_price'=>60,
                 'stock_total'=>'100',
-                'unit_id'=> $units2[0]
+                'unit_id'=> $kg->id,
             ],
             //Queso --5
             [
@@ -74,7 +74,7 @@ class ArticleSeeder extends Seeder
                 'stock'=> '100',
                 'unit_price'=>20,
                 'stock_total'=>'100',
-                'unit_id'=> $units5[0]
+                'unit_id'=> $sobre->id,
             ],
             [
                 'cod_article' => 'CujYi',
@@ -83,7 +83,7 @@ class ArticleSeeder extends Seeder
                 'stock'=> '90',
                 'unit_price'=>10,
                 'stock_total'=>'90',
-                'unit_id'=> $units2[0]
+                'unit_id'=> $kg->id,
             ],
             [
                 'cod_article' => 'SalNue',
@@ -92,7 +92,7 @@ class ArticleSeeder extends Seeder
                 'stock'=> '90',
                 'unit_price'=>10,
                 'stock_total'=>'90',
-                'unit_id'=> $units2[0]
+                'unit_id'=> $kg->id,
             ],
             [
                 'cod_article' => 'CloCal',
@@ -101,7 +101,7 @@ class ArticleSeeder extends Seeder
                 'stock'=> '80',
                 'unit_price'=>5,
                 'stock_total'=>'80',
-                'unit_id'=> $units2[0]
+                'unit_id'=> $kg->id,
             ],
             [
                 'cod_article' => 'Ferm',
@@ -110,7 +110,7 @@ class ArticleSeeder extends Seeder
                 'stock'=> '80',
                 'unit_price'=>5,
                 'stock_total'=>'80',
-                'unit_id'=> $units3[0]
+                'unit_id'=> $kg->id,
             ],
 
         ];
