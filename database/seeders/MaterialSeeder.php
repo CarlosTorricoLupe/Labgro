@@ -18,7 +18,7 @@ class MaterialSeeder extends Seeder
             //jugo
             [
                 'code' => 'Pulp',
-                'stock_start' => '20',
+                'stock_start' => '100',
                 'stock_min' => '10',
                 'color' => '#FFFFFF',
                 'article_id' => 1,
@@ -26,7 +26,7 @@ class MaterialSeeder extends Seeder
             ],
             [
                 'code' => 'Acid',
-                'stock_start' => '20',
+                'stock_start' => '50',
                 'stock_min' => '10',
                 'color' => '#FFFFFF',
                 'article_id' => 2,
@@ -34,14 +34,14 @@ class MaterialSeeder extends Seeder
             ],
             [
                 'code' => 'Azcr',
-                'stock_start' => '20',
+                'stock_start' => '100',
                 'stock_min' => '10',
                 'article_id' => 3,
                 'is_a' =>'supplies'
             ],
             [
                 'code' => 'Cnsvt',
-                'stock_start' => '20',
+                'stock_start' => '150',
                 'stock_min' => '10',
                 'article_id' => 4,
                 'is_a' =>'raw_material'
@@ -49,7 +49,7 @@ class MaterialSeeder extends Seeder
             //queso
             [
                 'code' => 'Cuj',
-                'stock_start' => '30',
+                'stock_start' => '80',
                 'stock_min' => '10',
                 'color' => '#FFFFFF',
                 'article_id' => 5,
@@ -57,7 +57,7 @@ class MaterialSeeder extends Seeder
             ],
             [
                 'code' => 'CujYi',
-                'stock_start' => '20',
+                'stock_start' => '70',
                 'stock_min' => '10',
                 'color' => '#FFFFFF',
                 'article_id' => 6,
@@ -65,7 +65,7 @@ class MaterialSeeder extends Seeder
             ],
             [
                 'code' => 'SalNue',
-                'stock_start' => '50',
+                'stock_start' => '120',
                 'stock_min' => '10',
                 'color' => '#FFFFFF',
                 'article_id' => 7,
@@ -73,7 +73,7 @@ class MaterialSeeder extends Seeder
             ],
             [
                 'code' => 'CloCal',
-                'stock_start' => '70',
+                'stock_start' => '110',
                 'stock_min' => '10',
                 'color' => '#FFFFFF',
                 'article_id' => 8,
@@ -81,7 +81,7 @@ class MaterialSeeder extends Seeder
             ],
             [
                 'code' => 'Ferm',
-                'stock_start' => '80',
+                'stock_start' => '100',
                 'stock_min' => '10',
                 'color' => '#FFFFFF',
                 'article_id' => 9,
