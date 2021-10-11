@@ -11,7 +11,8 @@ class Production extends Model
     use HasFactory;
 
     protected $fillable = [
-        'date_production'
+        'date_production',
+        'role_id'
     ];
 
     public function products()
@@ -47,6 +48,7 @@ class Production extends Model
             ->join('products','products.id','production_products.product_id')
             ->whereMonth('productions.created_at','=',$month)
             ->whereYear('productions.created_at',$year)
+            ->where('productions.role_id',auth()->user()->role_id)
             ->select('presentation_production_product.presentation_unit_id as presentations',
                 'products.name as product_name',
                 'presentation_units.name as presentation_name',
