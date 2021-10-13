@@ -158,10 +158,10 @@ class ProductionProductController extends Controller
     public function showProductionByDay(Request $request)
     {
         $response=array();
-        $productions=Production::whereDate('date_production',$request->date)->first();
+        $productions=Production::whereDate('date_production',$request->date)->where('role_id', auth()->user()->role_id)->first();
         if($productions === null){
             $response['sucess'] = false;
-            $response['message'] = "No se encontraron productos";
+            $response['message'] = "No se encontraron producciones";
         }else{
             $products=Production::indexProductsByProduction($productions->id);
             foreach($products as $product){

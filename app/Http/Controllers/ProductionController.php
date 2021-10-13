@@ -16,7 +16,7 @@ class ProductionController extends Controller
      */
     public function index(Request $request)
     {
-        $productions=Production::select('date_production')->WhereMonth('date_production',$request->month)->WhereYear('date_production',$request->year)->get();
+        $productions=Production::select('date_production')->WhereMonth('date_production',$request->month)->WhereYear('date_production',$request->year)->where('role_id',auth()->user()->role_id)->get();
         return response()->json([
             'sucess'=>true,
             'productions'=>$productions
@@ -31,18 +31,12 @@ class ProductionController extends Controller
      */
     public function store(Request $request)
     {
-        $production=Production::create($request->all());
-        $products=$request->get('products');
-        if(isset($products)){
-            $production=$production->product()->sync($products);
-            $exist_production=true;
-        }else{
-            $exist_production=false;
-             }
+        $data=$request->only('date_production');
+        $data['role_id'] = auth()->user()->role_id;
+        Production::create($data);
         return response()->json([
             'sucess' =>true,
             'message' =>'Produccion creada correctamente',
-            'production'=>$production
         ],201);
     }
 
