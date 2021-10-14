@@ -15,7 +15,8 @@ class Material extends Model
         'stock_min',
         'color',
         'article_id',
-        'is_a'
+        'is_a',
+        'role_id',
     ];
 
     public function orders()
@@ -53,6 +54,7 @@ class Material extends Model
         return $query->join('articles','materials.article_id','articles.id')
             ->join('units','articles.unit_id','units.id')
             ->select('materials.*', 'articles.name_article','units.unit_measure')
+            ->where('role_id',auth()->user()->role_id)
             ->where('is_a', $name);
     }
 
