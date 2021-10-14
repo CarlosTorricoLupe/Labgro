@@ -152,7 +152,7 @@ class ProductionProductController extends Controller
     }
 
     public function getProductionsById($id, Request $request){
-        return Production::getProductionsById($id, $request->year);
+        return Production::getProductionsByProduct($id, $request->year);
     }
 
     public function showProductionByDay(Request $request)

@@ -61,17 +61,20 @@ class Production extends Model
     }
 
     public static function getProductionsById($id_product, $year){
-//        return self::join('production_products', 'productions.id', 'production_products.production_id')
-//                ->join('presentation_production_product', 'production_products.id', 'presentation_production_product.production_product_id')
-//                ->where('production_products.product_id', $id_product)
-//                ->whereYear('productions.created_at', $year)
-//                ->select('productions.created_at', 'production_products.quantity' )
-//                ->get();
         return self::join('production_products', 'productions.id', 'production_products.production_id')
-                ->join('presentation_production_product', 'production_products.id', 'presentation_production_product.production_product_id')
-                ->join('material_production_product', 'production_products.id', 'material_production_product.production_product_id')
                 ->where('production_products.product_id', $id_product)
-                ->whereYear('productions.date_production', $year)
+                ->whereYear('productions.created_at', $year)
+                ->select('productions.created_at', 'production_products.quantity' )
+                ->get();
+
+    }
+
+    public static function getProductionsByProduct($id_product, $year){
+        return self::join('production_products', 'productions.id', 'production_products.production_id')
+            ->join('presentation_production_product', 'production_products.id', 'presentation_production_product.production_product_id')
+            ->join('material_production_product', 'production_products.id', 'material_production_product.production_product_id')
+            ->where('production_products.product_id', $id_product)
+            ->whereYear('productions.date_production', $year)
             ->groupBy('date','product_quantity')
             ->get(array(
                 DB::raw('Date(productions.date_production) as date'),
