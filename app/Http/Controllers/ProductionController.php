@@ -33,10 +33,11 @@ class ProductionController extends Controller
     {
         $data=$request->only('date_production');
         $data['role_id'] = auth()->user()->role_id;
-        Production::create($data);
+        $production=Production::create($data);
         return response()->json([
             'sucess' =>true,
             'message' =>'Produccion creada correctamente',
+            'production'=>$production,
         ],201);
     }
 
