@@ -80,4 +80,15 @@ class Order extends Model
             ->select('sections.name as section_name', 'orders.id', 'orders.id', 'orders.id', 'orders.receipt', 'orders.order_number', 'orders.date_issue as order_date', 'orders.status', 'orders.created_at', 'orders.observation')
             ->where('orders.id', $id);
     }
+
+    public function scopeReprobate($query, $id_order){
+        return $query->where('id', $id_order)
+            ->update(['status'=>'reprobate']);
+    }
+
+    public function scopeApproved($query, $id_order){
+        return $query->where('id', $id_order)
+            ->update(['status'=>'approved']);
+    }
+
 }

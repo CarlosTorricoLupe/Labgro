@@ -69,6 +69,7 @@ Route::apiResource('products',ProductController::class);
 Route::apiResource('materials',MaterialController::class);
 
 Route::apiResource('orders', OrderController::class);
+Route::get('order_reprobate/{id}', [OrderController::class, 'reprobate']);
 
 Route::apiResource('presentations', PresentationUnitController::class);
 
@@ -94,7 +95,7 @@ Route::apiResource('production.product.presentations',PresentationProductionProd
 
 Route::get("output/", [OutputController::class, 'index']);
 Route::get("output/getDetailOutput/", [OutputController::class, 'getDetailOutput']);
-Route::post("output/create", [OutputController::class, 'store']);
+Route::post("output/create/{id_order?}", [OutputController::class, 'store']);
 Route::post("output/search", [OutputController::class, 'searchOutputByDate']);
 
 Route::get("output/articles/{section}", [OutputController::class, 'getArticles']);

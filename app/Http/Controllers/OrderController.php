@@ -22,10 +22,7 @@ class OrderController extends Controller
             "reprobado" => Order::GetTypeStatus('reprobate')->get(),
 
         ];
-        return response()->json([
-            'success' => true,
-            'solicitud'=> $orders
-        ]);
+        return response()->json($orders,200);
     }
 
     /**
@@ -98,6 +95,16 @@ class OrderController extends Controller
         return response()->json([
             'sucess' => true,
             'message' => 'Pedido eliminado correctamente'
+        ],200);
+    }
+
+    public function reprobate($id)
+    {
+        $result = Order::Reprobate($id);
+        return response()->json([
+            'sucess' => true,
+            'message' => 'Pedido reprobado correctamente',
+
         ],200);
     }
 }
