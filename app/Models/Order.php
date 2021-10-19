@@ -56,12 +56,11 @@ class Order extends Model
             ->join('articles','materials.article_id','articles.id')
             ->join('units','articles.unit_id', 'units.id')
             ->select('order_materials.order_id',
-                'order_materials.material_id',
-                'order_materials.quantity',
-                'materials.code',
-                'materials.color',
-                'materials.is_a',
                 'materials.article_id',
+                'order_materials.material_id',
+                'order_materials.quantity as quantity_order',
+                'articles.stock_total as quantity_article',
+                'materials.stock_start as quantity_materials',
                 'articles.name_article',
                 'materials.article_id',
                 'units.unit_measure'
@@ -69,4 +68,27 @@ class Order extends Model
             ->where('order_materials.order_id',$id)
             ->get();
     }
+    public function scopeGetTypeStatus($query, $value){
+        return $query->join('sections','orders.section_id','sections.id')
+            ->select('sections.name as section_name', 'orders.id', 'orders.id', 'orders.id', 'orders.receipt', 'orders.order_number', 'orders.date_issue as order_date', 'orders.status', 'orders.created_at', 'orders.observation')
+            ->where('status', $value)
+            ->orderBy('orders.created_at', 'desc');
+    }
+
+    public function scopeGetOrderById($query, $id){
+        return $query->join('sections','orders.section_id','sections.id')
+            ->select('sections.name as section_name', 'orders.id', 'orders.id', 'orders.id', 'orders.receipt', 'orders.order_number', 'orders.date_issue as order_date', 'orders.status', 'orders.created_at', 'orders.observation')
+            ->where('orders.id', $id);
+    }
+
+    public function scopeReprobate($query, $id_order){
+        return $query->where('id', $id_order)
+            ->update(['status'=>'reprobate']);
+    }
+
+    public function scopeApproved($query, $id_order){
+        return $query->where('id', $id_order)
+            ->update(['status'=>'approved']);
+    }
+
 }
