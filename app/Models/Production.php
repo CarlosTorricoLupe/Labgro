@@ -11,7 +11,8 @@ class Production extends Model
     use HasFactory;
 
     protected $fillable = [
-        'date_production'
+        'date_production',
+        'role_id'
     ];
 
     public function products()
@@ -26,7 +27,7 @@ class Production extends Model
 
     public static function indexProductsByProduction($production_id){
         return self::join('production_products','productions.id','production_products.production_id')
-                    ->join('products','production_products.product_id','products.id')->select('products.id','products.name','production_products.quantity','productions.date_production')->where('production_products.production_id',$production_id)->get();
+                    ->join('products','production_products.product_id','products.id')->select('products.id','products.name','production_products.quantity','productions.date_production','products.code','products.image')->where('production_products.production_id',$production_id)->get();
     }
     public static function getProductsContainMaterialId($material_id, $year){
         return self::join('material_production_product','material_production_product.production_product_id','productions.id')
@@ -47,6 +48,7 @@ class Production extends Model
             ->join('products','products.id','production_products.product_id')
             ->whereMonth('productions.created_at','=',$month)
             ->whereYear('productions.created_at',$year)
+            ->where('productions.role_id',auth()->user()->role_id)
             ->select('presentation_production_product.presentation_unit_id as presentations',
                 'products.name as product_name',
                 'presentation_units.name as presentation_name',
@@ -59,10 +61,23 @@ class Production extends Model
     }
 
     public static function getProductionsById($id_product, $year){
+//        return self::join('production_products', 'productions.id', 'production_products.production_id')
+//                ->join('presentation_production_product', 'production_products.id', 'presentation_production_product.production_product_id')
+//                ->where('production_products.product_id', $id_product)
+//                ->whereYear('productions.created_at', $year)
+//                ->select('productions.created_at', 'production_products.quantity' )
+//                ->get();
         return self::join('production_products', 'productions.id', 'production_products.production_id')
+                ->join('presentation_production_product', 'production_products.id', 'presentation_production_product.production_product_id')
+                ->join('material_production_product', 'production_products.id', 'material_production_product.production_product_id')
                 ->where('production_products.product_id', $id_product)
-                ->whereYear('productions.created_at', $year)
-                ->select('productions.created_at', 'production_products.quantity' )
-                ->get();
+                ->whereYear('productions.date_production', $year)
+            ->groupBy('date','product_quantity')
+            ->get(array(
+                DB::raw('Date(productions.date_production) as date'),
+                DB::raw('(production_products.quantity) as product_quantity'),
+                DB::raw('SUM(presentation_production_product.quantity) as "presentations_quantity"'),
+                DB::raw('SUM(material_production_product.quantity_required) as "materials_quantity"'),
+            ));
     }
 }

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 use App\Http\Requests\CreateArticleRequest;
 use App\Http\Requests\UpdateArticleRequest;
+use App\Http\Resources\ArticleResource;
 use App\Models\Article;
 use App\Models\Unit;
 use Illuminate\Http\Request;
@@ -110,7 +111,19 @@ class ArticleController extends Controller
             ->select('articles.*')
             ->get();
 
+        if(count($result)){
+            return $result;
+        } else {
+            return response()->json([
+                'success'=>false,
+                'message'=>'No se encontraron resultados'
+            ],404);
+        }
+    }
 
+    public function peripheralReport(Request $request){
+        $result=Article::ArticlesPeripheralReport($request);
+//        $res = ArticleResource::collection($result);
         if(count($result)){
             return $result;
         } else {

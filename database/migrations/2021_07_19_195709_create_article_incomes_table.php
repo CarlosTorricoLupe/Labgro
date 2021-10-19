@@ -22,6 +22,8 @@ class CreateArticleIncomesTable extends Migration
             $table->foreignId('article_id')->constrained();
             $table->timestamps();
             $table->boolean('is_consumed')->default(0);
+            $table->date('last_output'); //ultima fecha en que salio el articulo
+            $table->decimal('current_stock',11,2);
         });
     }
 

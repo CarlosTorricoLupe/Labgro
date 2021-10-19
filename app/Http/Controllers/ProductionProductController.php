@@ -4,9 +4,12 @@ namespace App\Http\Controllers;
 
 use App\Models\Material;
 use App\Models\Material_product;
+use App\Models\Material_production_product;
+use App\Models\Presentation_production_product;
 use App\Models\Production;
 use App\Models\Production_product;
 use Illuminate\Http\Request;
+use Illuminate\Support\Arr;
 
 class ProductionProductController extends Controller
 {
@@ -150,5 +153,27 @@ class ProductionProductController extends Controller
 
     public function getProductionsById($id, Request $request){
         return Production::getProductionsById($id, $request->year);
+    }
+
+    public function showProductionByDay(Request $request)
+    {
+        $response=array();
+        $productions=Production::whereDate('date_production',$request->date)->where('role_id', auth()->user()->role_id)->first();
+        if($productions === null){
+            $response['sucess'] = false;
+            $response['message'] = "No se encontraron producciones";
+        }else{
+            $products=Production::indexProductsByProduction($productions->id);
+            foreach($products as $product){
+               $pr=Production_product::where('product_id',$product['id'])->where('production_id',$productions->id)->first()->id;
+               $materials=Material_production_product::getMaterialsByProduction($pr)->toArray();
+               $presentations=Presentation_production_product::getPresentationByProductOfProduction($pr)->toArray();
+               $product->materials=$materials;
+               $product->presentations=$presentations;
+            }
+            $response['sucess'] = true;
+            $response['products'] = $products;
+        }
+        return response()->json($response, 201);
     }
 }
