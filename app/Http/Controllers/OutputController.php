@@ -7,6 +7,7 @@ use App\Models\Article;
 use App\Models\Article_income;
 use App\Models\Material;
 use App\Models\Output;
+use App\Models\Order;
 use App\Models\OutputDetail;
 use Illuminate\Http\Request;
 
@@ -35,7 +36,7 @@ class OutputController extends Controller
      */
 
 
-    public function store(OutputRequest $request)
+    public function store(OutputRequest $request, $id_order = null)
     {
         $details = $request->only('details');
         $response = array();
@@ -49,6 +50,9 @@ class OutputController extends Controller
             $output->articles()->attach($details['details']);
             $this->updateStockMaterials($details['details']);
 
+            if (isset($id_order)){
+                Order::Approved($id_order);
+            }
             $response['sucess'] = true;
 
             $response['message'] = "Salida creada correctamente";

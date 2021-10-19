@@ -34,7 +34,9 @@ class MaterialController extends Controller
      */
     public function store(CreateMaterialRequest $request)
     {
-        $material =  Material::create($request->all());
+        $input = $request->all();
+        $input['role_id'] = auth()->user()->role_id;
+        $material =  Material::create($input);
         Material::UpdateCategoryMaterial($material, $material->article_id);
 
         return response()->json([

@@ -16,11 +16,13 @@ class OrderController extends Controller
      */
     public function index()
     {
-        $orders=Order::all();
-        return response()->json([
-            'success' => true,
-            'orders'=> $orders
-        ]);
+        $orders=[
+            "pendiente" => Order::GetTypeStatus('pending')->get(),
+            "aprobado" => Order::GetTypeStatus('approved')->get(),
+            "reprobado" => Order::GetTypeStatus('reprobate')->get(),
+
+        ];
+        return response()->json($orders,200);
     }
 
     /**
@@ -32,7 +34,6 @@ class OrderController extends Controller
     public function store(CreateOrderRequest $request)
     {
         $input = $request->except('details');
-        $input['role_id'] = auth()->user()->role_id;
 
         $order = Order::create($input);
 
@@ -55,8 +56,8 @@ class OrderController extends Controller
      */
     public function show($id)
     {
-        $order = Order::getOrder($id);
-        $details = Order::GetDetails($id);
+        $order = Order::GetOrderById($id)->first();
+        $details = Order::getDetails($id);
 
         return response()->json([
             'success'=>true,
@@ -94,6 +95,16 @@ class OrderController extends Controller
         return response()->json([
             'sucess' => true,
             'message' => 'Pedido eliminado correctamente'
+        ],200);
+    }
+
+    public function reprobate($id)
+    {
+        $result = Order::Reprobate($id);
+        return response()->json([
+            'sucess' => true,
+            'message' => 'Pedido reprobado correctamente',
+
         ],200);
     }
 }
