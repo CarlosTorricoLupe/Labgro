@@ -62,7 +62,7 @@ class Product extends Model
             'products.created_at')
             ->where('products.name','like',"%$value%")
             ->Where('role_id',auth()->user()->role_id)
-            ->paginate(12);
+            ->get();
     }
 
     public static function boot() {
