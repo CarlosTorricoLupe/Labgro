@@ -27,7 +27,22 @@ class Product extends Model
         return $this->belongsToMany(Material::class,'material_products')->withPivot('quantity')->withTimestamps();
     }
 
+    public function productions()
+    {
+        return $this->belongsToMany(Production::class,'production_products')->withPivot('quantity')->withTimestamps();
+    }
+
     public static function searchProducts($value='',$month,$year){
+        if (!$value && !$month && !$year) {
+            return self::select('products.id',
+                'products.name',
+                'products.code',
+                'products.description',
+                'products.image',
+                'products.created_at')
+                ->Where('role_id',auth()->user()->role_id)
+                ->get();
+        }
         if (!$value) {
             return self::select('products.id',
                 'products.name',
@@ -38,7 +53,7 @@ class Product extends Model
                 ->WhereMonth('products.created_at',$month)
                 ->WhereYear('products.created_at',$year)
                 ->Where('role_id',auth()->user()->role_id)
-                ->paginate(12);
+                ->get();
         }
         return self::select('products.id',
             'products.name',
@@ -46,7 +61,8 @@ class Product extends Model
             'products.image',
             'products.created_at')
             ->where('products.name','like',"%$value%")
-            ->paginate(12);
+            ->Where('role_id',auth()->user()->role_id)
+            ->get();
     }
 
     public static function boot() {

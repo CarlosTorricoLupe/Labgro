@@ -24,7 +24,9 @@ class IncomeRequest extends FormRequest
     public function rules()
     {
         return [
-            'receipt' => 'required|unique:incomes,receipt'
+            'receipt' => 'required|unique:incomes,receipt',
+            'order_number'=>'required',
+            'invoice_number'=>'required'
         ];
     }
     public function messages()
@@ -32,6 +34,8 @@ class IncomeRequest extends FormRequest
         return [
             'receipt.required'   => 'El numero para el :attribute es obligatorio.',
             'receipt.unique'   => 'El nro de :attribute ya existe, pruebe con otro.',
+            'order_number.required'   => 'El numero de :attribute es obligatorio.',
+            'invoice_number.required'   => 'El numero para la :attribute es obligatorio.',
         ];
     }
 
@@ -39,6 +43,8 @@ class IncomeRequest extends FormRequest
     {
         return [
             'receipt' => 'comprobante',
+            'order_number'=>'orden',
+            'invoice_number'=>'factura'
         ];
     }
 }

@@ -24,9 +24,9 @@ class OutputRequest extends FormRequest
     public function rules()
     {
         return [
-            'receipt' => 'required|unique:outputs,receipt',
+            'receipt' => 'required|numeric|unique:outputs,receipt',
             'section_id' => 'required',
-            'order_number' => 'required',
+            'order_number' => 'required|numeric',
             'order_date' => 'required',
             'delivery_date' => 'required',
             'total' => 'required',
@@ -39,7 +39,10 @@ class OutputRequest extends FormRequest
         return [
             'receipt.required'   => 'El numero para el :attribute es requerido.',
             'receipt.iunique'   => 'Esta :attribute ya existe, prueba otro numero.',
+            'receipt.numeric'   => 'Esta :attribute solo permite valores numericos.',
             'section_id'  => 'El :attribute es requerido.',
+            'order_number.required'  => 'El :attribute es requerido.',
+            'order_number.numeric'  => 'El :attribute solo permite valores numericos.',
             'order_date'  => 'El :attribute es requerido.',
             'delivery_date'  => 'El :attribute es requerido.',
             'total'  => 'El :attribute es requerido.',

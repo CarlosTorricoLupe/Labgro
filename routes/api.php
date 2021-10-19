@@ -15,6 +15,9 @@ use App\Http\Controllers\RawMaterialController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\MaterialController;
 use App\Http\Controllers\OrderController;
+use App\Http\Controllers\PresentationProductionProductController;
+use App\Http\Controllers\ProductionController;
+use App\Http\Controllers\ProductionProductController;
 use App\Http\Controllers\ProductMaterialController;
 use App\Http\Controllers\ProductPresentationController;
 
@@ -70,9 +73,23 @@ Route::apiResource('orders', OrderController::class);
 Route::apiResource('presentations', PresentationUnitController::class);
 
 Route::apiResource('product.materials',ProductMaterialController::class);
+
+
+Route::get('material/{id}/incomes', [ProductMaterialController::class, 'getIncomeMaterials']);
+Route::get('material/{id}/outputs', [ProductMaterialController::class, 'getOutputsMaterials']);
+
 /* Route::apiResource('incomes',IncomeController::class); */
 
 Route::apiResource('product.presentations',ProductPresentationController::class);
+
+Route::apiResource('productions', ProductionController::class);
+Route::get('getConsolidate',[ProductionController::class,'GetConsolidate']);
+
+Route::apiResource('production.products',ProductionProductController::class);
+Route::get('verifyMaterials', [ProductionProductController::class, 'verifyStockMaterial']);
+Route::get('details/productions',[ProductionProductController::class,'showProductionByDay']);
+Route::get('productions_details/{id}', [ProductionProductController::class, 'getProductionsById']);
+Route::apiResource('production.product.presentations',PresentationProductionProductController::class);
 
 
 
@@ -86,6 +103,7 @@ Route::put("output/update/{output}", [OutputController::class, 'update']);
 Route::delete("output/delete/{output}", [OutputController::class, 'destroy']);
 Route::get('/output/{output}',[OutputController::class, 'show']);
 Route::get('/output/by_article/{id}',[OutputController::class, 'outputsByArticle']);
+Route::get('outputs/getOutputArticleByDate/', [OutputController::class, 'getOutputArticleByDate']);
 
 Route::get("prueba", [OutputController::class, 'prueba']);
 
@@ -98,6 +116,7 @@ Route::put('/incomes/{income}', [IncomeController::class, 'update']);
 Route::delete('/incomes/{income}', [IncomeController::class, 'destroy']);
 Route::get('/incomes/getIncomesArticle/{id}', [IncomeController::class, 'getIncomesArticle']);
 Route::get('/peripheralReport', [ArticleController::class, 'peripheralReport']);
+Route::get('income/getIncomeArticleByDate/', [IncomeController::class, 'getIncomeArticleByDate']);
 
 
 //VERIFIRY PRICE

@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\UpdatePresentationUnit_productRequest;
 use App\Models\PresentationUnit_product;
 use App\Models\Product;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class ProductPresentationController extends Controller
@@ -16,13 +18,13 @@ class ProductPresentationController extends Controller
     public function index($id)
     {
         $presentations = PresentationUnit_product::getPresentations($id);
-        if(count($presentations)){
+        if (count($presentations)) {
             return $presentations;
         } else {
             return response()->json([
-                'success'=>false,
-                'message'=>'No se encontraron resultados'
-            ],404);
+                'success' => false,
+                'message' => 'No se encontraron resultados'
+            ], 404);
         }
     }
 
@@ -32,19 +34,19 @@ class ProductPresentationController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request,$id)
+    public function store(UpdatePresentationUnit_productRequest $request, $id)
     {
-        $response=array();
+        $response = array();
         $product = Product::find($id);
-        if (! $product->presentations->contains($request->presentation_unit_id)) {
-            $product->presentations()->attach($request->presentation_unit_id,['unit_cost_production'=>$request->unit_cost_production,'unit_price_sale'=>$request->unit_price_sale]);
+        if (!$product->presentations->contains($request->presentation_unit_id)) {
+            $product->presentations()->attach($request->presentation_unit_id, ['unit_cost_production' => $request->unit_cost_production, 'unit_price_sale' => $request->unit_price_sale]);
             $response['sucess'] = true;
             $response['message'] = "Presentacion agregada correctamente";
-        }else{
+        } else {
             $response['sucess'] = false;
             $response['error'] = "La unidad de presentacion ya existe";
         }
-        return response()->json($response,201);
+        return response()->json($response, 201);
     }
 
     /**
@@ -65,15 +67,24 @@ class ProductPresentationController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $product_id, $presentation_unit_id)
+    public function update(UpdatePresentationUnit_productRequest $request, $product_id, $presentation_unit_id)
     {
-        PresentationUnit_product::where('product_id', $product_id)
-            ->where('presentation_unit_id',$presentation_unit_id)
-            ->update($request->all());
+        $pres = PresentationUnit_product::where('product_id', $product_id)
+            ->where('presentation_unit_id', $presentation_unit_id)->get();
+        if ($pres[0]->created_at->isCurrentMonth()) {
+            foreach($pres as $pre){
+                $pre['unit_cost_production']=$request->unit_cost_production;
+                $pre['unit_price_sale']=$request->unit_price_sale;
+                $pre->saveOrFail();
+            }
+        } else {
+            $product = Product::find($product_id);
+            $product->presentations()->attach($request->presentation_unit_id, ['unit_cost_production' => $request->unit_cost_production, 'unit_price_sale' => $request->unit_price_sale]);
+        }
         return response()->json([
             'sucess' => true,
             'message' => 'Se actualizo correctamente'
-        ],200);
+        ], 200);
     }
 
     /**
@@ -85,11 +96,11 @@ class ProductPresentationController extends Controller
     public function destroy($product_id, $presentation_unit_id)
     {
         PresentationUnit_product::where('product_id', $product_id)
-            ->where('presentation_unit_id',$presentation_unit_id)
+            ->where('presentation_unit_id', $presentation_unit_id)
             ->delete();
         return response()->json([
             'sucess' => true,
             'message' => 'Se elimino correctamente'
-        ],200);
+        ], 200);
     }
 }

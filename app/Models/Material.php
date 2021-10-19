@@ -20,12 +20,17 @@ class Material extends Model
 
     public function orders()
     {
-        return $this->belongsToMany(Order::class,'order_materials', 'material_id','order_id');
+        return $this->belongsToMany(Order::class,'order_materials', 'material_id','order_id')->withTimestamps();;
     }
 
     public function products()
     {
         return $this->belongsToMany(Product::class,'material_products', 'material_id', 'product_id')->withPivot('quantity')->withTimestamps();
+    }
+
+    public function productions()
+    {
+        return $this->belongsToMany(Production::class,'material_production', 'material_id', 'production_id')->withPivot('quantity_required')->withTimestamps();
     }
 
     public function scopeUpdateCategoryMaterial($query, $material, $article_id){
