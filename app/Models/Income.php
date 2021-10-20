@@ -42,7 +42,7 @@ class Income extends Model
 
     public static function getIncome($id){
         return self::select('incomes.receipt','incomes.order_number','provider',
-        'total','invoice_number')->where('incomes.id',$id)->get();
+        'total','invoice_number','created_at')->where('incomes.id',$id)->get();
     }
 
     public static function getDetails($id){
