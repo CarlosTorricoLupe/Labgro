@@ -23,7 +23,7 @@ class MaterialSeeder extends Seeder
                 'color' => '#FFFFFF',
                 'article_id' => 1,
                 'is_a' =>'supplies',
-                'role_id'=>2               
+                'role_id'=>5               
             ],
             [
                 'code' => 'Acid',
@@ -48,7 +48,7 @@ class MaterialSeeder extends Seeder
                 'stock_min' => '10',
                 'article_id' => 4,
                 'is_a' =>'raw_material',
-                'role_id'=>2
+                'role_id'=>5
             ],
             //queso
             [
@@ -67,7 +67,7 @@ class MaterialSeeder extends Seeder
                 'color' => '#FFFFFF',
                 'article_id' => 6,
                 'is_a' =>'raw_material',
-                'role_id'=>5
+                'role_id'=>2
             ],
             [
                 'code' => 'SalNue',
@@ -76,7 +76,7 @@ class MaterialSeeder extends Seeder
                 'color' => '#FFFFFF',
                 'article_id' => 7,
                 'is_a' =>'raw_material',
-                'role_id'=>4
+                'role_id'=>2
             ],
             [
                 'code' => 'CloCal',
@@ -85,7 +85,7 @@ class MaterialSeeder extends Seeder
                 'color' => '#FFFFFF',
                 'article_id' => 8,
                 'is_a' =>'raw_material',
-                'role_id'=>5
+                'role_id'=>2
             ],
             [
                 'code' => 'Ferm',
@@ -94,7 +94,7 @@ class MaterialSeeder extends Seeder
                 'color' => '#FFFFFF',
                 'article_id' => 9,
                 'is_a' =>'raw_material',
-                'role_id'=>3
+                'role_id'=>2
             ],
         ];
         foreach($materials as $key => $value){
