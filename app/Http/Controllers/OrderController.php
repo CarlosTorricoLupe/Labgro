@@ -14,13 +14,12 @@ class OrderController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
         $orders=[
-            "pendiente" => Order::GetTypeStatus('pending')->get(),
-            "aprobado" => Order::GetTypeStatus('approved')->get(),
-            "reprobado" => Order::GetTypeStatus('reprobate')->get(),
-
+            "pendiente" => Order::GetTypeStatus('pending', $request->month, $request->year)->get(),
+            "aprobado" => Order::GetTypeStatus('approved', $request->month, $request->year)->get(),
+            "reprobado" => Order::GetTypeStatus('reprobate', $request->month, $request->year)->get(),
         ];
         return response()->json($orders,200);
     }
