@@ -21,6 +21,7 @@ class CreateMaterialsTable extends Migration
             $table->string('color')->default('#85CE36');
             $table->foreignId('article_id')->constrained();
             $table->enum('is_a',['raw_material', 'supplies'])->default('raw_material');
+            $table->foreignId('role_id')->constrained();
             $table->timestamps();
         });
     }

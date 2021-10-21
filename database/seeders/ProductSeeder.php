@@ -17,6 +17,7 @@ class ProductSeeder extends Seeder
      */
     public function run()
     {
+        /*
         $name=['Gelatina','Yogurt','Jugo', 'Queso'];
         $cod=['Gel12','Yog','Jug', 'Ques'];
         $descr = ['Gelatina elaborada en la Facultad de Agronomía',
@@ -42,12 +43,12 @@ class ProductSeeder extends Seeder
                 $prd->ingredients()->attach($mat,['quantity'=>rand(1,100)]);
             }
         }
-
+*/
         $jug=Product::create([
-            'name' => Arr::get($name,2),
-            'code'=> Arr::get($cod,2),
-            'description' => Arr::get($descr,2),
-            'role_id'=>Arr::get($roles,2),
+            'name' => 'Jugo',
+            'code'=> 'Jug',
+            'description' => 'Jugo elaborada en la Facultad de Agronomía',
+            'role_id'=>5,
             'image'=> 'https://picsum.photos/700/400?random',
         ]);
         $jug->ingredients()->attach(1,['quantity'=>0.1]);
@@ -56,10 +57,10 @@ class ProductSeeder extends Seeder
         $jug->ingredients()->attach(4,['quantity'=>0.25]);
 
         $ques=Product::create([
-            'name' => Arr::get($name,3),
-            'code'=> Arr::get($cod,3),
-            'description' => Arr::get($descr,3),
-            'role_id'=>Arr::get($roles,2),
+            'name' => 'Queso',
+            'code'=> 'Ques',
+            'description' => 'Queso elaborada en la Facultad de Agronomía',
+            'role_id'=>2,
             'image'=> 'https://picsum.photos/700/400?random',
         ]);
         $ques->ingredients()->attach(5,['quantity'=>0.4]);
