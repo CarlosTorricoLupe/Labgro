@@ -65,6 +65,17 @@ class Product extends Model
             ->get();
     }
 
+    public function scopeGetContainMaterialId($query, $material_id){
+
+        return $query->join('material_products','material_products.product_id','products.id')
+                ->join('materials', 'material_products.material_id', 'materials.id')
+                ->join('articles', 'materials.article_id', 'articles.id')
+
+            ->select('products.id as product_id' ,'materials.code', 'articles.name_article as name')
+            ->where('material_products.material_id', $material_id);
+    }
+
+
     public static function boot() {
         parent::boot();
 
