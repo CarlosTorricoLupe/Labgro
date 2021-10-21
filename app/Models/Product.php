@@ -71,7 +71,7 @@ class Product extends Model
                 ->join('materials', 'material_products.material_id', 'materials.id')
                 ->join('articles', 'materials.article_id', 'articles.id')
 
-            ->select('products.id as product_id' ,'materials.code', 'articles.name_article as name')
+            ->select('products.id as product_id' ,'products.code', 'products.name')
             ->where('material_products.material_id', $material_id);
     }
 
