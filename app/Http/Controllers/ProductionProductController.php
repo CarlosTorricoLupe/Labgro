@@ -80,7 +80,7 @@ class ProductionProductController extends Controller
                 $quantity_req=$material['quantity']*$quantity;
                 $control = $mat->stock_start - $quantity_req;
                 $mat->stock_start = $control;
-
+                $mat->saveOrFail();
                 $pr[0]->materiales()->attach($mat->id, ['quantity_required' => $quantity_req, 'control' => $control]);
             }
         }
