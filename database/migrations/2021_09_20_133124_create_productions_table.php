@@ -17,6 +17,8 @@ class CreateProductionsTable extends Migration
             $table->id();
             $table->date('date_production');
             $table->foreignId('role_id')->constrained();
+            $table->decimal('quantity_used')->nullable();
+            $table->integer('receipt_number');
             $table->timestamps();
         });
     }
