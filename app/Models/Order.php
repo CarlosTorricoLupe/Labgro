@@ -79,7 +79,7 @@ class Order extends Model
         if(isset($year)){
             $query->WhereYear('orders.created_at', $year);
         }
-        $query->orderBy('orders.created_at', 'desc');
+        return $query->orderBy('orders.created_at', 'desc');
     }
 
     public function scopeGetOrderById($query, $id){
