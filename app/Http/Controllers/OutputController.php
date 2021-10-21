@@ -197,7 +197,7 @@ class OutputController extends Controller
     }
 
     public function getDetailOutput(Request $request){
-        $details = Article_income::getDetails($request->id);
+        $details = OutputDetail::getDetails($request->id);
 
         return response()->json([
             'success'=> true,
