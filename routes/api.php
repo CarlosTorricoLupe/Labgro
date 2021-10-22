@@ -67,6 +67,7 @@ Route::apiResource('raw_material',RawMaterialController::class);
 Route::apiResource('products',ProductController::class);
 
 Route::apiResource('materials',MaterialController::class);
+Route::get('material/incomes_graphics', [MaterialController::class, 'IncomesMaterialByGraphics']);
 
 Route::apiResource('orders', OrderController::class);
 Route::get('order_reprobate/{id}', [OrderController::class, 'reprobate']);
