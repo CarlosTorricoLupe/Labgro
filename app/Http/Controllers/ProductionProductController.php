@@ -129,9 +129,25 @@ class ProductionProductController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, $production_id, $product_id)
     {
-        //
+        $product = Production_product::where('product_id', $product_id)
+            ->where('production_id', $production_id)->get();
+        if ($product[0]->created_at->isCurrentMonth()) {
+            foreach($product as $pre){
+                $pre['quantity']=$request->quantity;
+                $pre->saveOrFail();
+            }
+        } else {
+            return response()->json([
+                'sucess' => false,
+                'message' => 'No se puede modificar'
+            ], 200);
+        }
+        return response()->json([
+            'sucess' => true,
+            'message' => 'Se actualizo correctamente'
+        ], 200);
     }
 
     /**
