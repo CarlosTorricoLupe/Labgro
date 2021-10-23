@@ -66,18 +66,22 @@ class PresentationProductionProductController extends Controller
      */
     public function update(Request $request, $production_id,$product_id,$presentation_unit_id,Presentation_production_product  $presentation_production_product)
     {
+        $response=array();
         $productionProduct=Production_product::where('production_id',$production_id)
                             ->where('product_id',$product_id)
                             ->first()->id;
         $presentationProduct=Presentation_production_product::where('presentation_unit_id',$presentation_unit_id)
                             ->where('production_product_id',$productionProduct)
-                            ->first('quantity','unit_cost_production','unit_price_sale');
-        $presentationProduct->update($request->all()); 
-        return response()->json([
-            'success'=>true,
-            'message'=>'Presentacion actualizada correctamente',
-            'presentacion'=>$presentationProduct
-        ],200);
+                            ->first(['quantity','unit_cost_production','unit_price_sale','created_at']);
+        if ($presentationProduct->created_at->isToday()) {
+            $presentationProduct->update($request->all()); 
+            $response['sucess'] = true;
+            $response['message'] = "Presentacion actualizada correctamente";
+        }else{
+            $response['sucess'] = false;
+            $response['message'] = "No se puede modificar la cantidad"; 
+        }
+        return response()->json($response,200);
     }
 
     /**
