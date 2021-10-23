@@ -8,6 +8,7 @@ use App\Models\Material_production_product;
 use App\Models\Presentation_production_product;
 use App\Models\Production;
 use App\Models\Production_product;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
 
@@ -131,23 +132,19 @@ class ProductionProductController extends Controller
      */
     public function update(Request $request, $production_id, $product_id)
     {
+        $response=array();
         $product = Production_product::where('product_id', $product_id)
-            ->where('production_id', $production_id)->get();
-        if ($product[0]->created_at->isCurrentMonth()) {
-            foreach($product as $pre){
-                $pre['quantity']=$request->quantity;
-                $pre->saveOrFail();
-            }
+                    ->where('production_id', $production_id)
+                    ->first();
+        if ($product->created_at->isToday()) {
+            $product->update($request->all());
+            $response['sucess'] = true;
+            $response['message'] = "Cantidad actualizada correctamente";
         } else {
-            return response()->json([
-                'sucess' => false,
-                'message' => 'No se puede modificar'
-            ], 200);
+            $response['sucess'] = false;
+            $response['message'] = "No se puede modificar la cantidad"; 
         }
-        return response()->json([
-            'sucess' => true,
-            'message' => 'Se actualizo correctamente'
-        ], 200);
+        return response()->json($response, 200);
     }
 
     /**
