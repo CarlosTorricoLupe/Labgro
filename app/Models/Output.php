@@ -44,12 +44,13 @@ class Output extends Model
         return self::join('output_details','output_details.output_id','outputs.id')
             ->join('articles','output_details.article_id','articles.id')
             ->select('outputs.section_id',
-                'outputs.section_id',
+                'outputs.id as output_id',
                 'outputs.receipt',
                 'outputs.order_number',
                 'outputs.order_date',
                 'outputs.delivery_date',
                 'outputs.total',
+                'outputs.created_at',
                 'output_details.article_id',
                 'articles.name_article',
                 'output_details.quantity',
