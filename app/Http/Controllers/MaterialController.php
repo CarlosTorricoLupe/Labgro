@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\CreateMaterialRequest;
 use App\Http\Requests\UpdateMaterialRequest;
 use App\Models\Material;
+use App\Models\Output;
 use App\Models\Product;
 
 class MaterialController extends Controller
@@ -106,5 +107,26 @@ class MaterialController extends Controller
             ];
         }
         return response()->json($response, $code);
+    }
+
+    public function IncomesMaterialByGraphics(){
+        $materials = Material::GetTypeMaterial('raw_material')->get();
+
+
+        foreach ($materials as $material){
+            $outputs = Output::getOutputsByArticle($material->id);
+            $series = array();
+            foreach ($outputs as $output){
+                $series[] =[
+                    "value" => $output->quantity,
+                    "name" =>$output->created_at,
+                ];
+            }
+            $response[] = [
+                "name" => $material->article->name_article,
+                "series" => $series,
+            ];
+        }
+        return $response;
     }
 }
