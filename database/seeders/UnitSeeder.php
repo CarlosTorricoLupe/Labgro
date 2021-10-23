@@ -17,35 +17,34 @@ class UnitSeeder extends Seeder
         $units= [
             [
                 'unit_measure' => 'Ton',
-                'kind' => 'Peso'
+
             ],
             [
                 'unit_measure' => 'Kg',
-                'kind' => 'Peso'
+
             ],
             [
                 'unit_measure' => 'Caja',
-                'kind' => 'Otro'
+
             ],
             [
                 'unit_measure' => 'Unidad',
-                'kind' => 'Otro'
+
             ],
             [
                 'unit_measure' => 'Hojas',
-                'kind' => 'Otro'
+
             ],
             [
                 'unit_measure' => 'Ltr',
-                'kind' => 'Capacidad'
+
             ],
             [
                 'unit_measure' => 'Gal',
-                'kind' => 'Capacidad'
+
             ],
             [
             'unit_measure' => 'Sobres',
-            'kind' => 'Otro'
             ],
 
         ];

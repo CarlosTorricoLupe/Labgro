@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\CreateMaterialRequest;
 use App\Http\Requests\UpdateMaterialRequest;
 use App\Models\Material;
+use App\Models\Product;
 
 class MaterialController extends Controller
 {
@@ -34,7 +35,9 @@ class MaterialController extends Controller
      */
     public function store(CreateMaterialRequest $request)
     {
-        $material =  Material::create($request->all());
+        $input = $request->all();
+        $input['role_id'] = auth()->user()->role_id;
+        $material =  Material::create($input);
         Material::UpdateCategoryMaterial($material, $material->article_id);
 
         return response()->json([
@@ -83,10 +86,25 @@ class MaterialController extends Controller
      */
     public function destroy($id)
     {
-        Material::destroy($id);
-        return response()->json([
-            'success' => true,
-            'message' => 'Materia eliminada correctamente'
-        ],200);
+        $material =  Material::find($id);
+        try {
+            $material->delete();
+            $code =200;
+            $response = [
+                'success' => true,
+                'message' => 'Materia eliminada correctamente'
+            ];
+        } catch (\Exception $e) {
+            $code =400;
+            $products = Product::GetContainMaterialId($id)->get();
+
+            $response = [
+                'success' => false,
+                'message' => 'Este material existe en algún producto',
+                'products' => $products,
+                'error' => $e->getMessage(),
+            ];
+        }
+        return response()->json($response, $code);
     }
 }

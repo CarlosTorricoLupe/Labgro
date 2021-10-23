@@ -69,6 +69,7 @@ Route::apiResource('products',ProductController::class);
 Route::apiResource('materials',MaterialController::class);
 
 Route::apiResource('orders', OrderController::class);
+Route::get('order_reprobate/{id}', [OrderController::class, 'reprobate']);
 
 Route::apiResource('presentations', PresentationUnitController::class);
 
@@ -83,7 +84,9 @@ Route::get('material/{id}/outputs', [ProductMaterialController::class, 'getOutpu
 Route::apiResource('product.presentations',ProductPresentationController::class);
 
 Route::apiResource('productions', ProductionController::class);
-Route::get('getConsolidate',[ProductionController::class,'GetConsolidate']);
+Route::get('getConsolidate',[ProductionController::class,'getConsolidate']);
+Route::get('getDetailProduction',[ProductionController::class,'getDetailProduction']);
+Route::put('updateQuantityForProduction',[ProductionController::class,'updateQuantityUsedInProduction']);
 
 Route::apiResource('production.products',ProductionProductController::class);
 Route::get('verifyMaterials', [ProductionProductController::class, 'verifyStockMaterial']);
@@ -95,7 +98,7 @@ Route::apiResource('production.product.presentations',PresentationProductionProd
 
 Route::get("output/", [OutputController::class, 'index']);
 Route::get("output/getDetailOutput/", [OutputController::class, 'getDetailOutput']);
-Route::post("output/create", [OutputController::class, 'store']);
+Route::post("output/create/{id_order?}", [OutputController::class, 'store']);
 Route::post("output/search", [OutputController::class, 'searchOutputByDate']);
 
 Route::get("output/articles/{section}", [OutputController::class, 'getArticles']);
@@ -110,10 +113,12 @@ Route::get("prueba", [OutputController::class, 'prueba']);
 Route::get('/incomes',[IncomeController::class, 'index']);
 Route::post('/incomes',[IncomeController::class, 'store']);
 Route::get('/incomes/getDetailsIncome/', [IncomeController::class, 'getDetailsIncome']);
+Route::get('/incomes/byDetails/', [IncomeController::class, 'getDetailsIncome']);
 Route::get('/incomes/{income}',[IncomeController::class, 'show']);
 Route::put('/incomes/{income}', [IncomeController::class, 'update']);
 Route::delete('/incomes/{income}', [IncomeController::class, 'destroy']);
 Route::get('/incomes/getIncomesArticle/{id}', [IncomeController::class, 'getIncomesArticle']);
+Route::get('/peripheralReport', [ArticleController::class, 'peripheralReport']);
 Route::get('income/getIncomeArticleByDate/', [IncomeController::class, 'getIncomeArticleByDate']);
 
 

@@ -8,6 +8,7 @@ use App\Models\Material_production_product;
 use App\Models\Presentation_production_product;
 use App\Models\Production;
 use App\Models\Production_product;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
 
@@ -80,7 +81,7 @@ class ProductionProductController extends Controller
                 $quantity_req=$material['quantity']*$quantity;
                 $control = $mat->stock_start - $quantity_req;
                 $mat->stock_start = $control;
-
+                $mat->saveOrFail();
                 $pr[0]->materiales()->attach($mat->id, ['quantity_required' => $quantity_req, 'control' => $control]);
             }
         }
@@ -129,9 +130,21 @@ class ProductionProductController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, $production_id, $product_id)
     {
-        //
+        $response=array();
+        $product = Production_product::where('product_id', $product_id)
+                    ->where('production_id', $production_id)
+                    ->first();
+        if ($product->created_at->isToday()) {
+            $product->update($request->all());
+            $response['sucess'] = true;
+            $response['message'] = "Cantidad actualizada correctamente";
+        } else {
+            $response['sucess'] = false;
+            $response['message'] = "No se puede modificar la cantidad"; 
+        }
+        return response()->json($response, 200);
     }
 
     /**

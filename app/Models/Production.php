@@ -40,7 +40,7 @@ class Production extends Model
             ->get();
     }
 
-    public static function getProductsProducedByMonth($month, $year){
+    public static function getProductsProducedByMonthGroupedPresentation($month, $year){
         return DB::table('presentation_production_product')
             ->join('presentation_units','presentation_units.id','presentation_production_product.presentation_unit_id')
             ->join('production_products','production_products.id','presentation_production_product.production_product_id')
@@ -83,4 +83,22 @@ class Production extends Model
                 DB::raw('SUM(material_production_product.quantity_required) as "materials_quantity"'),
             ));
     }
+
+    public static function getProductsProducedByMonth($month, $year){
+        return DB::table('presentation_production_product')
+            ->join('presentation_units','presentation_units.id','presentation_production_product.presentation_unit_id')
+            ->join('production_products','production_products.id','presentation_production_product.production_product_id')
+            ->join('productions','productions.id','production_products.production_id')
+            ->join('products','products.id','production_products.product_id')
+            ->whereMonth('productions.created_at','=',$month)
+            ->whereYear('productions.created_at',$year)
+            ->where('productions.role_id',auth()->user()->role_id)
+            ->select('productions.date_production as date_production',
+                    'productions.receipt_number as receipt',
+                    'presentation_units.name as presentation_name',
+                    'presentation_production_product.unit_cost_production as unit_cost_production',
+                    'presentation_production_product.quantity as units_produced')
+            ->get();
+    }
+    
 }

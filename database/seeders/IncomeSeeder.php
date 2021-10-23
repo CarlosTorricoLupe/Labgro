@@ -15,13 +15,13 @@ class IncomeSeeder extends Seeder
      * @return void
      */
 
-     //php artisan db:seed --class=IncomeSeeder 
+     //php artisan db:seed --class=IncomeSeeder
      //Por si quieren ejecutar solo el seeder de Incomes
     public function run()
-    {      
+    {
         $dates=['2021-08-01','2021-07-12','2021-07-23','2021-07-04','2021-08-22','2021-08-12'];
 
-        for ($i=0; $i < 5; $i++) { 
+        for ($i=0; $i < 5; $i++) {
             $incom=Income::create([
                 'receipt' => rand(300,1000),
                 'total' => rand(300000,900000)/100,
@@ -32,9 +32,15 @@ class IncomeSeeder extends Seeder
 
                 $articles=Article::inRandomOrder()->take(rand(1,3))->pluck('id');
                 foreach($articles as $article){
-                    $incom->articles()->attach($article,['quantity'=>rand(1,100),'unit_price'=>rand(1000,6000)/100,'total_price'=>rand(10000,20000)/100]);
+                    $incom->articles()->attach($article,['quantity'=>rand(1,100),
+                        'unit_price'=>rand(1000,6000)/100,
+                        'total_price'=>rand(10000,20000)/100,
+                        'current_stock' => rand(300,1000),
+                        'last_output' => Arr::random($dates),
+
+                    ]);
                 }
         }
     }
-    
+
 }

@@ -62,8 +62,19 @@ class Product extends Model
             'products.created_at')
             ->where('products.name','like',"%$value%")
             ->Where('role_id',auth()->user()->role_id)
-            ->paginate(12);
+            ->get();
     }
+
+    public function scopeGetContainMaterialId($query, $material_id){
+
+        return $query->join('material_products','material_products.product_id','products.id')
+                ->join('materials', 'material_products.material_id', 'materials.id')
+                ->join('articles', 'materials.article_id', 'articles.id')
+
+            ->select('products.id as product_id' ,'products.code', 'products.name')
+            ->where('material_products.material_id', $material_id);
+    }
+
 
     public static function boot() {
         parent::boot();
