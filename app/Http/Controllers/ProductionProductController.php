@@ -142,7 +142,7 @@ class ProductionProductController extends Controller
             $response['message'] = "Cantidad actualizada correctamente";
         } else {
             $response['sucess'] = false;
-            $response['message'] = "No se puede modificar la cantidad"; 
+            $response['message'] = "No se puede modificar la cantidad";
         }
         return response()->json($response, 200);
     }
@@ -185,6 +185,7 @@ class ProductionProductController extends Controller
                $product->presentations=$presentations;
             }
             $response['sucess'] = true;
+            $response['production'] = $productions;
             $response['products'] = $products;
         }
         return response()->json($response, 201);

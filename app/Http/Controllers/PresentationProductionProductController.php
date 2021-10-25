@@ -72,14 +72,14 @@ class PresentationProductionProductController extends Controller
                             ->first()->id;
         $presentationProduct=Presentation_production_product::where('presentation_unit_id',$presentation_unit_id)
                             ->where('production_product_id',$productionProduct)
-                            ->first(['quantity','unit_cost_production','unit_price_sale','created_at']);
+                            ->first();
         if ($presentationProduct->created_at->isToday()) {
-            $presentationProduct->update($request->all()); 
+            $presentationProduct->update($request->all());
             $response['sucess'] = true;
             $response['message'] = "Presentacion actualizada correctamente";
         }else{
             $response['sucess'] = false;
-            $response['message'] = "No se puede modificar la cantidad"; 
+            $response['message'] = "No se puede modificar la cantidad";
         }
         return response()->json($response,200);
     }
