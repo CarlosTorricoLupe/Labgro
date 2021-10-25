@@ -82,7 +82,7 @@ class PresentationProductionProductController extends Controller
             $response['message'] = "Presentacion actualizada correctamente";
         }else{
             $response['sucess'] = false;
-            $response['message'] = "No se puede modificar la cantidad"; 
+            $response['message'] = "No se puede modificar la cantidad";
         }
         return response()->json($response,200);
     }
