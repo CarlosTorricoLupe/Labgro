@@ -119,7 +119,6 @@ class ProductionController extends Controller
         ->whereYear('productions.created_at',$request->year)
         ->where('productions.role_id',auth()->user()->role_id)->get();
         $productions=Production::getProductsProducedByMonth($request->month,$request->year);
-        dd($productions);
         $quantity = array();
         $result = array();
         foreach ($pr as $p) {
