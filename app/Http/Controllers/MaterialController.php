@@ -111,15 +111,14 @@ class MaterialController extends Controller
 
     public function IncomesMaterialByGraphics(){
         $materials = Material::GetTypeMaterial('raw_material')->get();
-
-
+        $response = array();
         foreach ($materials as $material){
             $outputs = Output::getOutputsByArticle($material->id);
             $series = array();
             foreach ($outputs as $output){
                 $series[] =[
                     "value" => $output->quantity,
-                    "name" =>$output->created_at,
+                    "name" =>Material::MonthName( $output->created_at),
                 ];
             }
             $response[] = [

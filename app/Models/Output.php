@@ -23,6 +23,9 @@ class Output extends Model
                     ->withTimestamps();;
     }
 
+    public function orders(){
+        return $this->belongsToMany(Order::class,'orders_outputs', 'output_id', 'order_id')->withTimestamps();
+    }
     public static function searchOutput($value='',$month,$year){
         if (!$value) {
             return self::join('sections','outputs.section_id','sections.id')
