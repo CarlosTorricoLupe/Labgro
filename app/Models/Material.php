@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -65,5 +66,10 @@ class Material extends Model
             ->join('units','articles.unit_id','units.id')
             ->select('materials.*', 'articles.name_article','units.unit_measure')
             ->where('materials.id', $id);
+    }
+    public static function MonthName($date){
+        $array_months = array("Ene","Feb","Mar","Abr","May","Jun","Jul","Ago","Sep","Oct","Nov","Dic");
+        $number_month = Carbon::createFromFormat('Y-m-d H:i:s', $date)->month;
+        return $array_months[$number_month - 1];
     }
 }

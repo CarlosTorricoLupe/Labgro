@@ -23,6 +23,9 @@ class Output extends Model
                     ->withTimestamps();;
     }
 
+    public function orders(){
+        return $this->belongsToMany(Order::class,'orders_outputs', 'output_id', 'order_id')->withTimestamps();
+    }
     public static function searchOutput($value='',$month,$year){
         if (!$value) {
             return self::join('sections','outputs.section_id','sections.id')
@@ -40,9 +43,11 @@ class Output extends Model
         return self::select('outputs.*')->where('outputs.id',$id)->get();
     }
 
-    public static function getOutputsByArticle($id){
+    public static function getOutputsByArticle($id, $year, $role_id){
         return self::join('output_details','output_details.output_id','outputs.id')
             ->join('articles','output_details.article_id','articles.id')
+           // ->join('orders_outputs', 'orders_outputs.output_id', 'outputs.id')
+            //->join('orders', 'orders_outputs.order_id', 'orders.id')
             ->select('outputs.section_id',
                 'outputs.id as output_id',
                 'outputs.receipt',
@@ -57,6 +62,8 @@ class Output extends Model
                 'output_details.budget_output',
                 'output_details.total as price_total'
             )
+            //->where('orders.role_id', $role_id)
+            ->whereYear('outputs.created_at',$year)
             ->where('output_details.article_id',$id)
             ->paginate(12);
 

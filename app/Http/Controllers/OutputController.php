@@ -42,7 +42,6 @@ class OutputController extends Controller
         $response = array();
 
         if( $this->verifyStockArticle($details['details']) ){
-
             $this->decrementStockArticle($details['details']);
 
             $output = Output::create($request->except('details'));
@@ -51,7 +50,8 @@ class OutputController extends Controller
             $this->updateStockMaterials($details['details']);
 
             if (isset($id_order)){
-                Order::Approved($id_order);
+                $order = Order::Approved($id_order);
+                $output->orders()->sync($order);
             }
             $response['sucess'] = true;
 

@@ -34,7 +34,6 @@ class OrderController extends Controller
     {
         $input = $request->except('details');
         $input['role_id'] = auth()->user()->role_id;
-        return $input;
 
         $order = Order::create($input);
 

@@ -28,6 +28,9 @@ class Order extends Model
     {
         return $this->belongsToMany(Material::class,'order_materials', 'order_id', 'material_id')->withPivot('quantity')->withTimestamps();
     }
+    public function outputs(){
+        return $this->belongsToMany(Output::class,'orders_outputs', 'order_id', 'output_id')->withTimestamps();
+    }
 
     public static function boot() {
         parent::boot();
