@@ -30,7 +30,7 @@ class PresentationProductionProductController extends Controller
         $productionProduct=Production_product::where('production_id',$production_id)
                             ->where('product_id',$product_id)
                             ->first();
-        if ($productionProduct) {
+        if (!$productionProduct->presentations->contains($request->presentation_id)) {
             $productionProduct->presentations()
                 ->attach($request->presentation_id,[
                     'quantity'=>$request->quantity,
@@ -39,11 +39,13 @@ class PresentationProductionProductController extends Controller
                 ]);
             $response['sucess'] = true;
             $response['message'] = "Presentación agregada correctamente";
+            $status=201;
         }else{
             $response['sucess'] = false;
-            $response['message'] = "No se encontraron datos que coincida con la producción";
+            $response['message'] = "La unidad de presentacion ya esta asignada al producto";
+            $status=400;
         }
-        return response()->json($response, 201);
+        return response()->json($response, $status);
     }
 
     /**
@@ -72,14 +74,15 @@ class PresentationProductionProductController extends Controller
                             ->first()->id;
         $presentationProduct=Presentation_production_product::where('presentation_unit_id',$presentation_unit_id)
                             ->where('production_product_id',$productionProduct)
-                            ->first(['quantity','unit_cost_production','unit_price_sale','created_at']);
+                            ->first();                            
         if ($presentationProduct->created_at->isToday()) {
-            $presentationProduct->update($request->all()); 
+            $presentationProduct->update([
+                'quantity'=>$request->quantity,'unit_cost_production'=>$request->unit_cost_production,'unit_price_sale'=>$request->unit_price_sale]); 
             $response['sucess'] = true;
             $response['message'] = "Presentacion actualizada correctamente";
         }else{
             $response['sucess'] = false;
-            $response['message'] = "No se puede modificar la cantidad"; 
+            $response['message'] = "No se puede modificar la cantidad";
         }
         return response()->json($response,200);
     }

@@ -42,11 +42,13 @@ class ProductPresentationController extends Controller
             $product->presentations()->attach($request->presentation_unit_id, ['unit_cost_production' => $request->unit_cost_production, 'unit_price_sale' => $request->unit_price_sale]);
             $response['sucess'] = true;
             $response['message'] = "Presentacion agregada correctamente";
+            $status=201;
         } else {
             $response['sucess'] = false;
             $response['error'] = "La unidad de presentacion ya existe";
+            $status=400;
         }
-        return response()->json($response, 201);
+        return response()->json($response,$status);
     }
 
     /**
