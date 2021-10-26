@@ -7,6 +7,7 @@ use App\Http\Requests\UpdateMaterialRequest;
 use App\Models\Material;
 use App\Models\Output;
 use App\Models\Product;
+use Illuminate\Http\Request;
 
 class MaterialController extends Controller
 {
@@ -109,11 +110,14 @@ class MaterialController extends Controller
         return response()->json($response, $code);
     }
 
-    public function IncomesMaterialByGraphics(){
+    public function IncomesMaterialByGraphics(Request $request){
+
+        $role_id= auth()->user()->role_id;
         $materials = Material::GetTypeMaterial('raw_material')->get();
         $response = array();
         foreach ($materials as $material){
-            $outputs = Output::getOutputsByArticle($material->id);
+//            $outputs = Output::getOutputsByArticle($material->id, $request->year, $role_id);
+            $outputs = Output::getOutputsByArticle($material->id, $request->year, 1);
             $series = array();
             foreach ($outputs as $output){
                 $series[] =[
