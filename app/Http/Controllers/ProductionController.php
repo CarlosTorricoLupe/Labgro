@@ -97,6 +97,7 @@ class ProductionController extends Controller
         foreach ($productions as $production){
             $import =  $production->units_produced*$production->unit_cost_production;
             $result[] = [
+                'Codigo' => $production->product_code,
                 'Producto' => $production->product_name,
                 'Unidad_Presentacion' => $production->presentation_name,
                 'Costo_Unitario_Produccion' => $production->unit_cost_production,
@@ -107,7 +108,7 @@ class ProductionController extends Controller
                 'Importe_unidades_daniadas' =>0,
                 'Cantidad_unidades_vendidas' =>0,
                 'Importe_unidades_vendidas' =>0,
-                'Total_Utilidad'=>$import
+                'Total_Utilidad'=>0-$import
             ];
         }
         return $result;
@@ -143,5 +144,27 @@ class ProductionController extends Controller
                }
         }  
            return $quantity;
+       }
+
+       public function getSummaryProduction(Request $request){
+        $productions=Production::getProductsProducedByMonthGroupedPresentation($request->month,$request->year);
+        $result = array();
+        foreach ($productions as $production){
+            $import =  $production->units_produced*$production->unit_cost_production;
+            $result[] = [
+                'Codigo' => $production->product_code,
+                'Producto' => $production->product_name,
+                'Unidad_Presentacion' => $production->presentation_name,
+                'Costo_Unitario_Produccion' => $production->unit_cost_production,
+                'Unidades_Producidas' => $production->units_produced,
+                'Importe' =>$import,
+                'Cantidad_unidades_defectuosas' =>0,
+                'Importe_unidades_defectuosas' =>0,
+                'Cantidad_total_produccion_efectiva_' =>$production->units_produced,
+                'Importe_total_produccion_efectiva' =>$import,
+            ];
+        }
+        return $result;   
+        
        }
 }

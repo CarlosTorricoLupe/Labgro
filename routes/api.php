@@ -88,6 +88,7 @@ Route::apiResource('productions', ProductionController::class);
 Route::get('getConsolidate',[ProductionController::class,'getConsolidate']);
 Route::get('getDetailProduction',[ProductionController::class,'getDetailProduction']);
 Route::put('updateQuantityForProduction',[ProductionController::class,'updateQuantityUsedInProduction']);
+Route::get('getSummaryProduction',[ProductionController::class,'getSummaryProduction']);
 
 Route::apiResource('production.products',ProductionProductController::class);
 Route::get('verifyMaterials', [ProductionProductController::class, 'verifyStockMaterial']);
