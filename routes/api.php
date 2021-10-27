@@ -108,7 +108,7 @@ Route::put("output/update/{output}", [OutputController::class, 'update']);
 Route::delete("output/delete/{output}", [OutputController::class, 'destroy']);
 Route::get('/output/{output}',[OutputController::class, 'show']);
 Route::get('/output/by_article/{id}',[OutputController::class, 'outputsByArticle']);
-Route::get('outputs/getOutputArticleByDate/', [OutputController::class, 'getOutputArticleByDate']);
+Route::get('/outputs/getOutputArticleByDate/', [OutputController::class, 'getOutputArticleByDate']);
 
 Route::get("prueba", [OutputController::class, 'prueba']);
 
@@ -121,7 +121,7 @@ Route::put('/incomes/{income}', [IncomeController::class, 'update']);
 Route::delete('/incomes/{income}', [IncomeController::class, 'destroy']);
 Route::get('/incomes/getIncomesArticle/{id}', [IncomeController::class, 'getIncomesArticle']);
 Route::get('/peripheralReport', [ArticleController::class, 'peripheralReport']);
-Route::get('income/getIncomeArticleByDate/', [IncomeController::class, 'getIncomeArticleByDate']);
+Route::get('/income/getIncomeArticleByDate/', [IncomeController::class, 'getIncomeArticleByDate']);
 
 
 //VERIFIRY PRICE
