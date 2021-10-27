@@ -43,7 +43,7 @@ class Output extends Model
         return self::select('outputs.*')->where('outputs.id',$id)->get();
     }
 
-    public static function getOutputsByArticle($id, $year, $role_id){
+    public static function getOutputsByArticle($id, $year, $month, $role_id){
         return self::join('output_details','output_details.output_id','outputs.id')
             ->join('articles','output_details.article_id','articles.id')
            // ->join('orders_outputs', 'orders_outputs.output_id', 'outputs.id')
@@ -64,6 +64,7 @@ class Output extends Model
             )
             //->where('orders.role_id', $role_id)
             ->whereYear('outputs.created_at',$year)
+            ->whereMonth('outputs.created_at',$month)
             ->where('output_details.article_id',$id)
             ->paginate(12);
 

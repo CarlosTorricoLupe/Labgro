@@ -116,20 +116,22 @@ class MaterialController extends Controller
         $materials = Material::GetTypeMaterial('raw_material')->get();
         $response = array();
         foreach ($materials as $material){
-//            $outputs = Output::getOutputsByArticle($material->id, $request->year, $role_id);
-            $outputs = Output::getOutputsByArticle($material->id, $request->year, 1);
-            $series = array();
-            foreach ($outputs as $output){
-                $series[] =[
-                    "value" => $output->quantity,
-                    "name" =>Material::MonthName( $output->created_at),
-                ];
-            }
             $response[] = [
-                "name" => $material->article->name_article,
-                "series" => $series,
+                'name' => $material->article->name_article,
+                'series' => $this->getDetailByMonths($material, $request->year, 1)
             ];
         }
         return $response;
+    }
+    public function getDetailByMonths($material, $year, $role_id){
+        $series = array();
+        for ($month=1; $month<=12; $month++){
+            $outputs = Output::getOutputsByArticle($material->id, $year, $month, 1);
+            $series[] = [
+                'value' =>$outputs->sum('quantity'),
+                'name' => Material::MonthNameByNumberMonth($month),
+            ];
+        }
+        return $series;
     }
 }
