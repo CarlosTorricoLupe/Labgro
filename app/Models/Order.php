@@ -87,7 +87,7 @@ class Order extends Model
 
     public function scopeGetOrderById($query, $id){
         return $query->join('sections','orders.section_id','sections.id')
-            ->select('sections.name as section_name', 'orders.id', 'orders.id', 'orders.id', 'orders.receipt', 'orders.order_number', 'orders.date_issue as order_date', 'orders.status', 'orders.created_at', 'orders.observation')
+            ->select('sections.id as section_id','sections.name as section_name', 'orders.id as order_id', 'orders.receipt', 'orders.order_number', 'orders.date_issue as order_date', 'orders.status', 'orders.created_at', 'orders.observation')
             ->where('orders.id', $id);
     }
 
