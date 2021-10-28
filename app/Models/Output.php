@@ -32,12 +32,12 @@ class Output extends Model
                         ->WhereMonth('order_date',$month)
                         ->WhereYear('order_date',$year)
                         ->select('outputs.*', 'sections.name')
-                        ->paginate(12);
+                        ->paginate(12)->appends(request()->query());;
         }
         return self::join('sections','outputs.section_id','sections.id')
                 ->where('receipt','like',"%$value%")
                 ->select('outputs.*', 'sections.name')
-                ->paginate(12);
+                ->paginate(12)->appends(request()->query());
     }
     public static function getOutput($id){
         return self::select('outputs.*')->where('outputs.id',$id)->get();
@@ -66,7 +66,7 @@ class Output extends Model
             ->whereYear('outputs.created_at',$year)
             ->whereMonth('outputs.created_at',$month)
             ->where('output_details.article_id',$id)
-            ->paginate(12);
+            ->paginate(12)->appends(request()->query());
 
     }
 
@@ -114,7 +114,7 @@ class Output extends Model
                     'outputs.id'
                 )
                 ->where('output_details.article_id',$id)
-                ->paginate(12);
+                ->paginate(12)->appends(request()->query());
         }else{
             return self::join('output_details','output_details.output_id','outputs.id')
                 ->join('articles','output_details.article_id','articles.id')
@@ -138,7 +138,7 @@ class Output extends Model
                 ->WhereMonth('outputs.delivery_date', '>=',  $month)
                 ->WhereMonth('outputs.delivery_date', '<=', $monthtwo)
                 ->WhereYear('outputs.delivery_date', $year)
-                ->paginate(12);
+                ->paginate(12)->appends(request()->query());
         }
     }
 
