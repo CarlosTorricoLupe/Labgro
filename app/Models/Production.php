@@ -51,27 +51,31 @@ class Production extends Model
             ->where('productions.role_id',auth()->user()->role_id)
             ->select('presentation_production_product.presentation_unit_id as presentations',
                 'products.name as product_name',
+                'products.code as product_code',
                 'presentation_units.name as presentation_name',
                 DB::raw('SUM(presentation_production_product.quantity) as units_produced'),
                 'presentation_production_product.unit_cost_production as unit_cost_production',
                 'presentation_production_product.unit_price_sale as unit_price_sale',
             )
-           ->groupBy('presentations','presentation_name','product_name','unit_cost_production','unit_price_sale')
+           ->groupBy('presentations','presentation_name','product_name','product_code','unit_cost_production','unit_price_sale')
            ->get();
     }
 
     public static function getProductionsById($id_product, $year){
-//        return self::join('production_products', 'productions.id', 'production_products.production_id')
-//                ->join('presentation_production_product', 'production_products.id', 'presentation_production_product.production_product_id')
-//                ->where('production_products.product_id', $id_product)
-//                ->whereYear('productions.created_at', $year)
-//                ->select('productions.created_at', 'production_products.quantity' )
-//                ->get();
         return self::join('production_products', 'productions.id', 'production_products.production_id')
-                ->join('presentation_production_product', 'production_products.id', 'presentation_production_product.production_product_id')
-                ->join('material_production_product', 'production_products.id', 'material_production_product.production_product_id')
                 ->where('production_products.product_id', $id_product)
-                ->whereYear('productions.date_production', $year)
+                ->whereYear('productions.created_at', $year)
+                ->select('productions.created_at', 'production_products.quantity' )
+                ->get();
+
+    }
+
+    public static function getProductionsByProduct($id_product, $year){
+        return self::join('production_products', 'productions.id', 'production_products.production_id')
+            ->join('presentation_production_product', 'production_products.id', 'presentation_production_product.production_product_id')
+            ->join('material_production_product', 'production_products.id', 'material_production_product.production_product_id')
+            ->where('production_products.product_id', $id_product)
+            ->whereYear('productions.date_production', $year)
             ->groupBy('date','product_quantity')
             ->get(array(
                 DB::raw('Date(productions.date_production) as date'),

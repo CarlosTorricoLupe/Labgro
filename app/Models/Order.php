@@ -28,6 +28,9 @@ class Order extends Model
     {
         return $this->belongsToMany(Material::class,'order_materials', 'order_id', 'material_id')->withPivot('quantity')->withTimestamps();
     }
+    public function outputs(){
+        return $this->belongsToMany(Output::class,'orders_outputs', 'order_id', 'output_id')->withTimestamps();
+    }
 
     public static function boot() {
         parent::boot();
@@ -84,13 +87,15 @@ class Order extends Model
 
     public function scopeGetOrderById($query, $id){
         return $query->join('sections','orders.section_id','sections.id')
-            ->select('sections.name as section_name', 'orders.id', 'orders.id', 'orders.id', 'orders.receipt', 'orders.order_number', 'orders.date_issue as order_date', 'orders.status', 'orders.created_at', 'orders.observation')
+            ->select('sections.id as section_id','sections.name as section_name', 'orders.id as order_id', 'orders.receipt', 'orders.order_number', 'orders.date_issue as order_date', 'orders.status', 'orders.created_at', 'orders.observation')
             ->where('orders.id', $id);
     }
 
-    public function scopeReprobate($query, $id_order){
+    public function scopeReprobate($query, $id_order, $value){
         return $query->where('id', $id_order)
-            ->update(['status'=>'reprobate']);
+            ->update(['status'=>'reprobate',
+                      'observation' => $value,
+                    ]);
     }
 
     public function scopeApproved($query, $id_order){

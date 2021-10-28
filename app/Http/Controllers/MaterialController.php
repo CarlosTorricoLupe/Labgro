@@ -7,6 +7,7 @@ use App\Http\Requests\UpdateMaterialRequest;
 use App\Models\Material;
 use App\Models\Output;
 use App\Models\Product;
+use Illuminate\Http\Request;
 
 class MaterialController extends Controller
 {
@@ -109,24 +110,28 @@ class MaterialController extends Controller
         return response()->json($response, $code);
     }
 
-    public function IncomesMaterialByGraphics(){
+    public function IncomesMaterialByGraphics(Request $request){
+
+        $role_id= auth()->user()->role_id;
         $materials = Material::GetTypeMaterial('raw_material')->get();
-
-
+        $response = array();
         foreach ($materials as $material){
-            $outputs = Output::getOutputsByArticle($material->id);
-            $series = array();
-            foreach ($outputs as $output){
-                $series[] =[
-                    "value" => $output->quantity,
-                    "name" =>$output->created_at,
-                ];
-            }
             $response[] = [
-                "name" => $material->article->name_article,
-                "series" => $series,
+                'name' => $material->article->name_article,
+                'series' => $this->getDetailByMonths($material, $request->year, 1)
             ];
         }
         return $response;
+    }
+    public function getDetailByMonths($material, $year, $role_id){
+        $series = array();
+        for ($month=1; $month<=12; $month++){
+            $outputs = Output::getOutputsByArticle($material->id, $year, $month, 1);
+            $series[] = [
+                'value' =>$outputs->sum('quantity'),
+                'name' => Material::MonthNameByNumberMonth($month),
+            ];
+        }
+        return $series;
     }
 }
