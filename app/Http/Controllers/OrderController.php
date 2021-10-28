@@ -98,13 +98,12 @@ class OrderController extends Controller
         ],200);
     }
 
-    public function reprobate($id)
+    public function reprobate(Request $request, $id)
     {
-        $result = Order::Reprobate($id);
+        $result = Order::Reprobate($id, $request->description);
         return response()->json([
             'sucess' => true,
             'message' => 'Pedido reprobado correctamente',
-
         ],200);
     }
 }
