@@ -91,9 +91,11 @@ class Order extends Model
             ->where('orders.id', $id);
     }
 
-    public function scopeReprobate($query, $id_order){
+    public function scopeReprobate($query, $id_order, $value){
         return $query->where('id', $id_order)
-            ->update(['status'=>'reprobate']);
+            ->update(['status'=>'reprobate',
+                      'observation' => $value,
+                    ]);
     }
 
     public function scopeApproved($query, $id_order){
