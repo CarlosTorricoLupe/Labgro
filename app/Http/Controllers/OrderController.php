@@ -16,12 +16,22 @@ class OrderController extends Controller
      */
     public function index(Request $request)
     {
-        $orders=[
-            "pendiente" => Order::GetTypeStatus('pending', $request->month, $request->year)->get(),
-            "aprobado" => Order::GetTypeStatus('approved', $request->month, $request->year)->get(),
-            "reprobado" => Order::GetTypeStatus('reprobate', $request->month, $request->year)->get(),
+
+        $p =Order::GetTypeStatus('reprobate', $request->month, $request->year)->get();
+         $p[0]['count'] = $p[0]->materials()->count();
+         $orders=[
+             "pendiente" => $this->getCountMaterial('pending', $request->month, $request->year),
+             "aprobado" => $this->getCountMaterial('approved', $request->month, $request->year),
+             "reprobado" => $this->getCountMaterial('reprobate', $request->month, $request->year),
         ];
         return response()->json($orders,200);
+    }
+    public function getCountMaterial($status, $month, $year){
+        $orders =Order::GetTypeStatus($status, $month, $year)->get();
+        foreach ($orders as $order){
+            $order['quantity_materials'] = $order->materials()->count();
+        }
+        return $orders;
     }
 
     /**
@@ -98,13 +108,12 @@ class OrderController extends Controller
         ],200);
     }
 
-    public function reprobate($id)
+    public function reprobate(Request $request, $id)
     {
-        $result = Order::Reprobate($id);
+        $result = Order::Reprobate($id, $request->description);
         return response()->json([
             'sucess' => true,
             'message' => 'Pedido reprobado correctamente',
-
         ],200);
     }
 }
