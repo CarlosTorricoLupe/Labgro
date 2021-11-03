@@ -37,7 +37,7 @@ class Income extends Model
         }
         return self::select('incomes.id',
         'incomes.receipt','incomes.order_number','provider',
-        'total','invoice_number','created_at')->where('receipt','like',"%$value%")->paginate(2)->appends(request()->query());
+        'total','invoice_number','created_at')->where('receipt','like',"%$value%")->paginate(12)->appends(request()->query());
     }
 
     public static function getIncome($id){
