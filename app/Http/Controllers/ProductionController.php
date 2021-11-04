@@ -126,11 +126,11 @@ class ProductionController extends Controller
             foreach($presentations as $presentation){
                 $import =  $presentation->units_produced*$presentation->unit_cost_production;
                 $result[]=[
-                    'Fecha produccion' => $presentation->date_production,
-                    'Cantidad Usada' => 0,
+                    'Fecha_produccion' => $presentation->date_production,
+                    'Cantidad_usada' => 0,
                     'Codigo' => $presentation->production_code,
-                    'Produccion Estandar' => $presentation->name_product,
-                    'Unidad/Presentacion' => $presentation->presentation_name,
+                    'Produccion_estandar' => $presentation->name_product,
+                    'Unidad_presentacion' => $presentation->presentation_name,
                     'Costo_unitario' => $presentation->unit_cost_production,
                     'Cantidad' => $presentation->units_produced,
                     'Importe' =>$import,
