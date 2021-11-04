@@ -67,6 +67,9 @@ class Material extends Model
             ->select('materials.*', 'articles.name_article','units.unit_measure')
             ->where('materials.id', $id);
     }
+    public function scopeGetMaterialByRoleIdArticleId($query, $role_id, $article_id){
+        return $query->where('role_id',$role_id)->where('article_id',$article_id);
+    }
     public static function MonthNameByDate($date){
         $array_months = array("Ene","Feb","Mar","Abr","May","Jun","Jul","Ago","Sep","Oct","Nov","Dic");
         $number_month = Carbon::createFromFormat('Y-m-d H:i:s', $date)->month;
