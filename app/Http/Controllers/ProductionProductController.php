@@ -22,7 +22,10 @@ class ProductionProductController extends Controller
     public function index($id)
     {
         /* $productions = Production::indexProductsByProduction($id); */
-        $productions=Production::with('products:id,name')->get(['id','date_production']);
+        $productions=Production::with(['products:id,name','products.ingredients'=>function ($query){
+                                    $query->join('articles','materials.article_id','articles.id')
+                                    ->select(['materials.id','code','article_id','name_article']);
+        }])->get(['id','date_production']);
         return response()->json([
             'sucess'=>true,
             'productions'=>$productions

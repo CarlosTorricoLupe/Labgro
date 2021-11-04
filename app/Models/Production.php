@@ -98,8 +98,27 @@ class Production extends Model
                     'productions.receipt_number as receipt',
                     'presentation_units.name as presentation_name',
                     'presentation_production_product.unit_cost_production as unit_cost_production',
-                    'presentation_production_product.quantity as units_produced')
+                    'presentation_production_product.quantity as units_produced',
+                    'products.name as name_product',
+                    'products.code as production_code')
             ->get();
     }
     
+    public static function getProductsByProduction($production_id){
+        return DB::table('presentation_production_product')
+            ->join('presentation_units','presentation_units.id','presentation_production_product.presentation_unit_id')
+            ->join('production_products','production_products.id','presentation_production_product.production_product_id')
+            ->join('productions','productions.id','production_products.production_id')
+            ->join('products','products.id','production_products.product_id')
+            ->where('production_products.production_id',$production_id)
+            ->where('productions.role_id',auth()->user()->role_id)
+            ->select('productions.date_production as date_production',
+                    'productions.receipt_number as receipt',
+                    'presentation_units.name as presentation_name',
+                    'presentation_production_product.unit_cost_production as unit_cost_production',
+                    'presentation_production_product.quantity as units_produced',
+                    'products.name as name_product',
+                    'products.code as production_code')
+            ->get();
+    }
 }
