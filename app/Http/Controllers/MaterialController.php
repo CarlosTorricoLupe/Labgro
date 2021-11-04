@@ -38,14 +38,27 @@ class MaterialController extends Controller
     public function store(CreateMaterialRequest $request)
     {
         $input = $request->all();
-        $input['role_id'] = auth()->user()->role_id;
-        $material =  Material::create($input);
-        Material::UpdateCategoryMaterial($material, $material->article_id);
+        $role_id = auth()->user()->role_id;
+        $article_id = $request->get('article_id');
+        $exist = Material::GetMaterialByRoleIdArticleId($role_id, $article_id)->first();
+        if (isset($exist) ){
+            $response = [
+                'success' => false,
+                'message' =>'Materia ya existente en este rol'
+            ];
+            $statusCode =400;
+        }else{
+            $input['role_id'] = $role_id;
+            $material =  Material::create($input);
+            Material::UpdateCategoryMaterial($material, $material->article_id);
+            $response = [
+                'success' => true,
+                'message' =>'Materia creada correctamente'
+            ];
+            $statusCode =200;
+        }
 
-        return response()->json([
-            'sucess' =>true,
-            'message' =>'Materia creada correctamente'
-        ],201);
+        return response()->json($response,$statusCode);
     }
 
     /**
