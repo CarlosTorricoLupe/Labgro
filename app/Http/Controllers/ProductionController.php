@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Presentation_production_product;
 use App\Models\Production;
 use App\Models\Production_product;
 use Illuminate\Http\Request;
@@ -118,32 +119,30 @@ class ProductionController extends Controller
     public function getDetailProduction(Request $request){
         $pr=Production::whereMonth('productions.created_at','=',$request->month)
         ->whereYear('productions.created_at',$request->year)
-        ->where('productions.role_id',auth()->user()->role_id)->get();
-        $productions=Production::getProductsProducedByMonth($request->month,$request->year);
-        $quantity = array();
-        $result = array();
-        foreach ($pr as $p) {
-            $quantity['quantity_used']=$p->quantity_used;
-            $productions=Production::getProductsProducedByMonth($request->month,$request->year);
-               foreach ($productions as $production){
-                   $import =  $production->units_produced*$production->unit_cost_production;
-                   $quantity[] = [
-                    'Fecha produccion' => $production->date_production,
-                    'Nro de recibo' => $production->receipt,
-                    'Cantidad' => 0,
-                    'Producto elaborado/Presentacion' => $production->presentation_name,
-                    'Costo_unitario' => $production->unit_cost_production,
-                    'Unidades_Producidas' => $production->units_produced,
+        ->where('productions.role_id',auth()->user()->role_id)->get(['id','quantity_used']);
+        foreach($pr as $p){
+            $result = array();
+            $presentations=Production::getProductsByProduction($p->id);
+            foreach($presentations as $presentation){
+                $import =  $presentation->units_produced*$presentation->unit_cost_production;
+                $result[]=[
+                    'Fecha produccion' => $presentation->date_production,
+                    'Cantidad Usada' => 0,
+                    'Codigo' => $presentation->production_code,
+                    'Produccion Estandar' => $presentation->name_product,
+                    'Unidad/Presentacion' => $presentation->presentation_name,
+                    'Costo_unitario' => $presentation->unit_cost_production,
+                    'Cantidad' => $presentation->units_produced,
                     'Importe' =>$import,
-                    'Cantidad_unidades_daniadas' =>0,
-                    'Importe_unidades_daniadas' =>0,
-                    'Cantidad_unidades_vendidas' =>0,
-                    'Importe_unidades_vendidas' =>0,
-                    'Total_Utilidad'=>$import
-                   ];
-               }
-        }  
-           return $quantity;
+                    'Cantidad_unidades_defectuosos' =>0,
+                    'Importe_unidades_defectuosos' =>0,
+                    'Cantidad_efectivamente_producido' =>$presentation->units_produced,
+                    'Importe_efectivamente_producido' =>$import
+                ];
+            }
+            $p->presentation=$result;
+        }
+        return $pr;
        }
 
        public function getSummaryProduction(Request $request){
