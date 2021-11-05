@@ -16,9 +16,6 @@ class OrderController extends Controller
      */
     public function index(Request $request)
     {
-
-        $p =Order::GetTypeStatus('reprobate', $request->month, $request->year)->get();
-         $p[0]['count'] = $p[0]->materials()->count();
          $orders=[
              "pendiente" => $this->getCountMaterial('pending', $request->month, $request->year),
              "aprobado" => $this->getCountMaterial('approved', $request->month, $request->year),
