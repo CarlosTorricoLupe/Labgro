@@ -9,9 +9,7 @@ class Income extends Model
 {
     use HasFactory;
 
-    protected $casts = [
-        'created_at' => "datetime:Y-m-d",
-    ];
+   
 
     protected $fillable =[
         'receipt',
@@ -21,7 +19,6 @@ class Income extends Model
         'user_id',
         'created_at',
         'invoice_number',
-        'm<b'
     ];
 
     public function articles()
