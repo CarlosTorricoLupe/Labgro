@@ -40,14 +40,14 @@ class Production extends Model
             ->get();
     }
 
-    public static function getProductsProducedByMonthGroupedPresentation($month, $year){
+    public static function getProductsProducedByMonthGroupedPresentation($start_date, $end_date){
         return DB::table('presentation_production_product')
             ->join('presentation_units','presentation_units.id','presentation_production_product.presentation_unit_id')
             ->join('production_products','production_products.id','presentation_production_product.production_product_id')
             ->join('productions','productions.id','production_products.production_id')
             ->join('products','products.id','production_products.product_id')
-            ->whereMonth('productions.created_at','=',$month)
-            ->whereYear('productions.created_at',$year)
+            ->whereDate('productions.date_production','>=',$start_date)
+            ->whereDate('productions.date_production','<=',$end_date)
             ->where('productions.role_id',auth()->user()->role_id)
             ->select('presentation_production_product.presentation_unit_id as presentations',
                 'products.name as product_name',
@@ -85,14 +85,14 @@ class Production extends Model
             ));
     }
 
-    public static function getProductsProducedByMonth($month, $year){
+    public static function getProductsProducedByMonth($start_date, $end_date){
         return DB::table('presentation_production_product')
             ->join('presentation_units','presentation_units.id','presentation_production_product.presentation_unit_id')
             ->join('production_products','production_products.id','presentation_production_product.production_product_id')
             ->join('productions','productions.id','production_products.production_id')
             ->join('products','products.id','production_products.product_id')
-            ->whereMonth('productions.created_at','=',$month)
-            ->whereYear('productions.created_at',$year)
+            ->whereDate('productions.date_production','>=',$start_date)
+            ->whereYear('productions.date_production','<=',$end_date)
             ->where('productions.role_id',auth()->user()->role_id)
             ->select('productions.date_production as date_production',
                     'productions.receipt_number as receipt',

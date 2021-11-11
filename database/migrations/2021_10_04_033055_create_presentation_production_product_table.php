@@ -18,6 +18,7 @@ class CreatePresentationProductionProductTable extends Migration
             $table->float('quantity');
             $table->decimal('unit_cost_production',11,2);
             $table->decimal('unit_price_sale',11,2);
+            $table->float('faulty_quantity')->default(0);
             $table->foreignId('presentation_unit_id')->constrained();
             $table->foreignId('production_product_id')->constrained();
             $table->timestamps();
