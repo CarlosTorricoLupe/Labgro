@@ -9,7 +9,7 @@ class Income extends Model
 {
     use HasFactory;
 
-   
+
 
     protected $fillable =[
         'receipt',
@@ -26,15 +26,19 @@ class Income extends Model
         return $this->belongsToMany(Article::class,'article_incomes',"income_id","article_id")->withPivot('quantity','unit_price','total_price')->withTimestamps();
     }
 
-    public static function searchIncome($value='',$month,$year){
-        if (!$value) {
-            return self::select('incomes.id',
-            'incomes.receipt','incomes.order_number','provider',
-            'total','invoice_number','created_at')->WhereMonth('created_at',$month)->WhereYear('created_at',$year)->paginate(12)->appends(request()->query());
+    public function scopeSearchIncome($query, $value, $month, $year){
+        if(isset($value)){
+            $query->where('receipt','like',"%$value%");
         }
-        return self::select('incomes.id',
-        'incomes.receipt','incomes.order_number','provider',
-        'total','invoice_number','created_at')->where('receipt','like',"%$value%")->paginate(12)->appends(request()->query());
+
+        if(isset($month)){
+            $query->WhereMonth('created_at',$month);
+        }
+
+        if(isset($year)){
+            $query->WhereYear('created_at',$year);
+        }
+        return $query->select('incomes.id', 'incomes.receipt','incomes.order_number','provider', 'total','invoice_number','created_at');
     }
 
     public static function getIncome($id){

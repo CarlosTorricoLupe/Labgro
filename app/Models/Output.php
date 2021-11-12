@@ -26,19 +26,22 @@ class Output extends Model
     public function orders(){
         return $this->belongsToMany(Order::class,'orders_outputs', 'output_id', 'order_id')->withTimestamps();
     }
-    public static function searchOutput($value='',$month,$year){
-        if (!$value) {
-            return self::join('sections','outputs.section_id','sections.id')
-                        ->WhereMonth('order_date',$month)
-                        ->WhereYear('order_date',$year)
-                        ->select('outputs.*', 'sections.name')
-                        ->paginate(12)->appends(request()->query());;
+    public function scopeSearchOutput($query, $value, $month, $year){
+        $query->join('sections','outputs.section_id','sections.id');
+        if(isset($value)){
+            $query->where('receipt','like',"%$value%");
         }
-        return self::join('sections','outputs.section_id','sections.id')
-                ->where('receipt','like',"%$value%")
-                ->select('outputs.*', 'sections.name')
-                ->paginate(12)->appends(request()->query());
+
+        if(isset($month)){
+            $query->WhereMonth('order_date',$month);
+        }
+
+        if(isset($year)){
+            $query->WhereYear('order_date',$year);
+        }
+        return $query->select('outputs.*', 'sections.name');
     }
+
     public static function getOutput($id){
         return self::select('outputs.*')->where('outputs.id',$id)->get();
     }
