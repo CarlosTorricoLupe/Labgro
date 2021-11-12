@@ -3,10 +3,10 @@
 namespace App\Http\Middleware;
 
 use Closure;
-use JWTAuth;
 use Exception;
 use Tymon\JWTAuth\Http\Middleware\BaseMiddleware;
 use Illuminate\Http\Request;
+use Tymon\JWTAuth\Facades\JWTAuth;
 
 class JwtMiddleware extends BaseMiddleware
 {
@@ -19,8 +19,6 @@ class JwtMiddleware extends BaseMiddleware
      */
     public function handle(Request $request, Closure $next)
     {
-        logger("sad");
-        logger($next);
         try {
             $user = JWTAuth::parseToken()->authenticate();
         } catch (Exception $e) {
