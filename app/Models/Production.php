@@ -46,8 +46,8 @@ class Production extends Model
             ->join('production_products','production_products.id','presentation_production_product.production_product_id')
             ->join('productions','productions.id','production_products.production_id')
             ->join('products','products.id','production_products.product_id')
-            ->whereDate('productions.date_production','>=',$start_date)
-            ->whereDate('productions.date_production','<=',$end_date)
+            ->where('productions.date_production','>=',$start_date)
+            ->where('productions.date_production','<=',$end_date)
             ->where('productions.role_id',auth()->user()->role_id)
             ->select('presentation_production_product.presentation_unit_id as presentations',
                 'products.name as product_name',
