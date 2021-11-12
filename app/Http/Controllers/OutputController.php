@@ -20,7 +20,9 @@ class OutputController extends Controller
      */
     public function index(Request $request)
     {
-        $outputs = Output::searchOutput($request->outputvalue, $request->month, $request->year);
+        $outputs = Output::searchOutput($request->outputvalue, $request->month, $request->year)
+            ->paginate(12)
+            ->appends(request()->query());
         return response()->json([
             'success' => true,
             'incomes'=> $outputs
