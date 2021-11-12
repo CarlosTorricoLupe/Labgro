@@ -8,6 +8,7 @@ use App\Models\Production_product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Psr\Http\Message\RequestInterface;
+use Tymon\JWTAuth\Facades\JWTAuth;
 
 class ProductionController extends Controller
 {
@@ -16,6 +17,11 @@ class ProductionController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+    public function __construct()
+    {
+        $this->user = JWTAuth::parseToken()->authenticate();
+    }
+
     public function index(Request $request)
     {
         $productions=Production::select('date_production')->WhereMonth('date_production',$request->month)->WhereYear('date_production',$request->year)->where('role_id',auth()->user()->role_id)->get();
@@ -93,7 +99,7 @@ class ProductionController extends Controller
     }
 
     public function getConsolidate(Request $request){
-     $productions=Production::getProductsProducedByMonthGroupedPresentation($request->month,$request->year);
+     $productions=Production::getProductsProducedByMonthGroupedPresentation($request->start_date,$request->end_date);
      $result = array();
         foreach ($productions as $production){
             $import =  $production->units_produced*$production->unit_cost_production;
@@ -117,8 +123,8 @@ class ProductionController extends Controller
 
 
     public function getDetailProduction(Request $request){
-        $pr=Production::whereMonth('productions.created_at','=',$request->month)
-        ->whereYear('productions.created_at',$request->year)
+        $pr=Production::whereDate('productions.created_at','>=',$request->start_date)
+        ->whereDate('productions.created_at','<=',$request->end_date)
         ->where('productions.role_id',auth()->user()->role_id)->get(['id','quantity_used']);
         foreach($pr as $p){
             $result = array();
@@ -130,7 +136,7 @@ class ProductionController extends Controller
                     'Cantidad_usada' => 0,
                     'Codigo' => $presentation->production_code,
                     'Produccion_estandar' => $presentation->name_product,
-                    'Unidad_presentacion' => $presentation->presentation_name,
+                    'Unidad_presentacion' => $presentation ->presentation_name,
                     'Costo_unitario' => $presentation->unit_cost_production,
                     'Cantidad' => $presentation->units_produced,
                     'Importe' =>$import,
@@ -146,7 +152,7 @@ class ProductionController extends Controller
        }
 
        public function getSummaryProduction(Request $request){
-        $productions=Production::getProductsProducedByMonthGroupedPresentation($request->month,$request->year);
+        $productions=Production::getProductsProducedByMonthGroupedPresentation($request->start_date,$request->end_date);
         $result = array();
         foreach ($productions as $production){
             $import =  $production->units_produced*$production->unit_cost_production;
