@@ -48,84 +48,85 @@ Route::group(['middleware' => ['auth:api']], function() {
     Route::put('users/update/{user}', [UserController::class, 'update']);
     Route::delete('users/delete/{user}',  [UserController::class, 'destroy']);
     Route::apiResource('articles', ArticleController::class);
-});
+    Route::apiResource('categories',CategoryController::class);
+    Route::get('search/category/{name}', [CategoryController::class,'search']);
 
 
-Route::apiResource('categories',CategoryController::class);
-Route::get('search/category/{name}', [CategoryController::class,'search']);
+    Route::get('search', [ArticleController::class, 'searchArticle']);
+    Route::get('search_category', [ArticleController::class, 'searchArticleForCategorgy']);
+
+    Route::apiResource('units',UnitController::class);
+
+    Route::apiResource('sections',SectionController::class);
+
+    Route::apiResource('raw_material',RawMaterialController::class);
+
+    Route::apiResource('products',ProductController::class);
+
+    Route::apiResource('materials',MaterialController::class);
+    Route::get('material/incomes_graphics', [MaterialController::class, 'IncomesMaterialByGraphics']);
+
+    Route::apiResource('orders', OrderController::class);
+    Route::get('order_reprobate/{id}', [OrderController::class, 'reprobate']);
+
+    Route::apiResource('presentations', PresentationUnitController::class);
+
+    Route::apiResource('product.materials',ProductMaterialController::class);
 
 
-Route::get('search', [ArticleController::class, 'searchArticle']);
-Route::get('search_category', [ArticleController::class, 'searchArticleForCategorgy']);
+    Route::get('material/{id}/incomes', [ProductMaterialController::class, 'getIncomeMaterials']);
+    Route::get('material/{id}/outputs', [ProductMaterialController::class, 'getOutputsMaterials']);
 
-Route::apiResource('units',UnitController::class);
+    /* Route::apiResource('incomes',IncomeController::class); */
 
-Route::apiResource('sections',SectionController::class);
+    Route::apiResource('product.presentations',ProductPresentationController::class);
 
-Route::apiResource('raw_material',RawMaterialController::class);
+    Route::apiResource('productions', ProductionController::class);
+    Route::get('getConsolidate',[ProductionController::class,'getConsolidate']);
+    Route::get('getDetailProduction',[ProductionController::class,'getDetailProduction']);
+    Route::put('updateQuantityForProduction',[ProductionController::class,'updateQuantityUsedInProduction']);
+    Route::get('getSummaryProduction',[ProductionController::class,'getSummaryProduction']);
 
-Route::apiResource('products',ProductController::class);
-
-Route::apiResource('materials',MaterialController::class);
-Route::get('material/incomes_graphics', [MaterialController::class, 'IncomesMaterialByGraphics']);
-
-Route::apiResource('orders', OrderController::class);
-Route::get('order_reprobate/{id}', [OrderController::class, 'reprobate']);
-
-Route::apiResource('presentations', PresentationUnitController::class);
-
-Route::apiResource('product.materials',ProductMaterialController::class);
-
-
-Route::get('material/{id}/incomes', [ProductMaterialController::class, 'getIncomeMaterials']);
-Route::get('material/{id}/outputs', [ProductMaterialController::class, 'getOutputsMaterials']);
-
-/* Route::apiResource('incomes',IncomeController::class); */
-
-Route::apiResource('product.presentations',ProductPresentationController::class);
-
-Route::apiResource('productions', ProductionController::class);
-Route::get('getConsolidate',[ProductionController::class,'getConsolidate']);
-Route::get('getDetailProduction',[ProductionController::class,'getDetailProduction']);
-Route::put('updateQuantityForProduction',[ProductionController::class,'updateQuantityUsedInProduction']);
-Route::get('getSummaryProduction',[ProductionController::class,'getSummaryProduction']);
-
-Route::apiResource('production.products',ProductionProductController::class);
-Route::get('verifyMaterials', [ProductionProductController::class, 'verifyStockMaterial']);
-Route::get('details/productions',[ProductionProductController::class,'showProductionByDay']);
-Route::get('productions_details/{id}', [ProductionProductController::class, 'getProductionsById']);
-Route::apiResource('production.product.presentations',PresentationProductionProductController::class);
+    Route::apiResource('production.products',ProductionProductController::class);
+    Route::get('verifyMaterials', [ProductionProductController::class, 'verifyStockMaterial']);
+    Route::get('details/productions',[ProductionProductController::class,'showProductionByDay']);
+    Route::get('productions_details/{id}', [ProductionProductController::class, 'getProductionsById']);
+    Route::apiResource('production.product.presentations',PresentationProductionProductController::class);
 
 
 
-Route::get("output/", [OutputController::class, 'index']);
-Route::get("output/getDetailOutput/", [OutputController::class, 'getDetailOutput']);
-Route::post("output/create/{id_order?}", [OutputController::class, 'store']);
-Route::post("output/search", [OutputController::class, 'searchOutputByDate']);
+    Route::get("output/", [OutputController::class, 'index']);
+    Route::get("output/getDetailOutput/", [OutputController::class, 'getDetailOutput']);
+    Route::post("output/create/{id_order?}", [OutputController::class, 'store']);
+    Route::post("output/search", [OutputController::class, 'searchOutputByDate']);
 
-Route::get("output/articles/{section}", [OutputController::class, 'getArticles']);
-Route::put("output/update/{output}", [OutputController::class, 'update']);
-Route::delete("output/delete/{output}", [OutputController::class, 'destroy']);
-Route::get('/output/{output}',[OutputController::class, 'show']);
-Route::get('/output/by_article/{id}',[OutputController::class, 'outputsByArticle']);
-Route::get('/outputs/getOutputArticleByDate', [OutputController::class, 'getOutputArticleByDate']);
+    Route::get("output/articles/{section}", [OutputController::class, 'getArticles']);
+    Route::put("output/update/{output}", [OutputController::class, 'update']);
+    Route::delete("output/delete/{output}", [OutputController::class, 'destroy']);
+    Route::get('/output/{output}',[OutputController::class, 'show']);
+    Route::get('/output/by_article/{id}',[OutputController::class, 'outputsByArticle']);
+    Route::get('/outputs/getOutputArticleByDate', [OutputController::class, 'getOutputArticleByDate']);
 
-Route::get("prueba", [OutputController::class, 'prueba']);
+    Route::get("prueba", [OutputController::class, 'prueba']);
 
-Route::get('/incomes',[IncomeController::class, 'index']);
-Route::post('/incomes',[IncomeController::class, 'store']);
-Route::get('/incomes/getDetailsIncome/', [IncomeController::class, 'getDetailsIncome']);
-Route::get('/incomes/byDetails/', [IncomeController::class, 'getDetailsIncome']);
-Route::get('/incomes/{income}',[IncomeController::class, 'show']);
-Route::put('/incomes/{income}', [IncomeController::class, 'update']);
-Route::delete('/incomes/{income}', [IncomeController::class, 'destroy']);
-Route::get('/incomes/getIncomesArticle/{id}', [IncomeController::class, 'getIncomesArticle']);
-Route::get('/peripheralReport', [ArticleController::class, 'peripheralReport']);
-Route::get('/income/getIncomeArticleByDate', [IncomeController::class, 'getIncomeArticleByDate']);
+    Route::get('/incomes',[IncomeController::class, 'index']);
+    Route::post('/incomes',[IncomeController::class, 'store']);
+    Route::get('/incomes/getDetailsIncome/', [IncomeController::class, 'getDetailsIncome']);
+    Route::get('/incomes/byDetails/', [IncomeController::class, 'getDetailsIncome']);
+    Route::get('/incomes/{income}',[IncomeController::class, 'show']);
+    Route::put('/incomes/{income}', [IncomeController::class, 'update']);
+    Route::delete('/incomes/{income}', [IncomeController::class, 'destroy']);
+    Route::get('/incomes/getIncomesArticle/{id}', [IncomeController::class, 'getIncomesArticle']);
+    Route::get('/peripheralReport', [ArticleController::class, 'peripheralReport']);
+    Route::get('/income/getIncomeArticleByDate', [IncomeController::class, 'getIncomeArticleByDate']);
 
 
 //VERIFIRY PRICE
-Route::get('/verifyPriceArticle/{id}', [OutputController::class, 'verififyPriceArticle']);
+    Route::get('/verifyPriceArticle/{id}', [OutputController::class, 'verififyPriceArticle']);
+
+});
+
+
 
 
 
