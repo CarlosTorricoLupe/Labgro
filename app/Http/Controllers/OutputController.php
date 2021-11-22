@@ -120,7 +120,7 @@ class OutputController extends Controller
 
     public function updateStockMaterials($details){
         foreach ($details as $detail){
-            $material = Material::find($detail['article_id']);
+            $material = Material::find($detail['article_id']);//corregir
             if ($material){
                 $stock_material = $material->stock_start;
                 $quantity_order = $detail['quantity'];
