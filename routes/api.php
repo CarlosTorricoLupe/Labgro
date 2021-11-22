@@ -68,6 +68,10 @@ Route::group(['middleware' => ['auth:api']], function() {
 
     Route::apiResource('orders', OrderController::class);
     Route::get('order_reprobate/{id}', [OrderController::class, 'reprobate']);
+    Route::get('notifications', [OrderController::class, 'notifications']);
+    Route::get('quantity_notifications', [OrderController::class, 'quantity_notifications']);
+    Route::get('view_notifications/{id}', [OrderController::class, 'view_notifications']);
+
 
     Route::apiResource('presentations', PresentationUnitController::class);
 

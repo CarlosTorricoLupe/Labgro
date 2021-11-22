@@ -113,4 +113,33 @@ class OrderController extends Controller
             'message' => 'Pedido reprobado correctamente',
         ],200);
     }
+    public function quantity_notifications()
+    {
+        $notifitacions = Order::GetQuantityNotifications()->count();
+        return response()->json([
+            'sucess' => true,
+            'notifications_new' => $notifitacions,
+        ],200);
+    }
+
+    public function notifications()
+    {
+        $notifitacions = Order::GetNotifications()->get();
+        Order::ViewedAllGeneral();
+        return response()->json([
+            'sucess' => true,
+            'notifications' => $notifitacions,
+        ],200);
+    }
+
+    public function view_notifications($id)
+    {
+        Order::Viewed($id);
+        return response()->json([
+            'sucess' => true,
+            'notification' => Order::find($id),
+        ],200);
+    }
+
+
 }
