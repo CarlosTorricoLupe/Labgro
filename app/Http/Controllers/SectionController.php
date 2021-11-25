@@ -4,10 +4,15 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\SectionRequest;
 use App\Models\Section;
+use App\Values\SectionStatusValues;
 use Illuminate\Http\Request;
 
 class SectionController extends Controller
 {
+    private static $SECTION_FRUTAS = "Producción Frutas";
+    private static $SECTION_CARNICOS = "Producción Cárnicos";
+    private static $SECTION_LACTEOS = "Producción Lácteos";
+
     /**
      * Display a listing of the resource.
      *
@@ -16,14 +21,24 @@ class SectionController extends Controller
     public function index()
     {
         $sections=Section::ActiveDescending()->get();
+
         if(count($sections)){
-            return $sections;
+            return $this->addRoleInSections($sections);
         } else {
             return response()->json([
                 'success'=>false,
                 'message'=>'No se encontraron resultados'
             ],404);
         }
+    }
+    private function addRoleInSections($sections){
+        foreach ($sections as $section){
+            if($section->name == self::$SECTION_CARNICOS || $section->name == self::$SECTION_FRUTAS || $section->name == self::$SECTION_LACTEOS){
+                $strategy_class = SectionStatusValues::STRATEGY[$section->name];
+                $section['role_id'] = (new $strategy_class)->getRoleSectionState();
+            }
+        }
+        return $sections;
     }
 
     /**
@@ -64,11 +79,19 @@ class SectionController extends Controller
      */
     public function update(SectionRequest $request, Section $section)
     {
-        $section->update($request->all());
-        return response()->json([
-            'sucess' => true,
-            'message' => 'Unidad actualizada correctamente'
-        ],200); 
+        if($section == self::$SECTION_CARNICOS || $section == self::$SECTION_FRUTAS || $section == self::$SECTION_LACTEOS){
+            $response = [
+                'success' => false,
+                'message' =>'La Unidad no puede modificarse, por que es necesario para producción'
+            ];
+        }else{
+            $section->update($request->all());
+            $response = [
+                'success' => true,
+                'message' =>'Unidad actualizada correctamente'
+            ];
+        }
+        return response()->json($response,200);
     }
 
     /**

@@ -38,7 +38,7 @@ class OutputController extends Controller
      */
 
 
-    public function store(OutputRequest $request, $id_order = null)
+    public function store(Request $request, $id_order = null)
     {
         $details = $request->only('details');
         $response = array();
@@ -46,14 +46,20 @@ class OutputController extends Controller
         if( $this->verifyStockArticle($details['details']) ){
             $this->decrementStockArticle($details['details']);
 
-            $output = Output::create($request->except('details'));
+            $output = Output::create($request->except(['details','role_id', 'order_id']));
 
             $output->articles()->attach($details['details']);
-            $this->updateStockMaterials($details['details']);
 
-            if (isset($id_order)){
-                $order = Order::Approved($id_order);
+
+            if (isset($request->order_id)){
+                $order_id = $request->order_id;
+                $order = Order::Approved($order_id);
                 $output->orders()->sync($order);
+                $role_id = Order::find($order_id)->pluck('role_id');
+                $this->updateStockMaterials($details['details'], $role_id);
+            }
+            if(isset($request->role_id)){
+                $this->updateStockMaterials($details['details'], $request->role_id);
             }
             $response['sucess'] = true;
 
@@ -118,9 +124,9 @@ class OutputController extends Controller
         }
     }
 
-    public function updateStockMaterials($details){
+    public function updateStockMaterials($details, $role_id){
         foreach ($details as $detail){
-            $material = Material::find($detail['article_id']);
+            $material = Material::where('article_id', $detail['article_id'])->where('role_id', $role_id);
             if ($material){
                 $stock_material = $material->stock_start;
                 $quantity_order = $detail['quantity'];
