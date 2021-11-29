@@ -70,19 +70,34 @@ class Production extends Model
 
     }
 
-    public static function getProductionsByProduct($id_product, $year){
-        return self::join('production_products', 'productions.id', 'production_products.production_id')
-            ->join('presentation_production_product', 'production_products.id', 'presentation_production_product.production_product_id')
-            ->join('presentation_units', 'presentation_production_product.presentation_unit_id', 'presentation_units.id')
-            ->join('material_production_product', 'production_products.id', 'material_production_product.production_product_id')
-            ->where('production_products.product_id', $id_product)
-            ->whereYear('productions.date_production', $year)
-            ->groupBy('date','product_quantity', 'presentations_name')
-            ->get(array(
-                DB::raw('Date(productions.date_production) as date'),
-                DB::raw('(production_products.quantity) as product_quantity'),
-                DB::raw('(presentation_units.name) as "presentations_name"'),
-            ));
+    public static function getProductionsByProduct($id_product, $request){
+        if($request->filterType=='year'){
+            return self::join('production_products', 'productions.id', 'production_products.production_id')
+                ->join('presentation_production_product', 'production_products.id', 'presentation_production_product.production_product_id')
+                ->join('presentation_units', 'presentation_production_product.presentation_unit_id', 'presentation_units.id')
+                ->join('material_production_product', 'production_products.id', 'material_production_product.production_product_id')
+                ->where('production_products.product_id', $id_product)
+                ->whereYear('productions.date_production', $request->date)
+                ->groupBy('date','product_quantity')
+                ->get(array(
+                    DB::raw('Date(productions.date_production) as date'),
+                    DB::raw('(production_products.quantity) as product_quantity'),
+                ));
+        }else{
+            return self::join('production_products', 'productions.id', 'production_products.production_id')
+                ->join('presentation_production_product', 'production_products.id', 'presentation_production_product.production_product_id')
+                ->join('presentation_units', 'presentation_production_product.presentation_unit_id', 'presentation_units.id')
+                ->join('material_production_product', 'production_products.id', 'material_production_product.production_product_id')
+                ->where('production_products.product_id', $id_product)
+                ->whereMonth('productions.date_production', $request->date)
+                ->groupBy('date', 'presentations_name', 'presentations_quantity')
+                ->get(array(
+                    DB::raw('Date(productions.date_production) as date'),
+                    DB::raw('(presentation_units.name) as "presentations_name"'),
+                    DB::raw('(presentation_production_product.quantity) as "presentations_quantity"'),
+                ));
+        }
+
     }
 
     public static function getProductsProducedByMonth($start_date, $end_date){
