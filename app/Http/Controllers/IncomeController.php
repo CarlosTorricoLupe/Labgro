@@ -35,6 +35,7 @@ class IncomeController extends Controller
      */
     public function store(IncomeRequest $request)
     {
+        logger($request);
         $income = new Income($request->all());
         $income->saveOrFail();
         $articles=$request->get('articles');
