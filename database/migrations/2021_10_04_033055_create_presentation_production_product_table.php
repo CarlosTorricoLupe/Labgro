@@ -21,6 +21,7 @@ class CreatePresentationProductionProductTable extends Migration
             $table->float('faulty_quantity')->default(0);
             $table->foreignId('presentation_unit_id')->constrained();
             $table->foreignId('production_product_id')->constrained();
+            $table->foreignId('role_id')->constrained();
             $table->timestamps();
         });
     }

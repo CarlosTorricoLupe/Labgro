@@ -80,4 +80,13 @@ class Material extends Model
         return $array_months[$number_month - 1];
     }
 
+    /* public function scopeGetQuantityLeftover($material_id, $year){
+        return self::join('material_production_product','material_production_product.material_id','materials.id')
+        ->select('material_production_product.quantity_required',
+            'material_production_product.control',
+            'productions.created_at')
+        ->where('material_production_product.material_id', $material_id)
+        ->whereYear('productions.created_at', $year)
+        ->get();
+    } */
 }

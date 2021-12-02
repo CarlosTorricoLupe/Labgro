@@ -19,6 +19,7 @@ class CreateMaterialProductionProductTable extends Migration
             $table->float('control');
             $table->foreignId('material_id')->constrained();
             $table->foreignId('production_product_id')->constrained();
+            $table->foreignId('role_id')->constrained();
             $table->timestamps();
         });
     }
