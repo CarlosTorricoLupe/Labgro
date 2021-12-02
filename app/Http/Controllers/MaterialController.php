@@ -161,6 +161,8 @@ class MaterialController extends Controller
                 'value'=>$leftover === null? 0:$leftover['control'],
             ];
         }
-            dd($series); 
+    return response()->json([
+            'series'=>$series
+        ],200);
     }
 }
