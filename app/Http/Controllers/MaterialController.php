@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\CreateMaterialRequest;
 use App\Http\Requests\UpdateMaterialRequest;
 use App\Models\Material;
+use App\Models\Material_production_product;
 use App\Models\Output;
 use App\Models\Product;
 use Illuminate\Http\Request;
@@ -146,5 +147,20 @@ class MaterialController extends Controller
             ];
         }
         return $series;
+    }
+    public function getQuantityLeftOver($id, Request $request){
+        $series = array();
+        for ($month=1; $month<=12; $month++){
+            $leftover = Material_production_product::where('material_id',$id)
+                        ->whereMonth('created_at',$month)
+                        ->whereYear('created_at',$request->year)
+                        ->where('role_id',auth()->user()->role_id)
+                        ->latest()->first(['control']);
+            $series[]=[
+                'name'=>Material::MonthNameByNumberMonth($month),
+                'value'=>$leftover === null? 0:$leftover['control'],
+            ];
+        }
+            dd($series); 
     }
 }
