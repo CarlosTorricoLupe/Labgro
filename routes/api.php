@@ -91,14 +91,14 @@ Route::group(['middleware' => ['auth:api']], function() {
     Route::get('getDetailProduction',[ProductionController::class,'getDetailProduction']);
     Route::put('updateQuantityForProduction',[ProductionController::class,'updateQuantityUsedInProduction']);
     Route::get('getSummaryProduction',[ProductionController::class,'getSummaryProduction']);
+    Route::get('getMaterialsConsumed',[ProductionProductController::class,'getMaterialsConsumed']);
 
     Route::apiResource('production.products',ProductionProductController::class);
     Route::get('verifyMaterials', [ProductionProductController::class, 'verifyStockMaterial']);
     Route::get('details/productions',[ProductionProductController::class,'showProductionByDay']);
     Route::get('productions_details/{id}', [ProductionProductController::class, 'getProductionsById']);
     Route::apiResource('production.product.presentations',PresentationProductionProductController::class);
-
-
+    Route::get('getMaterialsConsumed',[ProductionProductController::class,'getMaterialsConsumed']);
 
     Route::get("output/", [OutputController::class, 'index']);
     Route::get("output/getDetailOutput/", [OutputController::class, 'getDetailOutput']);
