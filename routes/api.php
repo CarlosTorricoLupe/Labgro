@@ -65,6 +65,7 @@ Route::group(['middleware' => ['auth:api']], function() {
 
     Route::apiResource('materials',MaterialController::class);
     Route::get('material/incomes_graphics', [MaterialController::class, 'IncomesMaterialByGraphics']);
+    Route::get('material/{id}/quantityLeftover', [MaterialController::class, 'getQuantityLeftOver']);
 
     Route::apiResource('orders', OrderController::class);
     Route::get('order_reprobate/{id}', [OrderController::class, 'reprobate']);

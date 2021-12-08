@@ -79,5 +79,4 @@ class Material extends Model
         $array_months = array("Ene","Feb","Mar","Abr","May","Jun","Jul","Ago","Sep","Oct","Nov","Dic");
         return $array_months[$number_month - 1];
     }
-
 }
