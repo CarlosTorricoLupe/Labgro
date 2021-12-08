@@ -26,7 +26,17 @@ class SectionSeeder extends Seeder
             ],
             [
                 'name' => 'Tecnologia'
-            ]
+            ],
+            [
+                'name' => 'Producción Frutas'
+            ],
+            [
+                'name' => 'Producción Cárnicos'
+            ],
+            [
+                'name' => 'Producción Lácteos'
+            ],
+
         ];
         foreach($sections as $key => $value){
             Section::create($value);
