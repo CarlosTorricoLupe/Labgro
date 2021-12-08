@@ -8,6 +8,7 @@ use App\Models\Material_production_product;
 use App\Models\Presentation_production_product;
 use App\Models\Production;
 use App\Models\Production_product;
+use App\Models\ProductionMaterial;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
@@ -192,5 +193,26 @@ class ProductionProductController extends Controller
             $response['products'] = $products;
         }
         return response()->json($response, 201);
+    }
+
+    public function getMaterialsConsumed(Request $request){
+        $productions = Production_product::getProductionByDate($request->month, $request->year)->get();
+        $materials = Material::GetMaterials()->get();
+
+        $consumed_materials = collect();
+        foreach ($materials as $material){
+            $material_id = $material->id;
+            $quantity  = 0;
+            foreach ($productions as $production) {
+                if($production->material_id == $material_id){
+                    $quantity = $quantity + $production->quantity_production * $production->quantity_material;
+                }
+            }
+            $consumed_materials[] = [
+                "name" => $material->name_article,
+                "quantity" => $quantity,
+            ];
+        }
+        return $consumed_materials->SortByDesc('quantity');
     }
 }

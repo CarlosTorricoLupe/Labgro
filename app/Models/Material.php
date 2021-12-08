@@ -79,4 +79,11 @@ class Material extends Model
         $array_months = array("Ene","Feb","Mar","Abr","May","Jun","Jul","Ago","Sep","Oct","Nov","Dic");
         return $array_months[$number_month - 1];
     }
+
+    public function scopeGetMaterials($query){
+        return $query->join('articles','materials.article_id','articles.id')
+            ->join('units','articles.unit_id','units.id')
+            ->select('materials.*', 'articles.name_article','units.unit_measure')
+            ->where('role_id',auth()->user()->role_id);
+    }
 }
