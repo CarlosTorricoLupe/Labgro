@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Presentation_production_product;
+use App\Models\Production;
 use App\Models\Production_product;
 use Illuminate\Http\Request;
 
@@ -26,6 +27,7 @@ class PresentationProductionProductController extends Controller
      */
     public function store(Request $request,$production_id,$product_id)
     {
+        $production= Production::find($production_id);
         $response=array();
         $productionProduct=Production_product::where('production_id',$production_id)
                             ->where('product_id',$product_id)
@@ -35,7 +37,8 @@ class PresentationProductionProductController extends Controller
                 ->attach($request->presentation_id,[
                     'quantity'=>$request->quantity,
                     'unit_cost_production'=>$request->unit_cost_production,
-                    'unit_price_sale'=>$request->unit_price_sale
+                    'unit_price_sale'=>$request->unit_price_sale,
+                    'role_id'=>$production->role_id
                 ]);
             $response['sucess'] = true;
             $response['message'] = "Presentación agregada correctamente";
@@ -74,10 +77,10 @@ class PresentationProductionProductController extends Controller
                             ->first()->id;
         $presentationProduct=Presentation_production_product::where('presentation_unit_id',$presentation_unit_id)
                             ->where('production_product_id',$productionProduct)
-                            ->first();                            
+                            ->first();
         if ($presentationProduct->created_at->isToday()) {
             $presentationProduct->update([
-                'quantity'=>$request->quantity,'unit_cost_production'=>$request->unit_cost_production,'unit_price_sale'=>$request->unit_price_sale]); 
+                'quantity'=>$request->quantity,'unit_cost_production'=>$request->unit_cost_production,'unit_price_sale'=>$request->unit_price_sale]);
             $response['sucess'] = true;
             $response['message'] = "Presentacion actualizada correctamente";
         }else{
