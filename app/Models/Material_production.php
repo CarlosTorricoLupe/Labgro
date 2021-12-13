@@ -10,7 +10,11 @@ class Material_production extends Model
     use HasFactory;
 
     protected $fillable=[
-        'quantity_required'
+        'quantity_required',
+        'role_id',
+        'control',
+        'material_id',
+        'production_product_id'
     ];
 
 

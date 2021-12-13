@@ -17,7 +17,13 @@ class Production_product extends Model
 
     public function materiales()
     {
-        return $this->belongsToMany(Material::class,'material_production_product')->withPivot('quantity_required')->withTimestamps();
+        return $this->belongsToMany(Material::class,'material_production_product')
+            ->withPivot('quantity_required',
+                'role_id',
+                'control',
+                'material_id',
+                'production_product_id')
+            ->withTimestamps();
     }
 
     public function presentations(){
