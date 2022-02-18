@@ -50,13 +50,11 @@ class OutputController extends Controller
 
             $output->articles()->attach($details['details']);
 
-
             if (isset($request->order_id)){
-                $order_id = $request->order_id;
-                $order = Order::Approved($order_id);
+                Order::Approved($request->order_id);
+                $order = Order::find($request->order_id);
                 $output->orders()->sync($order);
-                $role_id = Order::find($order_id)->pluck('role_id');
-                $this->updateStockMaterials($details['details'], $role_id);
+                $this->updateStockMaterials($details['details'], $order->role_id);
             }
             if(isset($request->role_id)){
                 $this->updateStockMaterials($details['details'], $request->role_id);
@@ -111,7 +109,6 @@ class OutputController extends Controller
         return $is_permit;
     }
 
-
     public function decrementStockArticle($details){
         foreach ($details as $detail){
             $article = Article::find($detail['article_id']);
@@ -126,7 +123,7 @@ class OutputController extends Controller
 
     public function updateStockMaterials($details, $role_id){
         foreach ($details as $detail){
-            $material = Material::where('article_id', $detail['article_id'])->where('role_id', $role_id);
+            $material = Material::where('article_id', $detail['article_id'])->where('role_id', $role_id)->first();
             if ($material){
                 $stock_material = $material->stock_start;
                 $quantity_order = $detail['quantity'];
