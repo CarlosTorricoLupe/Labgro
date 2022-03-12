@@ -14,8 +14,7 @@ class AlterTableToOrders extends Migration
     public function up()
     {
         Schema::table('orders', function (Blueprint $table) {
-            $table->enum('viewed_order', ['true','false'])->default('true');
-            $table->enum('viewed_general', ['true','false'])->default('true');
+            $table->enum('view_order', ['true','false'])->default('false');
         });
     }
 
@@ -27,8 +26,7 @@ class AlterTableToOrders extends Migration
     public function down()
     {
         Schema::table('orders', function (Blueprint $table) {
-            $table->dropColumn('viewed_order');
-            $table->dropColumn('viewed_general');
+            $table->dropColumn('view_order');
         });
     }
 }
