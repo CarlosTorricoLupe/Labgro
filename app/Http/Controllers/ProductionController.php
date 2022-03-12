@@ -169,7 +169,7 @@ class ProductionController extends Controller
                 'Importe_total_produccion_efectiva' =>$import,
             ];
         }
-        return $result;   
-        
+        return $result;
+
        }
 }

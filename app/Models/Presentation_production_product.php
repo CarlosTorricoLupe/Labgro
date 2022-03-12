@@ -14,7 +14,11 @@ class Presentation_production_product extends Model
     protected $fillable = [
         'quantity',
         'unit_cost_production',
-        'unit_price_sale'
+        'unit_price_sale',
+        'production_product_id',
+        'role_id',
+        'presentation_unit_id',
+        'faulty_quantity'
     ];
 
     public static function getPresentationByProductOfProduction($pr){
