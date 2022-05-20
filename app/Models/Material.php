@@ -86,4 +86,5 @@ class Material extends Model
             ->select('materials.*', 'articles.name_article','units.unit_measure')
             ->where('role_id',auth()->user()->role_id);
     }
+    
 }
