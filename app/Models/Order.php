@@ -116,7 +116,7 @@ class Order extends Model
         return $query->join('sections','orders.section_id','sections.id')
             ->select('sections.id as section_id','sections.name as section_name', 'orders.id as order_id', 'orders.receipt', 'orders.order_number', 'orders.date_issue as order_date', 'orders.status', 'orders.created_at', 'orders.observation', 'orders.observation', 'orders.view_order')
             ->where('orders.role_id',auth()->user()->role_id)
-            ->orderByRaw("FIELD(orders.view_order, \"false\", \"true\")")
+            ->orderByRaw("case orders.view_order when 'true' then 1 when 'false' then 2 end")
             ->orderBy('orders.updated_at', 'desc');
     }
     public function scopeViewedAllGeneral($query){
