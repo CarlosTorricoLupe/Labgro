@@ -22,8 +22,7 @@ class Order extends Model
         'section_id',
         'role_id',
         'created_at',
-        'viewed_order',
-        'viewed_general',
+        'view_order',
     ];
 
     public function materials()
@@ -97,39 +96,31 @@ class Order extends Model
         return $query->where('id', $id_order)
             ->update(['status'=>'reprobate',
                       'observation' => $value,
-                      'viewed_order' => 'false',
-                      'viewed_general' => 'false',
-            ]);
+                      'view_order' => 'false']);
     }
 
     public function scopeApproved($query, $id_order){
         return $query->where('id', $id_order)
             ->update(['status'=>'approved',
-                'viewed_order' => 'false',
-                'viewed_general' => 'false',]);
+                'view_order' => 'false']);
     }
 
     public function scopeGetQuantityNotifications($query){
         return $query->join('sections','orders.section_id','sections.id')
             ->select('sections.id as section_id','sections.name as section_name', 'orders.id as order_id', 'orders.receipt', 'orders.order_number', 'orders.date_issue as order_date', 'orders.status', 'orders.created_at', 'orders.observation', 'orders.observation', 'orders.viewed_general', 'orders.viewed_order')
             ->where('orders.role_id',auth()->user()->role_id)
-            ->where('orders.viewed_general', 'false');
+            ->where('orders.view_order', 'false');
 
     }
     public function scopeGetNotifications($query){
         return $query->join('sections','orders.section_id','sections.id')
-            ->select('sections.id as section_id','sections.name as section_name', 'orders.id as order_id', 'orders.receipt', 'orders.order_number', 'orders.date_issue as order_date', 'orders.status', 'orders.created_at', 'orders.observation', 'orders.observation', 'orders.viewed_general', 'orders.viewed_order')
+            ->select('sections.id as section_id','sections.name as section_name', 'orders.id as order_id', 'orders.receipt', 'orders.order_number', 'orders.date_issue as order_date', 'orders.status', 'orders.created_at', 'orders.observation', 'orders.observation', 'orders.view_order')
             ->where('orders.role_id',auth()->user()->role_id)
-            ->orderByRaw("FIELD(orders.viewed_general, \"false\", \"true\")")
+            ->orderByRaw("FIELD(orders.view_order, \"false\", \"true\")")
             ->orderBy('orders.updated_at', 'desc');
     }
     public function scopeViewedAllGeneral($query){
         return $query->where('role_id',auth()->user()->role_id)
-            ->update(['viewed_general'=>'false']);
+            ->update(['view_order'=>'true']);
     }
-    public function scopeViewed($query, $id_order){
-        return $query->where('id', $id_order)
-            ->update(['viewed_order'=>'true']);
-    }
-
 }
