@@ -75,7 +75,7 @@ class Order extends Model
     }
     public function scopeGetTypeStatus($query, $value, $month, $year){
         $query->join('sections','orders.section_id','sections.id')
-            ->select('sections.name as section_name', 'orders.id', 'orders.id', 'orders.id', 'orders.receipt', 'orders.order_number', 'orders.date_issue as order_date', 'orders.status', 'orders.created_at', 'orders.observation')
+            ->select('sections.name as section_name', 'orders.id', 'orders.id', 'orders.id', 'orders.receipt', 'orders.order_number', 'orders.date_issue as order_date', 'orders.status', 'orders.created_at', 'orders.observation', 'orders.quantity_approved')
             ->where('status', $value);
         if(isset($month)){
             $query->WhereMonth('orders.created_at', $month);
@@ -99,9 +99,10 @@ class Order extends Model
                       'view_order' => 'false']);
     }
 
-    public function scopeApproved($query, $id_order){
+    public function scopeApproved($query, $id_order, $quantity){
         return $query->where('id', $id_order)
             ->update(['status'=>'approved',
+                'quantity_approved'=>$quantity,
                 'view_order' => 'false']);
     }
 
