@@ -51,7 +51,7 @@ class OutputController extends Controller
             $output->articles()->attach($details['details']);
 
             if (isset($request->order_id)){
-                Order::Approved($request->order_id);
+                Order::Approved($request->order_id, $request->quantity_approved);
                 $order = Order::find($request->order_id);
                 $output->orders()->sync($order);
                 $this->updateStockMaterials($details['details'], $order->role_id);
