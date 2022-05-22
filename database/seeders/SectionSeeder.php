@@ -16,18 +16,6 @@ class SectionSeeder extends Seeder
     {
         $sections= [
             [
-                'name' => 'Laboratorio de suelos y areas'
-            ],
-            [
-                'name' => 'Biblioteca'
-            ],
-            [
-                'name' => 'Biotecnologia'
-            ],
-            [
-                'name' => 'Tecnologia'
-            ],
-            [
                 'name' => 'Producción Frutas'
             ],
             [
