@@ -14,7 +14,7 @@ class AddQuantityApprovedToOrdersTable extends Migration
     public function up()
     {
         Schema::table('orders', function (Blueprint $table) {
-            $table->string('quantity_approved')->default(null);
+            $table->string('quantity_approved')->nullable();
         });
     }
 
