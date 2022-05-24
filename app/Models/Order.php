@@ -60,7 +60,9 @@ class Order extends Model
             ->join('materials','order_materials.material_id','materials.id')
             ->join('articles','materials.article_id','articles.id')
             ->join('units','articles.unit_id', 'units.id')
-            ->select('order_materials.order_id',
+            ->select(
+                'order_materials.id as pivot_id',
+                'order_materials.order_id',
                 'materials.article_id',
                 'order_materials.material_id',
                 'order_materials.quantity as quantity_order',
@@ -68,14 +70,15 @@ class Order extends Model
                 'materials.stock_start as quantity_materials',
                 'articles.name_article',
                 'materials.article_id',
-                'units.unit_measure'
+                'units.unit_measure',
+                'order_materials.quantity_approved',
             )
             ->where('order_materials.order_id',$id)
             ->get();
     }
     public function scopeGetTypeStatus($query, $value, $month, $year){
         $query->join('sections','orders.section_id','sections.id')
-            ->select('sections.name as section_name', 'orders.id', 'orders.id', 'orders.id', 'orders.receipt', 'orders.order_number', 'orders.date_issue as order_date', 'orders.status', 'orders.created_at', 'orders.observation', 'orders.quantity_approved')
+            ->select('sections.name as section_name', 'orders.id', 'orders.id', 'orders.id', 'orders.receipt', 'orders.order_number', 'orders.date_issue as order_date', 'orders.status', 'orders.created_at', 'orders.observation')
             ->where('status', $value);
         if(isset($month)){
             $query->WhereMonth('orders.created_at', $month);
@@ -84,6 +87,14 @@ class Order extends Model
             $query->WhereYear('orders.created_at', $year);
         }
         return $query->orderBy('orders.created_at', 'desc');
+    }
+
+    public function scopeUpdatePivot($query, $id_pivot, $quantity){
+        return $query->join('order_materials', 'order_materials.order_id','orders.id')
+            ->where('order_materials.id',$id_pivot)
+            ->update([
+                'order_materials.quantity_approved' => $quantity,
+            ]);
     }
 
     public function scopeGetOrderById($query, $id){
@@ -99,23 +110,22 @@ class Order extends Model
                       'view_order' => 'false']);
     }
 
-    public function scopeApproved($query, $id_order, $quantity){
+    public function scopeApproved($query, $id_order){
         return $query->where('id', $id_order)
             ->update(['status'=>'approved',
-                'quantity_approved'=>$quantity,
                 'view_order' => 'false']);
     }
 
     public function scopeGetQuantityNotifications($query){
         return $query->join('sections','orders.section_id','sections.id')
-            ->select('sections.id as section_id','sections.name as section_name', 'orders.id as order_id', 'orders.receipt', 'orders.order_number', 'orders.date_issue as order_date', 'orders.status', 'orders.created_at', 'orders.observation', 'orders.observation', 'orders.viewed_general', 'orders.viewed_order')
+            ->select('sections.id as section_id','sections.name as section_name', 'orders.id as order_id', 'orders.receipt', 'orders.order_number', 'orders.date_issue as order_date', 'orders.status', 'orders.created_at', 'orders.observation', 'orders.observation', 'orders.viewed_order')
             ->where('orders.role_id',auth()->user()->role_id)
             ->where('orders.view_order', 'false');
 
     }
     public function scopeGetNotifications($query){
         return $query->join('sections','orders.section_id','sections.id')
-            ->select('sections.id as section_id','sections.name as section_name', 'orders.id as order_id', 'orders.receipt', 'orders.order_number', 'orders.date_issue as order_date', 'orders.status', 'orders.created_at', 'orders.observation', 'orders.observation', 'orders.view_order')
+            ->select('sections.id as section_id','sections.name as section_name', 'orders.id as order_id', 'orders.receipt', 'orders.order_number', 'orders.date_issue as order_date', 'orders.status', 'orders.created_at', 'orders.observation',  'orders.view_order')
             ->where('orders.role_id',auth()->user()->role_id)
             ->orderByRaw("case orders.view_order when 'true' then 1 when 'false' then 2 end")
             ->orderBy('orders.updated_at', 'desc');

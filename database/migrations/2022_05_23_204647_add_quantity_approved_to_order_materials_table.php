@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class AddQuantityApprovedToOrdersTable extends Migration
+class AddQuantityApprovedToOrderMaterialsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,8 +13,8 @@ class AddQuantityApprovedToOrdersTable extends Migration
      */
     public function up()
     {
-        Schema::table('orders', function (Blueprint $table) {
-            $table->string('quantity_approved')->default(null);
+        Schema::table('order_materials', function (Blueprint $table) {
+            $table->float('quantity_approved')->nullable();
         });
     }
 
@@ -25,7 +25,7 @@ class AddQuantityApprovedToOrdersTable extends Migration
      */
     public function down()
     {
-        Schema::table('orders', function (Blueprint $table) {
+        Schema::table('order_materials', function (Blueprint $table) {
             $table->dropColumn('quantity_approved');
         });
     }
