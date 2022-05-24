@@ -20,6 +20,7 @@ class Output extends Model
 
     public function articles(){
         return $this->belongsToMany(Article::class, "output_details", "output_id", "article_id")
+                    ->withPivot('quantity','budget_output','total')
                     ->withTimestamps();;
     }
 

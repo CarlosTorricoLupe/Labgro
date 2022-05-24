@@ -38,7 +38,7 @@ class OutputController extends Controller
      */
 
 
-    public function store(Request $request, $id_order = null)
+    public function store(OutputRequest $request, $id_order = null)
     {
         $details = $request->only('details');
         $response = array();
@@ -47,14 +47,22 @@ class OutputController extends Controller
             $this->decrementStockArticle($details['details']);
 
             $output = Output::create($request->except(['details','role_id', 'order_id']));
-
-            $output->articles()->attach($details['details']);
+            foreach ($details['details'] as $detail){
+                $output->articles()->attach(
+                    $detail['article_id'],
+                    ['quantity'=>$detail['quantity'],
+                    'budget_output'=>$detail['budget_output'],
+                    'total'=>$detail['total']
+                    ]
+                );
+            }
 
             if (isset($request->order_id)){
-                Order::Approved($request->order_id, $request->quantity_approved);
+                Order::Approved($request->order_id);
                 $order = Order::find($request->order_id);
                 $output->orders()->sync($order);
                 $this->updateStockMaterials($details['details'], $order->role_id);
+
             }
             if(isset($request->role_id)){
                 $this->updateStockMaterials($details['details'], $request->role_id);
@@ -127,6 +135,7 @@ class OutputController extends Controller
             if ($material){
                 $stock_material = $material->stock_start;
                 $quantity_order = $detail['quantity'];
+                Order::updatePivot($detail['pivot_id'], $detail['quantity_approved']);
                 $material->stock_start = $stock_material + $quantity_order;
                 $material->save();
             }
