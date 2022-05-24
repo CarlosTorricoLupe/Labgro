@@ -27,7 +27,7 @@ class Order extends Model
 
     public function materials()
     {
-        return $this->belongsToMany(Material::class,'order_materials', 'order_id', 'material_id')->withPivot('quantity')->withTimestamps();
+        return $this->belongsToMany(Material::class,'order_materials', 'order_id', 'material_id')->withPivot('quantity','quantity_approved')->withTimestamps();
     }
     public function outputs(){
         return $this->belongsToMany(Output::class,'orders_outputs', 'order_id', 'output_id')->withTimestamps();
