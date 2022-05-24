@@ -61,7 +61,7 @@ class OutputController extends Controller
                 Order::Approved($request->order_id);
                 $order = Order::find($request->order_id);
                 $output->orders()->sync($order);
-                $this->updateStockMaterials($details['details'], $order->role_id);
+                $this->updateStockMaterials($details['details'], $order->role_id, $request->order_id);
 
             }
             if(isset($request->role_id)){
@@ -129,13 +129,15 @@ class OutputController extends Controller
         }
     }
 
-    public function updateStockMaterials($details, $role_id){
+    public function updateStockMaterials($details, $role_id, $order_id = null){
         foreach ($details as $detail){
             $material = Material::where('article_id', $detail['article_id'])->where('role_id', $role_id)->first();
             if ($material){
                 $stock_material = $material->stock_start;
                 $quantity_order = $detail['quantity'];
-                Order::updatePivot($detail['pivot_id'], $detail['quantity_approved']);
+                if(isset($order_id)){
+                    $material->orders()->updateExistingPivot($order_id,['quantity_approved'=>$detail['quantity_approved']]);
+                }
                 $material->stock_start = $stock_material + $quantity_order;
                 $material->save();
             }
