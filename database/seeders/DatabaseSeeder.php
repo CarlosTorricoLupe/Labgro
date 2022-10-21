@@ -25,11 +25,11 @@ class DatabaseSeeder extends Seeder
              UserSeeder::class,
              ArticleSeeder::class,
              SectionSeeder::class,
-             IncomeSeeder::class,
-             OutputSeeder::class,
+             //IncomeSeeder::class,
+             //OutputSeeder::class,
              MaterialSeeder::class,
              PresentationUnitsSeeder::class,
-             ProductSeeder::class,
+             //ProductSeeder::class,
          ]);
         //\App\Models\User::factory()->create();
     }

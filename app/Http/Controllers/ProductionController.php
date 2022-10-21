@@ -17,10 +17,7 @@ class ProductionController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function __construct()
-    {
-        $this->user = JWTAuth::parseToken()->authenticate();
-    }
+    
 
     public function index(Request $request)
     {

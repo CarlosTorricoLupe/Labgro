@@ -97,7 +97,7 @@ class Article extends Model
             ->WhereMonth('outputs.delivery_date', '>=', $periods[$request->trimestre][0])
             ->WhereMonth('outputs.delivery_date', '<=', $periods[$request->trimestre][1])
 
-            ->distinct()
+            
             ->select('articles.id as articleId',
                 'article_incomes.id as articleIncomeId',
                 'incomes.id as incomeId',
@@ -108,7 +108,7 @@ class Article extends Model
                 'article_incomes.unit_price as incomesUnitPrice',
                 'article_incomes.quantity as incomesQuantity',
                 'article_incomes.last_output as lastOutput',
-                'article_incomes.current_stock as currentStock',
+                'article_incomes.quantity as currentStock',
                 'output_details.quantity as outputQuantity',
                 'output_details.budget_output as output',
                 'units.unit_measure')

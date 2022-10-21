@@ -60,7 +60,8 @@ class IncomeController extends Controller
         foreach($articles as $article){
             $articleUpdate=Article::find($article['article_id']);
             if($articleUpdate){
-                $articleUpdate['stock_total'] = $article['quantity'] + $articleUpdate['stock'];
+                $articleUpdate['stock'] = $article['quantity'] + $articleUpdate['stock_total'];
+                $articleUpdate['stock_total'] = $article['quantity'] + $articleUpdate['stock_total'];
                 $article['is_consumed'] = 1;
                 $articleUpdate->saveOrFail();
                 $response['articles']="Stock de los articulos actualizados correctamente";

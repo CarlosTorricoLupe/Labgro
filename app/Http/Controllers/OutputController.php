@@ -38,7 +38,7 @@ class OutputController extends Controller
      */
 
 
-    public function store(OutputRequest $request, $id_order = null)
+    public function store(OutputRequest $request)
     {
         $details = $request->only('details');
         $response = array();
@@ -90,32 +90,13 @@ class OutputController extends Controller
             $quantity_order = $detail['quantity'];
 
             if( ($stock_article - $quantity_order) < 0 ){
-                if(($this->translateStockIncome($article, $quantity_order)) == false){
-                    $is_permit = false;
-                }
+                $is_permit=false;
             }
         }
         return $is_permit;
     }
 
-    public function translateStockIncome($article, $quantity_order){
-        $is_permit = false;
-
-        $income = Article_income::
-            where('article_id', $article->id )
-            ->where('is_consumed', '=' , 0)
-            ->first();
-
-        if( ($article->stock + $income->quantity) > $quantity_order) {
-            $article->stock = $article->stock + $income->quantity;
-            $income->is_consumed = 1;
-            $article->save();
-            $income->save();
-            $is_permit = true;
-        }
-
-        return $is_permit;
-    }
+    
 
     public function decrementStockArticle($details){
         foreach ($details as $detail){

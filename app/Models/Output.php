@@ -9,6 +9,9 @@ class Output extends Model
 {
     use HasFactory;
 
+    protected $casts = [
+        'delivery_date' => "datetime:Y-m-d",
+    ];
     protected $fillable = [
         'section_id',
         'receipt',
