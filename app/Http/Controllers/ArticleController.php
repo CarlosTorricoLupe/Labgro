@@ -133,4 +133,14 @@ class ArticleController extends Controller
             ],404);
         }
     }
+
+    public function physicalReport(Request $request){
+        $report=Article::getArticlePhysicalReport($request->id,$request->mounthone,$request->mounttwo,$request->year);
+        $reportOuput=Article::getArticlePhysicalReportOutput($request->id,$request->mounthone,$request->mounttwo,$request->year);
+        $reporteFinal=$report->concat($reportOuput)->sortBy(['fecha','asc'],['created_at','asc']);
+        return response()->json([
+            'success'=>true,
+            'report'=>$reporteFinal,
+        ],200);
+    }
 }

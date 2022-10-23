@@ -63,6 +63,7 @@ class IncomeController extends Controller
                 $articleUpdate['stock'] = $article['quantity'] + $articleUpdate['stock_total'];
                 $articleUpdate['stock_total'] = $article['quantity'] + $articleUpdate['stock_total'];
                 $article['is_consumed'] = 1;
+                $articleUpdate['unit_price']=$article['unit_price'];
                 $articleUpdate->saveOrFail();
                 $response['articles']="Stock de los articulos actualizados correctamente";
             }
@@ -138,6 +139,7 @@ class IncomeController extends Controller
              $articleUpdate=Article::find($detail['article_id']);
              if($articleUpdate){
                  $articleUpdate->stock_total -=$detail['quantity'];
+                 $articleUpdate->stock -=$detail['quantity'];
                  $articleUpdate->saveOrFail();
                  $response['articles']="Stock de los articulos restaurados correctamente";
                 $articleUpdate->incomes()->detach($detail['income_id']);

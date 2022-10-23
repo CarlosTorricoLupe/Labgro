@@ -20,6 +20,7 @@ use App\Http\Controllers\ProductionController;
 use App\Http\Controllers\ProductionProductController;
 use App\Http\Controllers\ProductMaterialController;
 use App\Http\Controllers\ProductPresentationController;
+use Illuminate\Routing\Route as RoutingRoute;
 
 /*
 |--------------------------------------------------------------------------
@@ -128,7 +129,7 @@ Route::group(['middleware' => ['auth:api']], function() {
 
 //VERIFIRY PRICE
     Route::get('/verifyPriceArticle/{id}', [OutputController::class, 'verififyPriceArticle']);
-
+    Route::get('/article/getPhysicalReport', [ArticleController::class, 'physicalReport']);
 });
 
 

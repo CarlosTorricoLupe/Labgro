@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-
+use Illuminate\Support\Facades\DB;
 
 class Article extends Model
 {
@@ -113,5 +113,84 @@ class Article extends Model
                 'output_details.budget_output as output',
                 'units.unit_measure')
             ->get();
+    }
+
+    public static function getArticlePhysicalReport($id,$month, $monthtwo,$year){
+        if($month == 0 && $monthtwo == 0 && $year == 0 ){
+            return self::join('article_incomes','articles.id','article_incomes.article_id')
+                        ->join('incomes','article_incomes.income_id','incomes.id')
+                        ->select(//'articles.name_article as article_name',
+                            'incomes.created_at as fecha',
+                            'incomes.invoice_number as comprobante',                    
+                            'article_incomes.quantity as cantidadEntrada',
+                            'article_incomes.total_price as importeEntrada',
+                            'article_incomes.quantity as cantidadSaldo',
+                            'article_incomes.total_price as importeSaldo',
+                            'article_incomes.unit_price as precioMedioEntrada',
+                            'article_incomes.created_at as created_at',
+                        )
+                ->where('article_incomes.article_id',$id)
+                ->get();
+
+        }else{
+            return self::join('article_incomes','articles.id','article_incomes.article_id')
+                    ->join('incomes','article_incomes.income_id','incomes.id')
+                    ->select(//'articles.name_article as article_name',
+                        'incomes.created_at as fecha',
+                        'incomes.invoice_number as comprobante',                    
+                        'article_incomes.quantity as cantidadEntrada',
+                        'article_incomes.total_price as importeEntrada',
+                        'article_incomes.quantity as cantidadSaldo',
+                        'article_incomes.total_price as importeSaldo',
+                        'article_incomes.unit_price as precioMedioEntrada',
+                        'article_incomes.created_at as created_at',
+                    )
+                ->where('article_incomes.article_id',$id)
+                ->WhereMonth('incomes.created_at', '>=',  $month)
+                ->WhereMonth('incomes.created_at', '<=', $monthtwo)
+                ->WhereYear('incomes.created_at', $year)
+                ->get();
+        }
+    }
+
+    public static function getArticlePhysicalReportOutput($id,$month, $monthtwo,$year){
+
+        if($month == 0 && $monthtwo == 0 && $year == 0 ){
+            return self::join('output_details','articles.id','output_details.article_id')
+                    ->join('outputs','output_details.output_id','outputs.id')
+                    ->join('sections','outputs.section_id','sections.id')
+                    ->select(//'articles.name_article as article_name',
+                        'outputs.delivery_date as fecha',
+                        'outputs.receipt as comprobante',
+                        'sections.name as origen',
+                        'output_details.quantity as cantidadSalida',
+                        'output_details.total as importeSalida',
+                        'output_details.balance_stock as cantidadSaldo',
+                        'output_details.balance_price as importeSaldo',
+                        'output_details.created_at as created_at'
+                    )       
+            ->where('output_details.article_id',$id)
+            ->get();
+        }else{
+            return self::join('output_details','articles.id','output_details.article_id')
+                    ->join('outputs','output_details.output_id','outputs.id')
+                    ->join('sections','outputs.section_id','sections.id')
+                    ->select(//'articles.name_article as article_name',
+                        'outputs.delivery_date as fecha',
+                        'outputs.receipt as comprobante',
+                        'sections.name as origen',
+                        'output_details.quantity as cantidadSalida',
+                        'output_details.total as importeSalida',
+                        'output_details.balance_stock as cantidadSaldo',
+                        'output_details.balance_price as importeSaldo',
+                        'output_details.created_at as created_at'
+                    )   
+                    ->where('output_details.article_id',$id)
+                ->WhereMonth('outputs.delivery_date', '>=',  $month)
+                ->WhereMonth('outputs.delivery_date', '<=', $monthtwo)
+                ->WhereYear('outputs.delivery_date', $year)
+                ->get();
+        }
+    
     }
 }
