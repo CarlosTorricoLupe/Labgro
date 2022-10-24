@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
 
 class Output extends Model
 {
@@ -75,6 +76,36 @@ class Output extends Model
             ->where('output_details.article_id',$id)
             ->paginate(12)->appends(request()->query());
 
+    }
+
+    public static function getOutputs($year, $periodIni, $periodEnd){
+        return DB::table('outputs')
+            ->join('output_details','outputs.id','output_details.output_id')
+            ->join('articles','output_details.article_id','articles.id')
+            ->join('units','articles.unit_id',"units.id")
+            ->whereYear('outputs.delivery_date',$year)
+            ->WhereMonth('outputs.delivery_date', '>=', $periodIni)
+            ->WhereMonth('outputs.delivery_date', '<=', $periodEnd)
+            ->select(
+                'articles.cod_article',
+                DB::raw('SUM(output_details.quantity) as quantity'),
+                'units.unit_measure',
+                'articles.name_article',
+                'articles.unit_price',
+                DB::raw('SUM(output_details.total) as total'),
+                DB::raw('COUNT(output_details.article_id) as outputs'),
+                DB::raw('SUM(articles.unit_price) as amount1'),
+                'output_details.balance_stock',
+                DB::raw('SUM(output_details.balance_stock) as amount2'),
+            )
+            ->groupBy('output_details.article_id',
+                'articles.cod_article',
+                'units.unit_measure',
+                'articles.name_article',
+                'articles.unit_price',
+                'output_details.total',
+                'output_details.balance_stock',
+            );
     }
 
     public static function boot() {

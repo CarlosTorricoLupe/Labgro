@@ -5,6 +5,7 @@ use App\Http\Requests\CreateArticleRequest;
 use App\Http\Requests\UpdateArticleRequest;
 use App\Http\Resources\ArticleResource;
 use App\Models\Article;
+use App\Models\Output;
 use App\Models\Unit;
 use Illuminate\Http\Request;
 
@@ -122,8 +123,17 @@ class ArticleController extends Controller
     }
 
     public function peripheralReport(Request $request){
-        $result=Article::ArticlesPeripheralReport($request);
-//        $res = ArticleResource::collection($result);
+        $periods=[
+            'Primer Trimestre'=>[1,3],
+            'Segundo Trimestre'=>[4,6],
+            'Tercer Trimestre'=>[7,9],
+            'Cuarto Trimestre'=>[10,12],
+        ];
+        $period = $periods[$request->trimestre];
+        $year = $request->year;
+        $outputs = Output::getOutputs($year, $period[0], $period[1])->get();
+        return $outputs;
+        $result=Article::ArticlesPeripheralReport($period, $year);
         if(count($result)){
             return $result;
         } else {
