@@ -192,7 +192,7 @@ class ProductionProductController extends Controller
             $response['production'] = $productions;
             $response['products'] = $products;
         }
-        return response()->json($response, 201);
+        return response()->json($response, 200);
     }
 
     public function getMaterialsConsumed(Request $request){

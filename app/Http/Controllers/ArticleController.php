@@ -135,43 +135,54 @@ class ArticleController extends Controller
     }
 
     public function physicalReport(Request $request){
+        $reporteFinal=[];
         $reportsIncomes=Article::getArticlePhysicalReport($request->id,$request->mounthone,$request->mounttwo,$request->year);
-        $result = array();
-        foreach($reportsIncomes as $income){
-            $result[]=[
-                'fecha'=> $income->fecha,
-                'comprobante'=> $income->comprobante,
-                'Origen'=> "Ingreso",
-                'cantidadEntrada'=> $income->cantidadEntrada,
-                'importeEntrada'=> $income->importeEntrada,
-                'cantidadSalida'=> "",
-                'importeSalida'=> "",
-                'cantidadSaldo'=> $income->cantidadSaldo,
-                'importeSaldo'=> $income->importeSaldo,
-                'precioMedio'=> $income->precioMedioEntrada,
-                'created_at'=> $income->created_at->toDateTimeString(),
-            ];
-            $reportIncome=collect($result);
-        }
+            $result = array();
+            foreach($reportsIncomes as $income){
+                $result[]=[
+                    'fecha'=> $income->fecha,
+                    'comprobante'=> $income->comprobante,
+                    'Origen'=> "Ingreso",
+                    'cantidadEntrada'=> $income->cantidadEntrada,
+                    'importeEntrada'=> $income->importeEntrada,
+                    'cantidadSalida'=> "",
+                    'importeSalida'=> "",
+                    'cantidadSaldo'=> $income->cantidadSaldo,
+                    'importeSaldo'=> $income->importeSaldo,
+                    'precioMedio'=> $income->precioMedioEntrada,
+                    'created_at'=> $income->created_at->toDateTimeString(),
+                ];
+                $reportIncome=collect($result);
+            }
         $reportsOuputs=Article::getArticlePhysicalReportOutput($request->id,$request->mounthone,$request->mounttwo,$request->year);
-        $result2 = array();
-        foreach($reportsOuputs as $outputs){
-            $result2[]=[
-                'fecha'=> $outputs->fecha,
-                'comprobante'=> $outputs->comprobante,
-                'Origen'=> $outputs->origen,
-                'cantidadEntrada'=> "",
-                'importeEntrada'=> "",
-                'cantidadSalida'=> $outputs->cantidadSalida,
-                'importeSalida'=> $outputs->importeSalida,
-                'cantidadSaldo'=> $outputs->cantidadSaldo,
-                'importeSaldo'=> $outputs->importeSaldo,
-                'precioMedio'=> "",
-                'created_at'=> $outputs->created_at->toDateTimeString(),
-            ];
-            $reportOutput=collect($result2);
+            $result2 = array();
+            foreach($reportsOuputs as $outputs){
+                $result2[]=[
+                    'fecha'=> $outputs->fecha,
+                    'comprobante'=> $outputs->comprobante,
+                    'Origen'=> $outputs->origen,
+                    'cantidadEntrada'=> "",
+                    'importeEntrada'=> "",
+                    'cantidadSalida'=> $outputs->cantidadSalida,
+                    'importeSalida'=> $outputs->importeSalida,
+                    'cantidadSaldo'=> $outputs->cantidadSaldo,
+                    'importeSaldo'=> $outputs->importeSaldo,
+                    'precioMedio'=> "",
+                    'created_at'=> $outputs->created_at->toDateTimeString(),
+                ];
+                $reportOutput=collect($result2);
+            }
+        
+        if (count($reportsIncomes)&& count($reportsOuputs)) {
+            $reporteFinal=$reportIncome->concat($reportOutput)->sortBy(['fecha','asc'],['created_at','asc']);
+        }else{
+        if (count($reportsIncomes)) {
+            $reporteFinal=$reportIncome->sortBy(['fecha','asc'],['created_at','asc']);
         }
-        $reporteFinal=$reportIncome->concat($reportOutput)->sortBy(['fecha','asc'],['created_at','asc']);
+        if(count($reportsOuputs)){
+            $reporteFinal=$reportOutput->sortBy(['fecha','asc'],['created_at','asc']);
+        }
+        }
         return response()->json([
             'success'=>true,
             'report'=>$reporteFinal,

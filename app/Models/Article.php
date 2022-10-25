@@ -185,7 +185,7 @@ class Article extends Model
                         'output_details.balance_price as importeSaldo',
                         'output_details.created_at as created_at'
                     )   
-                    ->where('output_details.article_id',$id)
+                 ->where('output_details.article_id',$id)
                 ->WhereMonth('outputs.delivery_date', '>=',  $month)
                 ->WhereMonth('outputs.delivery_date', '<=', $monthtwo)
                 ->WhereYear('outputs.delivery_date', $year)
