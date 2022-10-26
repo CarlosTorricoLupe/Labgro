@@ -146,7 +146,7 @@ class ArticleController extends Controller
 
     public function physicalReport(Request $request){
         $reporteFinal=[];
-        $reportsIncomes=Article::getArticlePhysicalReport($request->id,$request->mounthone,$request->mounttwo,$request->year);
+        $reportsIncomes=Article::getArticlePhysicalReport($request->id,$request->monthone,$request->monthtwo,$request->year);
             $result = array();
             foreach($reportsIncomes as $income){
                 $result[]=[
@@ -164,7 +164,7 @@ class ArticleController extends Controller
                 ];
                 $reportIncome=collect($result);
             }
-        $reportsOuputs=Article::getArticlePhysicalReportOutput($request->id,$request->mounthone,$request->mounttwo,$request->year);
+        $reportsOuputs=Article::getArticlePhysicalReportOutput($request->id,$request->monthone,$request->monthtwo,$request->year);
             $result2 = array();
             foreach($reportsOuputs as $outputs){
                 $result2[]=[
