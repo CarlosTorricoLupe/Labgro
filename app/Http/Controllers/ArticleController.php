@@ -131,8 +131,8 @@ class ArticleController extends Controller
         ];
         $period = $periods[$request->trimestre];
         $year = $request->year;
-        $outputs = Output::getOutputs($year, $period[0], $period[1])->get();
-        return $outputs;
+        $inputs = Article::getInputs($year, $period[0], $period[1])->get();
+        return $inputs;
         $result=Article::ArticlesPeripheralReport($period, $year);
         if(count($result)){
             return $result;

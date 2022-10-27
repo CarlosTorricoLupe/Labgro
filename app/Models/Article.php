@@ -97,7 +97,7 @@ class Article extends Model
             ->WhereMonth('outputs.delivery_date', '>=', $periods[$request->trimestre][0])
             ->WhereMonth('outputs.delivery_date', '<=', $periods[$request->trimestre][1])
 
-            
+
             ->select('articles.id as articleId',
                 'article_incomes.id as articleIncomeId',
                 'incomes.id as incomeId',
@@ -121,7 +121,7 @@ class Article extends Model
                         ->join('incomes','article_incomes.income_id','incomes.id')
                         ->select(//'articles.name_article as article_name',
                             'incomes.created_at as fecha',
-                            'incomes.invoice_number as comprobante',                    
+                            'incomes.invoice_number as comprobante',
                             'article_incomes.quantity as cantidadEntrada',
                             'article_incomes.total_price as importeEntrada',
                             'article_incomes.quantity as cantidadSaldo',
@@ -137,7 +137,7 @@ class Article extends Model
                     ->join('incomes','article_incomes.income_id','incomes.id')
                     ->select(//'articles.name_article as article_name',
                         'incomes.created_at as fecha',
-                        'incomes.invoice_number as comprobante',                    
+                        'incomes.invoice_number as comprobante',
                         'article_incomes.quantity as cantidadEntrada',
                         'article_incomes.total_price as importeEntrada',
                         'article_incomes.quantity as cantidadSaldo',
@@ -168,7 +168,7 @@ class Article extends Model
                         'output_details.balance_stock as cantidadSaldo',
                         'output_details.balance_price as importeSaldo',
                         'output_details.created_at as created_at'
-                    )       
+                    )
             ->where('output_details.article_id',$id)
             ->get();
         }else{
@@ -184,13 +184,36 @@ class Article extends Model
                         'output_details.balance_stock as cantidadSaldo',
                         'output_details.balance_price as importeSaldo',
                         'output_details.created_at as created_at'
-                    )   
+                    )
                     ->where('output_details.article_id',$id)
                 ->WhereMonth('outputs.delivery_date', '>=',  $month)
                 ->WhereMonth('outputs.delivery_date', '<=', $monthtwo)
                 ->WhereYear('outputs.delivery_date', $year)
                 ->get();
         }
-    
+    }
+
+    public static function getInputs($year, $periodIni, $periodEnd){
+        return DB::table('articles')
+            ->join('article_incomes','articles.id','article_incomes.article_id')
+            ->join('incomes','article_incomes.income_id',"incomes.id")
+            ->join('units','articles.unit_id',"units.id")
+            ->whereYear('incomes.created_at',$year)
+            ->WhereMonth('incomes.created_at', '>=', $periodIni)
+            ->WhereMonth('incomes.created_at', '<=', $periodEnd)
+            ->select(
+                'articles.cod_article',
+                DB::raw('SUM(article_incomes.quantity) as quantity'),
+                'units.unit_measure',
+                'articles.name_article',
+                'articles.unit_price',
+                DB::raw('SUM(article_incomes.total_price) as total'),
+            )
+            ->groupBy('article_incomes.article_id',
+                'articles.cod_article',
+                'units.unit_measure',
+                'articles.name_article',
+                'articles.unit_price',
+            );
     }
 }
