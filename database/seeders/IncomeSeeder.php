@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use App\Models\Article;
 use App\Models\Income;
+use App\Models\Output;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Arr;
 
@@ -19,28 +20,166 @@ class IncomeSeeder extends Seeder
      //Por si quieren ejecutar solo el seeder de Incomes
     public function run()
     {
-        $dates=['2021-08-01','2021-07-12','2021-07-23','2021-07-04','2021-08-22','2021-08-12'];
+        $articles=Article::all()->pluck('id');
 
-        for ($i=0; $i < 5; $i++) {
-            $incom=Income::create([
-                'receipt' => rand(300,1000),
-                'total' => rand(300000,900000)/100,
-                'provider' => 'pedro',
-                'order_number' => rand(100,700),
-                'created_at' => Arr::random($dates),
-                'invoice_number'=>rand(100,1000)]);
+        $income=Income::create([
+            "receipt" => 100,
+            "total" =>  100.00,
+            "provider" =>  "Jugos s.r.l",
+            "order_number" =>  200,
+            "created_at" =>  "2022-09-03 10:30:12",
+            "invoice_number" => 101]);
+            $income->articles()->attach(1,['quantity'=>20,
+                    'unit_price'=>5,
+                    'total_price'=>100,
+            ]);
 
-                $articles=Article::inRandomOrder()->take(rand(1,3))->pluck('id');
-                foreach($articles as $article){
-                    $incom->articles()->attach($article,['quantity'=>rand(1,100),
-                        'unit_price'=>rand(1000,6000)/100,
-                        'total_price'=>rand(10000,20000)/100,
-                        'current_stock' => rand(300,1000),
-                        'last_output' => Arr::random($dates),
+            $output = Output::create([
+                'section_id' =>'1',
+                'receipt' => 500,
+                'order_number' => 500,
+                'order_date' => "2022-09-04 10:30:12",
+                'delivery_date' => "2022-09-04 10:50:12",
+                'total' => 25]);
+                $output->articles()->attach(1,[
+                    'quantity'=>5,
+                    'budget_output'=>50,
+                    'total'=>25,
+                    'balance_stock' => 15,
+                    'balance_price' => 75
+                ]);
 
+            $output = Output::create([
+                'section_id' =>'3',
+                'receipt' => 501,
+                'order_number' => 501,
+                'order_date' => "2022-09-10 10:30:12",
+                'delivery_date' => "2022-09-10 12:50:12",
+                'total' => 15]);
+                $output->articles()->attach(1,[
+                        'quantity'=>3,
+                        'budget_output'=>50,
+                        'total'=>15,
+                        'balance_stock' => 12,
+                        'balance_price' => 60
                     ]);
-                }
-        }
+
+            $output = Output::create([
+                'section_id' =>'1',
+                'receipt' => 502,
+                'order_number' => 502,
+                'order_date' => "2022-09-22 10:30:12",
+                'delivery_date' => "2022-09-22 12:50:12",
+                'total' => 60]);
+                $output->articles()->attach(1,[
+                        'quantity'=>12,
+                        'budget_output'=>50,
+                        'total'=>60,
+                        'balance_stock' => 0,
+                        'balance_price' => 0
+                    ]);
+            $income=Income::create([
+                "receipt" => 101,
+                "total" =>  150.00,
+                "provider" =>  "Jugos s.r.l",
+                "order_number" =>  201,
+                "created_at" =>  "2022-10-01 10:30:12",
+                "invoice_number" => 102]);
+                $income->articles()->attach(1,['quantity'=>30,
+                        'unit_price'=>5,
+                        'total_price'=>150,
+                ]);
+
+            
+            $income2=Income::create([
+                "receipt" => 201,
+                "total" =>  250.00,
+                "provider" =>  "CuajaMax",
+                "order_number" =>  202,
+                "created_at" =>  "2022-10-02 10:30:12",
+                "invoice_number" => 201]);
+                $income2->articles()->attach(2,['quantity'=>50,
+                            'unit_price'=>5,
+                            'total_price'=>250,
+                ]);
+            $output = Output::create([
+                'section_id' =>'3',
+                'receipt' => 503,
+                'order_number' => 503,
+                'order_date' => "2022-10-05 10:30:12",
+                'delivery_date' => "2022-10-05 12:50:12",
+                'total' => 50]);
+                $output->articles()->attach(2,[
+                        'quantity'=>10,
+                        'budget_output'=>60,
+                        'total'=>50,
+                        'balance_stock' => 40,
+                        'balance_price' =>200
+                    ]);
+        
+            $output = Output::create([
+                'section_id' =>'3',
+                'receipt' => 504,
+                'order_number' => 504,
+                'order_date' => "2022-10-14 10:30:12",
+                'delivery_date' => "2022-10-14 12:50:12",
+                'total' => 75]);
+                $output->articles()->attach(2,[
+                        'quantity'=>15,
+                        'budget_output'=>60,
+                        'total'=>75,
+                        'balance_stock' => 25,
+                        'balance_price' => 125
+                    ]);
+            $output = Output::create([
+                'section_id' =>'3',
+                'receipt' => 505,
+                'order_number' => 505,
+                'order_date' => "2022-10-25 10:30:12",
+                'delivery_date' => "2022-10-25 12:50:12",
+                'total' => 75]);
+                $output->articles()->attach(2,[
+                        'quantity'=>15,
+                        'budget_output'=>60,
+                        'total'=>75,
+                        'balance_stock' => 10,
+                        'balance_price' => 50
+                    ]);
+            $output = Output::create([
+                'section_id' =>'3',
+                'receipt' => 506,
+                'order_number' => 506,
+                'order_date' => "2022-11-04 10:30:12",
+                'delivery_date' => "2022-11-04 12:50:12",
+                'total' => 50]);
+                $output->articles()->attach(2,[
+                        'quantity'=>10,
+                        'budget_output'=>61,
+                        'total'=>50,
+                        'balance_stock' => 0,
+                        'balance_price' => 0
+                    ]);
+            
+        // for ($i=0; $i < 3; $i++) {
+        //     $incom=Income::create([
+        //         'receipt' => rand(300,1000),
+        //         'total' => rand(300000,900000)/100,
+        //         'provider' => 'pedro',
+        //         'order_number' => rand(100,700),
+        //         'created_at' => Arr::random($dates),
+        //         'invoice_number'=>rand(100,1000)]);
+
+        //         $articles=Article::inRandomOrder()->take(rand(1,3))->pluck('id');
+        //         foreach($articles as $article){
+        //             $incom->articles()->attach($article,['quantity'=>rand(1,100),
+        //                 'unit_price'=>rand(1000,6000)/100,
+        //                 'total_price'=>rand(10000,20000)/100,
+        //                 'current_stock' => rand(300,1000),
+        //                 'last_output' => Arr::random($dates),
+
+        //             ]);
+        //         }
+        // }
     }
 
 }
