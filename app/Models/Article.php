@@ -77,44 +77,6 @@ class Article extends Model
              ->get();
     }
 
-    public function scopeArticlesPeripheralReport($query, $request){
-        $periods=[
-            'Primer Trimestre'=>[1,3],
-            'Segundo Trimestre'=>[4,6],
-            'Tercer Trimestre'=>[7,9],
-            'Cuarto Trimestre'=>[10,12],
-        ];
-        return $query
-            ->join('article_incomes','articles.id','article_incomes.article_id')
-            ->join('incomes','article_incomes.income_id','incomes.id')
-            ->join('units','articles.unit_id','units.id')
-            ->join('output_details','articles.id','output_details.article_id')
-            ->join('outputs','output_details.output_id','outputs.id')
-            ->WhereYear('outputs.delivery_date', '=', $request->year)
-            ->WhereYear('incomes.created_at', '=', $request->year)
-            ->WhereMonth('incomes.created_at', '>=', $periods[$request->trimestre][0])
-            ->WhereMonth('incomes.created_at', '<=', $periods[$request->trimestre][1])
-            ->WhereMonth('outputs.delivery_date', '>=', $periods[$request->trimestre][0])
-            ->WhereMonth('outputs.delivery_date', '<=', $periods[$request->trimestre][1])
-
-
-            ->select('articles.id as articleId',
-                'article_incomes.id as articleIncomeId',
-                'incomes.id as incomeId',
-                'articles.cod_article',
-                'articles.name_article',
-                'articles.stock as articleStock',
-                'articles.unit_price as articleUnitPrice',
-                'article_incomes.unit_price as incomesUnitPrice',
-                'article_incomes.quantity as incomesQuantity',
-                'article_incomes.last_output as lastOutput',
-                'article_incomes.quantity as currentStock',
-                'output_details.quantity as outputQuantity',
-                'output_details.budget_output as output',
-                'units.unit_measure')
-            ->get();
-    }
-
     public static function getArticlePhysicalReport($id,$month, $monthtwo,$year){
         if($month == 0 && $monthtwo == 0 && $year == 0 ){
             return self::join('article_incomes','articles.id','article_incomes.article_id')
