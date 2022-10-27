@@ -8,6 +8,7 @@ use App\Models\Article;
 use App\Models\Output;
 use App\Models\Unit;
 use Illuminate\Http\Request;
+use function PHPUnit\Framework\isEmpty;
 
 class ArticleController extends Controller
 {
@@ -132,10 +133,10 @@ class ArticleController extends Controller
         $period = $periods[$request->trimestre];
         $year = $request->year;
         $incomes = Article::getInputs($year, $period[0], $period[1])->get();
-
+        $outputs = Output::getOutputs(1, $year, $period[0], $period[1])->get();
         foreach($incomes as $income){
             $outputs = Output::getOutputs($income->article_id , $year, $period[0], $period[1])->get();
-            if($outputs){
+            if(count($outputs)>0){
                 $r_outputs = $outputs->sum('outputs');
                 $r_balance_stock = @$outputs->last()->balance_stock;
                 $r_balance_stock = $r_balance_stock ? $r_balance_stock : 0;
@@ -144,10 +145,11 @@ class ArticleController extends Controller
                 $income->balance_stock = $r_balance_stock;
                 $income->amount2 = $income->unit_price * $r_balance_stock;
             }else {
+                $r_balance_stock = $income->quantity;
                 $income->outputs = 0;
                 $income->amount1 = 0;
-                $income->balance_stock = 0;
-                $income->amount2 = 0;
+                $income->balance_stock = $r_balance_stock;
+                $income->amount2 = $income->unit_price * $r_balance_stock;
             }
         }
         if(count($incomes)){
