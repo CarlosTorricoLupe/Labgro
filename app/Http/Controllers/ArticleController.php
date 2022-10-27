@@ -131,11 +131,16 @@ class ArticleController extends Controller
         ];
         $period = $periods[$request->trimestre];
         $year = $request->year;
-        $inputs = Article::getInputs($year, $period[0], $period[1])->get();
-        return $inputs;
-        $result=Article::ArticlesPeripheralReport($period, $year);
-        if(count($result)){
-            return $result;
+        $incomes = Article::getInputs($year, $period[0], $period[1])->get();
+        foreach($incomes as $income){
+            $outputs = Output::getOutputs($income->article_id , $year, $period[0], $period[1])->first();
+            $income->outputs = $outputs ? $outputs->outputs : 0;
+            $income->amount1 = $outputs ? $income->unit_price * $outputs->outputs : 0;
+            $income->balance_stock = $outputs ? $outputs->balance_stock : 0;
+            $income->amount2 = $outputs ? $income->unit_price * $outputs->balance_stock : 0;
+        }
+        if(count($incomes)){
+            return $incomes;
         } else {
             return response()->json([
                 'success'=>false,

@@ -202,6 +202,7 @@ class Article extends Model
             ->WhereMonth('incomes.created_at', '>=', $periodIni)
             ->WhereMonth('incomes.created_at', '<=', $periodEnd)
             ->select(
+                'article_incomes.article_id',
                 'articles.cod_article',
                 DB::raw('SUM(article_incomes.quantity) as quantity'),
                 'units.unit_measure',
