@@ -25,41 +25,41 @@ class MaterialSeeder extends Seeder
                 'is_a' =>'supplies',
                 'role_id'=>5               
             ],
-            // [
-            //     'code' => 'Acid',
-            //     'stock_start' => '50',
-            //     'stock_min' => '10',
-            //     'color' => '#FFFFFF',
-            //     'article_id' => 2,
-            //     'is_a' =>'raw_material',
-            //     'role_id'=>5
-            // ],
-            // [
-            //     'code' => 'Azcr',
-            //     'stock_start' => '100',
-            //     'stock_min' => '10',
-            //     'article_id' => 3,
-            //     'is_a' =>'supplies',
-            //     'role_id'=>5
-            // ],
-            // [
-            //     'code' => 'Cnsvt',
-            //     'stock_start' => '150',
-            //     'stock_min' => '10',
-            //     'article_id' => 4,
-            //     'is_a' =>'raw_material',
-            //     'role_id'=>5
-            // ],
-            //queso
             [
-                'code' => 'Cuj',
-                'stock_start' => '80',
+                'code' => 'Acid',
+                'stock_start' => '50',
                 'stock_min' => '10',
                 'color' => '#FFFFFF',
                 'article_id' => 2,
                 'is_a' =>'raw_material',
-                'role_id'=>2
+                'role_id'=>5
             ],
+            [
+                'code' => 'Azcr',
+                'stock_start' => '100',
+                'stock_min' => '10',
+                'article_id' => 3,
+                'is_a' =>'supplies',
+                'role_id'=>5
+            ],
+            [
+                'code' => 'Cnsvt',
+                'stock_start' => '150',
+                'stock_min' => '10',
+                'article_id' => 4,
+                'is_a' =>'raw_material',
+                'role_id'=>5
+            ],
+            //queso
+            // [
+            //     'code' => 'Cuj',
+            //     'stock_start' => '80',
+            //     'stock_min' => '10',
+            //     'color' => '#FFFFFF',
+            //     'article_id' => 2,
+            //     'is_a' =>'raw_material',
+            //     'role_id'=>2
+            // ],
             // [
             //     'code' => 'CujYi',
             //     'stock_start' => '70',
@@ -87,15 +87,15 @@ class MaterialSeeder extends Seeder
             //     'is_a' =>'raw_material',
             //     'role_id'=>2
             // ],
-            [
-                'code' => 'Ferm',
-                'stock_start' => '100',
-                'stock_min' => '10',
-                'color' => '#FFFFFF',
-                'article_id' => 3,
-                'is_a' =>'raw_material',
-                'role_id'=>4
-            ],
+            // [
+            //     'code' => 'Ferm',
+            //     'stock_start' => '100',
+            //     'stock_min' => '10',
+            //     'color' => '#FFFFFF',
+            //     'article_id' => 3,
+            //     'is_a' =>'raw_material',
+            //     'role_id'=>4
+            // ],
         ];
         foreach($materials as $key => $value){
             Material::create($value);

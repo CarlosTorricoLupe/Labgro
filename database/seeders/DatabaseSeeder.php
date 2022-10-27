@@ -29,7 +29,7 @@ class DatabaseSeeder extends Seeder
              //OutputSeeder::class,
              MaterialSeeder::class,
              PresentationUnitsSeeder::class,
-             //ProductSeeder::class,
+             ProductSeeder::class,
          ]);
         //\App\Models\User::factory()->create();
     }

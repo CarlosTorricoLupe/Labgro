@@ -56,17 +56,17 @@ class ProductSeeder extends Seeder
         $jug->ingredients()->attach(3,['quantity'=>0.666666]);
         $jug->ingredients()->attach(4,['quantity'=>0.25]);
 
-        $ques=Product::create([
-            'name' => 'Queso',
-            'code'=> 'Ques',
-            'description' => 'Queso elaborada en la Facultad de Agronomía',
-            'role_id'=>2,
-            'image'=> 'https://picsum.photos/700/400?random',
-        ]);
-        $ques->ingredients()->attach(5,['quantity'=>0.4]);
-        $ques->ingredients()->attach(6,['quantity'=>0.3]);
-        $ques->ingredients()->attach(7,['quantity'=>0.666666]);
-        $ques->ingredients()->attach(8,['quantity'=>17.8]);
-        $ques->ingredients()->attach(9,['quantity'=>2.5]);
+        // $ques=Product::create([
+        //     'name' => 'Queso',
+        //     'code'=> 'Ques',
+        //     'description' => 'Queso elaborada en la Facultad de Agronomía',
+        //     'role_id'=>2,
+        //     'image'=> 'https://picsum.photos/700/400?random',
+        // ]);
+        // $ques->ingredients()->attach(5,['quantity'=>0.4]);
+        // $ques->ingredients()->attach(6,['quantity'=>0.3]);
+        // $ques->ingredients()->attach(7,['quantity'=>0.666666]);
+        // $ques->ingredients()->attach(8,['quantity'=>17.8]);
+        // $ques->ingredients()->attach(9,['quantity'=>2.5]);
     }
 }
