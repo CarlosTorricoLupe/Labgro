@@ -77,51 +77,13 @@ class Article extends Model
              ->get();
     }
 
-    public function scopeArticlesPeripheralReport($query, $request){
-        $periods=[
-            'Primer Trimestre'=>[1,3],
-            'Segundo Trimestre'=>[4,6],
-            'Tercer Trimestre'=>[7,9],
-            'Cuarto Trimestre'=>[10,12],
-        ];
-        return $query
-            ->join('article_incomes','articles.id','article_incomes.article_id')
-            ->join('incomes','article_incomes.income_id','incomes.id')
-            ->join('units','articles.unit_id','units.id')
-            ->join('output_details','articles.id','output_details.article_id')
-            ->join('outputs','output_details.output_id','outputs.id')
-            ->WhereYear('outputs.delivery_date', '=', $request->year)
-            ->WhereYear('incomes.created_at', '=', $request->year)
-            ->WhereMonth('incomes.created_at', '>=', $periods[$request->trimestre][0])
-            ->WhereMonth('incomes.created_at', '<=', $periods[$request->trimestre][1])
-            ->WhereMonth('outputs.delivery_date', '>=', $periods[$request->trimestre][0])
-            ->WhereMonth('outputs.delivery_date', '<=', $periods[$request->trimestre][1])
-
-            
-            ->select('articles.id as articleId',
-                'article_incomes.id as articleIncomeId',
-                'incomes.id as incomeId',
-                'articles.cod_article',
-                'articles.name_article',
-                'articles.stock as articleStock',
-                'articles.unit_price as articleUnitPrice',
-                'article_incomes.unit_price as incomesUnitPrice',
-                'article_incomes.quantity as incomesQuantity',
-                'article_incomes.last_output as lastOutput',
-                'article_incomes.quantity as currentStock',
-                'output_details.quantity as outputQuantity',
-                'output_details.budget_output as output',
-                'units.unit_measure')
-            ->get();
-    }
-
-    public static function getArticlePhysicalReport($id,$monthone, $monthtwo,$year){
-        if($monthone == 0 && $monthtwo == 0 && $year == 0 ){
+    public static function getArticlePhysicalReport($id,$month, $monthtwo,$year){
+        if($month == 0 && $monthtwo == 0 && $year == 0 ){
             return self::join('article_incomes','articles.id','article_incomes.article_id')
                         ->join('incomes','article_incomes.income_id','incomes.id')
                         ->select(//'articles.name_article as article_name',
                             'incomes.created_at as fecha',
-                            'incomes.invoice_number as comprobante',                    
+                            'incomes.invoice_number as comprobante',
                             'article_incomes.quantity as cantidadEntrada',
                             'article_incomes.total_price as importeEntrada',
                             'article_incomes.quantity as cantidadSaldo',
@@ -137,7 +99,7 @@ class Article extends Model
                     ->join('incomes','article_incomes.income_id','incomes.id')
                     ->select(//'articles.name_article as article_name',
                         'incomes.created_at as fecha',
-                        'incomes.invoice_number as comprobante',                    
+                        'incomes.invoice_number as comprobante',
                         'article_incomes.quantity as cantidadEntrada',
                         'article_incomes.total_price as importeEntrada',
                         'article_incomes.quantity as cantidadSaldo',
@@ -146,16 +108,16 @@ class Article extends Model
                         'article_incomes.created_at as created_at',
                     )
                 ->where('article_incomes.article_id',$id)
-                ->WhereMonth('incomes.created_at', '>=',  $monthone)
+                ->WhereMonth('incomes.created_at', '>=',  $month)
                 ->WhereMonth('incomes.created_at', '<=', $monthtwo)
                 ->WhereYear('incomes.created_at', $year)
                 ->get();
         }
     }
 
-    public static function getArticlePhysicalReportOutput($id,$monthone, $monthtwo,$year){
+    public static function getArticlePhysicalReportOutput($id,$month, $monthtwo,$year){
 
-        if($monthone == 0 && $monthtwo == 0 && $year == 0 ){
+        if($month == 0 && $monthtwo == 0 && $year == 0 ){
             return self::join('output_details','articles.id','output_details.article_id')
                     ->join('outputs','output_details.output_id','outputs.id')
                     ->join('sections','outputs.section_id','sections.id')
@@ -168,7 +130,7 @@ class Article extends Model
                         'output_details.balance_stock as cantidadSaldo',
                         'output_details.balance_price as importeSaldo',
                         'output_details.created_at as created_at'
-                    )       
+                    )
             ->where('output_details.article_id',$id)
             ->get();
         }else{
@@ -184,13 +146,37 @@ class Article extends Model
                         'output_details.balance_stock as cantidadSaldo',
                         'output_details.balance_price as importeSaldo',
                         'output_details.created_at as created_at'
-                    )   
-                 ->where('output_details.article_id',$id)
-                ->WhereMonth('outputs.delivery_date', '>=',  $monthone)
+                    )
+                    ->where('output_details.article_id',$id)
+                ->WhereMonth('outputs.delivery_date', '>=',  $month)
                 ->WhereMonth('outputs.delivery_date', '<=', $monthtwo)
                 ->WhereYear('outputs.delivery_date', $year)
                 ->get();
         }
-    
+    }
+
+    public static function getInputs($year, $periodIni, $periodEnd){
+        return DB::table('articles')
+            ->join('article_incomes','articles.id','article_incomes.article_id')
+            ->join('incomes','article_incomes.income_id',"incomes.id")
+            ->join('units','articles.unit_id',"units.id")
+            ->whereYear('incomes.created_at',$year)
+            ->WhereMonth('incomes.created_at', '>=', $periodIni)
+            ->WhereMonth('incomes.created_at', '<=', $periodEnd)
+            ->select(
+                'article_incomes.article_id',
+                'articles.cod_article',
+                DB::raw('SUM(article_incomes.quantity) as quantity'),
+                'units.unit_measure',
+                'articles.name_article',
+                'articles.unit_price',
+                DB::raw('SUM(article_incomes.total_price) as total'),
+            )
+            ->groupBy('article_incomes.article_id',
+                'articles.cod_article',
+                'units.unit_measure',
+                'articles.name_article',
+                'articles.unit_price',
+            );
     }
 }

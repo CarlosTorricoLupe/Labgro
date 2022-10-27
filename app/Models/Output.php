@@ -78,32 +78,18 @@ class Output extends Model
 
     }
 
-    public static function getOutputs($year, $periodIni, $periodEnd){
+    public static function getOutputs($article_id, $year, $periodIni, $periodEnd){
         return DB::table('outputs')
             ->join('output_details','outputs.id','output_details.output_id')
-            ->join('articles','output_details.article_id','articles.id')
-            ->join('units','articles.unit_id',"units.id")
             ->whereYear('outputs.delivery_date',$year)
             ->WhereMonth('outputs.delivery_date', '>=', $periodIni)
             ->WhereMonth('outputs.delivery_date', '<=', $periodEnd)
+            ->Where('output_details.article_id', '=', $article_id)
             ->select(
-                'articles.cod_article',
-                DB::raw('SUM(output_details.quantity) as quantity'),
-                'units.unit_measure',
-                'articles.name_article',
-                'articles.unit_price',
-                DB::raw('SUM(output_details.total) as total'),
                 DB::raw('COUNT(output_details.article_id) as outputs'),
-                DB::raw('SUM(articles.unit_price) as amount1'),
                 'output_details.balance_stock',
-                DB::raw('SUM(output_details.balance_stock) as amount2'),
             )
             ->groupBy('output_details.article_id',
-                'articles.cod_article',
-                'units.unit_measure',
-                'articles.name_article',
-                'articles.unit_price',
-                'output_details.total',
                 'output_details.balance_stock',
             );
     }
