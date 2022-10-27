@@ -132,12 +132,23 @@ class ArticleController extends Controller
         $period = $periods[$request->trimestre];
         $year = $request->year;
         $incomes = Article::getInputs($year, $period[0], $period[1])->get();
+
         foreach($incomes as $income){
-            $outputs = Output::getOutputs($income->article_id , $year, $period[0], $period[1])->first();
-            $income->outputs = $outputs ? $outputs->outputs : 0;
-            $income->amount1 = $outputs ? $income->unit_price * $outputs->outputs : 0;
-            $income->balance_stock = $outputs ? $outputs->balance_stock : 0;
-            $income->amount2 = $outputs ? $income->unit_price * $outputs->balance_stock : 0;
+            $outputs = Output::getOutputs($income->article_id , $year, $period[0], $period[1])->get();
+            if($outputs){
+                $r_outputs = $outputs->sum('outputs');
+                $r_balance_stock = @$outputs->last()->balance_stock;
+                $r_balance_stock = $r_balance_stock ? $r_balance_stock : 0;
+                $income->outputs = $r_outputs;
+                $income->amount1 = $income->unit_price * $r_outputs;
+                $income->balance_stock = $r_balance_stock;
+                $income->amount2 = $income->unit_price * $r_balance_stock;
+            }else {
+                $income->outputs = 0;
+                $income->amount1 = 0;
+                $income->balance_stock = 0;
+                $income->amount2 = 0;
+            }
         }
         if(count($incomes)){
             return $incomes;
@@ -187,7 +198,7 @@ class ArticleController extends Controller
                 ];
                 $reportOutput=collect($result2);
             }
-        
+
         if (count($reportsIncomes)&& count($reportsOuputs)) {
             $reporteFinal=$reportIncome->concat($reportOutput)->sortBy(['fecha','asc'],['created_at','asc']);
         }else{

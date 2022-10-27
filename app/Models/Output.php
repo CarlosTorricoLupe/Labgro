@@ -81,15 +81,13 @@ class Output extends Model
     public static function getOutputs($article_id, $year, $periodIni, $periodEnd){
         return DB::table('outputs')
             ->join('output_details','outputs.id','output_details.output_id')
+            ->join('articles','output_details.article_id','articles.id')
             ->whereYear('outputs.delivery_date',$year)
             ->WhereMonth('outputs.delivery_date', '>=', $periodIni)
             ->WhereMonth('outputs.delivery_date', '<=', $periodEnd)
-            ->Where('output_details.article_id', '=', $article_id)
+            ->Where('output_details.article_id', $article_id)
             ->select(
-                DB::raw('COUNT(output_details.article_id) as outputs'),
-                'output_details.balance_stock',
-            )
-            ->groupBy('output_details.article_id',
+                'output_details.quantity as outputs',
                 'output_details.balance_stock',
             );
     }
