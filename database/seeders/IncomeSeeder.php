@@ -33,7 +33,7 @@ class IncomeSeeder extends Seeder
                     'unit_price'=>5,
                     'total_price'=>100,
             ]);
-
+            $article=Article::find(1)->update(['stock'=>20,'stock_total'=>20,'unit_price'=>5]);
             $output = Output::create([
                 'section_id' =>'1',
                 'receipt' => 500,
@@ -48,7 +48,7 @@ class IncomeSeeder extends Seeder
                     'balance_stock' => 15,
                     'balance_price' => 75
                 ]);
-
+                $article=Article::find(1)->update(['stock'=>15,'stock_total'=>15]);
             $output = Output::create([
                 'section_id' =>'3',
                 'receipt' => 501,
@@ -63,7 +63,7 @@ class IncomeSeeder extends Seeder
                         'balance_stock' => 12,
                         'balance_price' => 60
                     ]);
-
+                $article=Article::find(1)->update(['stock'=>12,'stock_total'=>12]);
             $output = Output::create([
                 'section_id' =>'1',
                 'receipt' => 502,
@@ -78,6 +78,7 @@ class IncomeSeeder extends Seeder
                         'balance_stock' => 0,
                         'balance_price' => 0
                     ]);
+                $article=Article::find(1)->update(['stock'=>0,'stock_total'=>0]);
             $income=Income::create([
                 "receipt" => 101,
                 "total" =>  150.00,
@@ -89,8 +90,8 @@ class IncomeSeeder extends Seeder
                         'unit_price'=>5,
                         'total_price'=>150,
                 ]);
+                $article=Article::find(1)->update(['stock'=>30,'stock_total'=>30,'unit_price'=>5]);
 
-            
             $income2=Income::create([
                 "receipt" => 201,
                 "total" =>  250.00,
@@ -102,6 +103,8 @@ class IncomeSeeder extends Seeder
                             'unit_price'=>5,
                             'total_price'=>250,
                 ]);
+                $article=Article::find(2)->update(['stock'=>50,'stock_total'=>50,'unit_price'=>5]);
+
             $output = Output::create([
                 'section_id' =>'3',
                 'receipt' => 503,
@@ -116,7 +119,8 @@ class IncomeSeeder extends Seeder
                         'balance_stock' => 40,
                         'balance_price' =>200
                     ]);
-        
+                $article=Article::find(2)->update(['stock'=>40,'stock_total'=>40]);
+
             $output = Output::create([
                 'section_id' =>'3',
                 'receipt' => 504,
@@ -131,6 +135,8 @@ class IncomeSeeder extends Seeder
                         'balance_stock' => 25,
                         'balance_price' => 125
                     ]);
+                $article=Article::find(2)->update(['stock'=>25,'stock_total'=>25]);
+
             $output = Output::create([
                 'section_id' =>'3',
                 'receipt' => 505,
@@ -145,6 +151,8 @@ class IncomeSeeder extends Seeder
                         'balance_stock' => 10,
                         'balance_price' => 50
                     ]);
+                $article=Article::find(2)->update(['stock'=>10,'stock_total'=>10]);
+                
             $output = Output::create([
                 'section_id' =>'3',
                 'receipt' => 506,
@@ -159,6 +167,20 @@ class IncomeSeeder extends Seeder
                         'balance_stock' => 0,
                         'balance_price' => 0
                     ]);
+                $article=Article::find(2)->update(['stock'=>0,'stock_total'=>0]);
+
+        $income3=Income::create([
+            "receipt" => 202,
+            "total" =>  250.00,
+            "provider" =>  "",
+            "order_number" =>  203,
+            "created_at" =>  "2022-10-10 10:30:12",
+            "invoice_number" => 203]);
+            $income2->articles()->attach(3,['quantity'=>25,
+                        'unit_price'=>10,
+                        'total_price'=>250,
+            ]);
+            $article=Article::find(3)->update(['stock'=>25,'stock_total'=>25,'unit_price'=>10]);
             
         // for ($i=0; $i < 3; $i++) {
         //     $incom=Income::create([
