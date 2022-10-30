@@ -32,6 +32,9 @@ class IncomeSeeder extends Seeder
         $income->articles()->attach(1,['quantity'=>20,
             'unit_price'=>5,
             'total_price'=>100,
+            'current_stock'=>0,
+            'current_price'=>0,
+            'unit_value'=>5
         ]);
         $article=Article::find(1)->update(['stock'=>20,'stock_total'=>20,'unit_price'=>5]);
         $output = Output::create([
@@ -89,6 +92,9 @@ class IncomeSeeder extends Seeder
         $income->articles()->attach(1,['quantity'=>30,
             'unit_price'=>5,
             'total_price'=>150,
+            'current_stock'=>0,
+            'current_price'=>0,
+            'unit_value'=>5
         ]);
         $article=Article::find(1)->update(['stock'=>30,'stock_total'=>30,'unit_price'=>5]);
 
@@ -102,6 +108,9 @@ class IncomeSeeder extends Seeder
         $income2->articles()->attach(5,['quantity'=>50,
             'unit_price'=>5,
             'total_price'=>250,
+            'current_stock'=>0,
+            'current_price'=>0,
+            'unit_value'=>5
         ]);
         $article=Article::find(5)->update(['stock'=>50,'stock_total'=>50,'unit_price'=>5]);
 
@@ -179,6 +188,9 @@ class IncomeSeeder extends Seeder
         $income2->articles()->attach(6,['quantity'=>25,
             'unit_price'=>10,
             'total_price'=>250,
+            'current_stock'=>0,
+            'current_price'=>0,
+            'unit_value'=>10
         ]);
         $article=Article::find(6)->update(['stock'=>25,'stock_total'=>25,'unit_price'=>10]);
 
