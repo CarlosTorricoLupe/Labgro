@@ -32,9 +32,13 @@ class Output extends Model
         return $this->belongsToMany(Order::class,'orders_outputs', 'output_id', 'order_id')->withTimestamps();
     }
     public function scopeSearchOutput($query, $value, $month, $year){
-        $query->join('sections','outputs.section_id','sections.id');
+        $query->join('output_details','outputs.id','output_details.output_id')
+            ->join('articles','output_details.article_id','articles.id')
+            ->join('sections','outputs.section_id','sections.id');
         if(isset($value)){
-            $query->where('receipt','like',"%$value%");
+            $query->orWhere('outputs.receipt','like',"%$value%")
+                ->orWhere('sections.name','like',"%$value%")
+                ->orWhere('articles.name_article','like',"%$value%");
         }
 
         if(isset($month)){
