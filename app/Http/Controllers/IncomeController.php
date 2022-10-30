@@ -39,11 +39,25 @@ class IncomeController extends Controller
         $income = new Income($request->all());
         $income->saveOrFail();
         $articles=$request->get('articles');
-        $res=$this->updateDataArticles($articles);
         $response=array();
-        if(isset($res['articles'])){
-            $income->articles()->sync($articles);
-            $response['incomes']=$res['articles'];
+        if(isset($articles)){
+            // $income->articles()->sync($articles);
+            // $response['incomes']=$res['articles'];
+            foreach ($articles as $article){
+                list($currentStock,$currentPrice,$unitValue)=$this->getCurrentStock($article);
+                $income->articles()->attach(
+                    $article['article_id'],
+                    ['quantity'=>$article['quantity'],
+                    'unit_price'=>$article['unit_price'],
+                    'total_price'=>$article['total_price'],
+                    'current_stock'=>$currentStock,
+                    'current_price'=>$currentPrice,
+                    'unit_value'=>$unitValue
+                    ]
+                );
+            }
+        $res=$this->updateDataArticles($articles);
+        $response['incomes']=$res['articles'];
         }else{
             $response['error'] = "No se agregaron Articulos";
              }
@@ -60,15 +74,29 @@ class IncomeController extends Controller
         foreach($articles as $article){
             $articleUpdate=Article::find($article['article_id']);
             if($articleUpdate){
+                $articleUpdate['unit_price']= (($articleUpdate['stock']*$articleUpdate['unit_price'])+($article['quantity']*$article['unit_price']))/(($articleUpdate['stock']+$article['quantity']));
                 $articleUpdate['stock'] = $article['quantity'] + $articleUpdate['stock_total'];
                 $articleUpdate['stock_total'] = $article['quantity'] + $articleUpdate['stock_total'];
                 $article['is_consumed'] = 1;
-                $articleUpdate['unit_price']=$article['unit_price'];
                 $articleUpdate->saveOrFail();
                 $response['articles']="Stock de los articulos actualizados correctamente";
             }
        }
        return $response;
+   }
+
+   public function getCurrentStock($article)
+   {
+       $currentStock=0;
+        $currentPrice=0;
+        $unitValue=0;
+        $articleUpdate=Article::find($article['article_id']);
+        if($articleUpdate){
+            $unitValue=(($articleUpdate['stock']*$articleUpdate['unit_price'])+($article['quantity']*$article['unit_price']))/(($articleUpdate['stock']+$article['quantity']));
+            $currentStock=$articleUpdate->stock;
+            $currentPrice=$articleUpdate->unit_price;
+        }
+       return [$currentStock,$currentPrice,$unitValue];
    }
     /**
      * Display the specified resource.
@@ -140,6 +168,7 @@ class IncomeController extends Controller
              if($articleUpdate){
                  $articleUpdate->stock_total -=$detail['quantity'];
                  $articleUpdate->stock -=$detail['quantity'];
+                 $articleUpdate->unit_price -=$detail['unit_price'];
                  $articleUpdate->saveOrFail();
                  $response['articles']="Stock de los articulos restaurados correctamente";
                 $articleUpdate->incomes()->detach($detail['income_id']);

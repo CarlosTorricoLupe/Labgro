@@ -168,6 +168,7 @@ class ArticleController extends Controller
         $reportsIncomes=Article::getArticlePhysicalReport($request->id,$request->monthone,$request->monthtwo,$request->year);
             $result = array();
             foreach($reportsIncomes as $income){
+                $importeSaldo=($income->stock+$income->cantidadEntrada)*$income->valUnit;
                 $result[]=[
                     'fecha'=> $income->fecha,
                     'comprobante'=> $income->comprobante,
@@ -176,10 +177,11 @@ class ArticleController extends Controller
                     'importeEntrada'=> $income->importeEntrada,
                     'cantidadSalida'=> "",
                     'importeSalida'=> "",
-                    'cantidadSaldo'=> $income->cantidadSaldo,
-                    'importeSaldo'=> $income->importeSaldo,
+                    'cantidadSaldo'=> $income->stock+$income->cantidadEntrada,
+                    'importeSaldo'=> $importeSaldo,
                     'precioMedio'=> $income->precioMedioEntrada,
                     'created_at'=> $income->created_at->toDateTimeString(),
+                    'valorUnit'=> $income->valUnit,
                 ];
                 $reportIncome=collect($result);
             }
@@ -198,6 +200,7 @@ class ArticleController extends Controller
                     'importeSaldo'=> $outputs->importeSaldo,
                     'precioMedio'=> "",
                     'created_at'=> $outputs->created_at->toDateTimeString(),
+                    'valorUnit'=> $outputs->valUnit,
                 ];
                 $reportOutput=collect($result2);
             }
@@ -205,13 +208,16 @@ class ArticleController extends Controller
         if (count($reportsIncomes)&& count($reportsOuputs)) {
             $reporteFinal=$reportIncome->concat($reportOutput)->sortBy(['fecha','asc'],['created_at','asc']);
         }else{
-        if (count($reportsIncomes)) {
-            $reporteFinal=$reportIncome->sortBy(['fecha','asc'],['created_at','asc']);
+            if (count($reportsIncomes)) {
+                $reporteFinal=$reportIncome->sortBy(['fecha','asc'],['created_at','asc']);
+            }
+            if(count($reportsOuputs)){
+                $reporteFinal=$reportOutput->sortBy(['fecha','asc'],['created_at','asc']);
+            }
         }
-        if(count($reportsOuputs)){
-            $reporteFinal=$reportOutput->sortBy(['fecha','asc'],['created_at','asc']);
-        }
-        }
+            if ($request->year > date('Y')) {
+                $reporteFinal=collect($reporteFinal->last());
+            }
         return response()->json([
             'success'=>true,
             'report'=>$reporteFinal,
