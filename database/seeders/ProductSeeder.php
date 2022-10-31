@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use App\Models\Material;
 use App\Models\PresentationUnit;
 use App\Models\Product;
+use App\Models\Unit;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Arr;
 
@@ -44,12 +45,14 @@ class ProductSeeder extends Seeder
             }
         }
 */
+        $ltr = Unit::where('unit_measure','Ltr')->first();
         $jug=Product::create([
             'name' => 'Jugo',
             'code'=> 'Jug',
             'description' => 'Jugo elaborada en la Facultad de Agronomía',
             'role_id'=>5,
             'image'=> 'https://picsum.photos/700/400?random',
+            'unit_id'=>$ltr->id
         ]);
         $jug->ingredients()->attach(1,['quantity'=>0.1]);
         $jug->ingredients()->attach(2,['quantity'=>0.09]);

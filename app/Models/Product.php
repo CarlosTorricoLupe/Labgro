@@ -14,7 +14,8 @@ class Product extends Model
         'code',
         'description',
         'image',
-        'role_id'
+        'role_id',
+        'unit_id'
     ];
 
     public function presentations()
@@ -30,6 +31,10 @@ class Product extends Model
     public function productions()
     {
         return $this->belongsToMany(Production::class,'production_products')->withPivot('quantity')->withTimestamps();
+    }
+
+    public function units(){
+        return $this->belongsToMany(Unit::class);
     }
 
     public static function searchProducts($value='',$month,$year){
