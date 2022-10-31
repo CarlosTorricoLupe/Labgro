@@ -31,16 +31,10 @@ class Output extends Model
     public function orders(){
         return $this->belongsToMany(Order::class,'orders_outputs', 'output_id', 'order_id')->withTimestamps();
     }
-    public function scopeSearchOutput($query, $value, $month, $year){
+    public function scopeSearchOutput($query, $month, $year){
         $query->join('output_details','outputs.id','output_details.output_id')
             ->join('articles','output_details.article_id','articles.id')
             ->join('sections','outputs.section_id','sections.id');
-        if(isset($value)){
-            $query->orWhere('outputs.receipt','like',"%$value%")
-                ->orWhere('sections.name','like',"%$value%")
-                ->orWhere('articles.name_article','like',"%$value%");
-        }
-
         if(isset($month)){
             $query->WhereMonth('order_date',$month);
         }
@@ -49,6 +43,15 @@ class Output extends Model
             $query->WhereYear('order_date',$year);
         }
         return $query->select('outputs.*', 'sections.name');
+    }
+
+    public function scopeFilterValue($query, $value){
+        if(isset($value)){
+            $query->where('outputs.receipt','like',"%$value%")
+                ->orWhere('sections.name','like',"%$value%")
+                ->orWhere('articles.name_article','like',"%$value%");
+        }
+        return $query;
     }
 
     public static function getOutput($id){
