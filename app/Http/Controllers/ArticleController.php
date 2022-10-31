@@ -134,7 +134,6 @@ class ArticleController extends Controller
         $period = $periods[$request->trimestre];
         $year = $request->year;
         $incomes = Article::getInputs($year, $period[0], $period[1])->get();
-        $outputs = Output::getOutputs(1, $year, $period[0], $period[1])->get();
         foreach($incomes as $income){
             $outputs = Output::getOutputs($income->article_id , $year, $period[0], $period[1])->get();
             if(count($outputs)>0){
