@@ -20,7 +20,8 @@ class OutputController extends Controller
      */
     public function index(Request $request)
     {
-        $outputs = Output::searchOutput($request->outputvalue, $request->month, $request->year)
+        $outputs = Output::searchOutput($request->month, $request->year)
+            ->filterValue($request->outputvalue)
             ->paginate(12)
             ->appends(request()->query());
         return response()->json([
@@ -99,7 +100,7 @@ class OutputController extends Controller
         return $is_permit;
     }
 
-    
+
 
     public function decrementStockArticle($details){
         foreach ($details as $detail){
@@ -114,8 +115,8 @@ class OutputController extends Controller
     }
 
     public function getBalances($details){
-         $balance_stock = 0;     
-         $balance_price = 0;         
+         $balance_stock = 0;
+         $balance_price = 0;
         foreach($details as $detail){
             $article=Article::find($detail['article_id']);
             if ($article) {

@@ -29,10 +29,6 @@ class Income extends Model
     public function scopeSearchIncome($query, $value, $month, $year){
         $query->join('article_incomes','article_incomes.income_id','incomes.id')
             -> join('articles','article_incomes.article_id','articles.id');
-        if(isset($value)){
-            $query->orWhere('incomes.receipt','like',"%$value%")
-                ->orWhere('articles.name_article','like',"%$value%");
-        }
 
         if(isset($month)){
             $query->WhereMonth('created_at',$month);
@@ -42,6 +38,14 @@ class Income extends Model
             $query->WhereYear('created_at',$year);
         }
         return $query->select('incomes.id', 'incomes.receipt','incomes.order_number','provider', 'total','invoice_number','created_at');
+    }
+
+    public function scopeFilterValue($query, $value){
+        if(isset($value)){
+            $query->Where('incomes.receipt','like',"%$value%")
+                ->orWhere('articles.name_article','like',"%$value%");
+        }
+        return $query;
     }
 
     public static function getIncome($id){
