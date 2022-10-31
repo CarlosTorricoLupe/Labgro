@@ -31,14 +31,14 @@ class Income extends Model
             -> join('articles','article_incomes.article_id','articles.id');
 
         if(isset($monthone) && isset($monthtwo)){
-            $query->WhereMonth('created_at', '>=',  $monthone)
-                ->WhereMonth('created_at', '<=', $monthtwo);
+            $query->WhereMonth('incomes.created_at', '>=',  $monthone)
+                ->WhereMonth('incomes.created_at', '<=', $monthtwo);
         }
 
         if(isset($year)){
-            $query->WhereYear('created_at',$year);
+            $query->WhereYear('incomes.created_at',$year);
         }
-        return $query->select('incomes.id', 'incomes.receipt','incomes.order_number','provider', 'total','invoice_number','created_at');
+        return $query->select('incomes.id', 'incomes.receipt', 'incomes.order_number', 'incomes.provider', 'incomes.total', 'incomes.invoice_number', 'incomes.created_at');
     }
 
     public function scopeFilterValue($query, $value){
