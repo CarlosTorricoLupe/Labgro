@@ -20,7 +20,7 @@ class OutputController extends Controller
      */
     public function index(Request $request)
     {
-        $outputs = Output::searchOutput($request->month, $request->year)
+        $outputs = Output::searchOutput($request->monthone, $request->monthtwo ,$request->year)
             ->filterValue($request->outputvalue)
             ->paginate(12)
             ->appends(request()->query());

@@ -26,12 +26,13 @@ class Income extends Model
         return $this->belongsToMany(Article::class,'article_incomes',"income_id","article_id")->withPivot('quantity','unit_price','total_price')->withTimestamps();
     }
 
-    public function scopeSearchIncome($query, $value, $month, $year){
+    public function scopeSearchIncome($query, $monthone, $monthtwo,  $year){
         $query->join('article_incomes','article_incomes.income_id','incomes.id')
             -> join('articles','article_incomes.article_id','articles.id');
 
-        if(isset($month)){
-            $query->WhereMonth('created_at',$month);
+        if(isset($monthone) && isset($monthtwo)){
+            $query->WhereMonth('created_at', '>=',  $monthone)
+                ->WhereMonth('created_at', '<=', $monthtwo);
         }
 
         if(isset($year)){

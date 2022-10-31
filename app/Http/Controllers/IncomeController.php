@@ -17,7 +17,7 @@ class IncomeController extends Controller
      */
     public function index(Request $request)
     {
-        $incomes=Income::searchIncome($request->month,$request->year)
+        $incomes=Income::searchIncome($request->monthone, $request->monthtwo, $request->year)
             ->filterValue($request->incomevalue)
             ->paginate(12)
             ->appends(request()->query());

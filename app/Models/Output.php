@@ -31,12 +31,13 @@ class Output extends Model
     public function orders(){
         return $this->belongsToMany(Order::class,'orders_outputs', 'output_id', 'order_id')->withTimestamps();
     }
-    public function scopeSearchOutput($query, $month, $year){
+    public function scopeSearchOutput($query, $monthone, $monthtwo, $year){
         $query->join('output_details','outputs.id','output_details.output_id')
             ->join('articles','output_details.article_id','articles.id')
             ->join('sections','outputs.section_id','sections.id');
-        if(isset($month)){
-            $query->WhereMonth('order_date',$month);
+        if(isset($monthone) && isset($monthtwo)){
+            $query->WhereMonth('order_date', '>=',  $monthone)
+                ->WhereMonth('order_date', '<=', $monthtwo);
         }
 
         if(isset($year)){
