@@ -44,7 +44,8 @@ class Product extends Model
                 'products.code',
                 'products.description',
                 'products.image',
-                'products.created_at')
+                'products.created_at',
+                'unit_id')
                 ->Where('role_id',auth()->user()->role_id)
                 ->get();
         }
