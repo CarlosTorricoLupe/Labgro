@@ -49,7 +49,7 @@ class OutputController extends Controller
             list($balance_stock,$balance_price)=$this->getBalances($details['details']);
             $this->decrementStockArticle($details['details']);
             $input = $request->except(['details','role_id', 'order_id']);
-            $input['delivery_date'] = $input['delivery_date'] . " " . Carbon::now()->format("h:m:s");
+            $input['delivery_date'] = $input['delivery_date'] . " " . Carbon::now()->format("H:i:s");
             $output = Output::create($input);
             foreach ($details['details'] as $detail){
                 $output->articles()->attach(
