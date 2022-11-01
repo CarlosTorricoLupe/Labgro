@@ -123,6 +123,7 @@ class Order extends Model
             ->where('orders.view_order', 'false');
 
     }
+
     public function scopeGetNotifications($query){
         return $query->join('sections','orders.section_id','sections.id')
             ->select('sections.id as section_id','sections.name as section_name', 'orders.id as order_id', 'orders.receipt', 'orders.order_number', 'orders.date_issue as order_date', 'orders.status', 'orders.created_at', 'orders.observation',  'orders.view_order')
@@ -130,6 +131,15 @@ class Order extends Model
             ->orderByRaw("case orders.view_order when 'true' then 1 when 'false' then 2 end")
             ->orderBy('orders.updated_at', 'desc');
     }
+
+    public function scopeGetMaterials($query, $order_id){
+        return $query->join('order_materials', 'order_materials.order_id','orders.id')
+            ->join('materials','order_materials.material_id','materials.id')
+            ->join('articles','materials.article_id','articles.id')
+            ->select('articles.name_article','order_materials.quantity', 'order_materials.quantity_approved')
+            ->where('orders.id', $order_id);
+    }
+
     public function scopeViewedAllGeneral($query){
         return $query->where('role_id',auth()->user()->role_id)
             ->update(['view_order'=>'true']);
