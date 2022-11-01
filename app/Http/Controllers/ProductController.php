@@ -92,11 +92,12 @@ class ProductController extends Controller
      */
     public function show(Product $product)
     {
+        $prod=Product::showProduct($product->id);
         $presentations=PresentationUnit_product::getPresentations($product->id);
         $materials=Material_product::getDetailMaterial($product->id);
         return response()->json([
             'success'=> true,
-            'product' => $product,
+            'product' => $prod,
             'presentations' => $presentations,
             'materials' => $materials
         ],200);

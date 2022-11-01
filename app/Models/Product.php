@@ -39,7 +39,8 @@ class Product extends Model
 
     public static function searchProducts($value='',$month,$year){
         if (!$value && !$month && !$year) {
-            return self::select('products.id',
+            return self::join('units','products.unit_id','units.id')
+            ->select('products.id',
                 'products.name',
                 'products.code',
                 'products.description',
@@ -82,6 +83,21 @@ class Product extends Model
             ->where('material_products.material_id', $material_id);
     }
 
+    public static function showProduct($id){
+        return self::join('units','products.unit_id','units.id')
+        ->select('products.id',
+                'products.name',
+                'products.code',
+                'products.description',
+                'products.image',
+                'products.created_at',
+                'unit_id',
+                'unit_measure')
+                ->Where('role_id',auth()->user()->role_id)
+                ->where('products.id',$id)
+                ->get();
+        
+    }
 
     public static function boot() {
         parent::boot();
