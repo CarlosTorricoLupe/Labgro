@@ -39,7 +39,8 @@ class Product extends Model
 
     public static function searchProducts($value='',$month,$year){
         if (!$value && !$month && !$year) {
-            return self::select('products.id',
+            return self::join('units','products.unit_id','units.id')
+            ->select('products.id',
                 'products.name',
                 'products.code',
                 'products.description',

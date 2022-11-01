@@ -205,13 +205,13 @@ class ArticleController extends Controller
             }
 
         if (count($reportsIncomes)&& count($reportsOuputs)) {
-            $reporteFinal=$reportIncome->concat($reportOutput)->sortBy(['fecha','asc'],['created_at','asc']);
+            $reporteFinal=$reportIncome->concat($reportOutput);
         }else{
             if (count($reportsIncomes)) {
-                $reporteFinal=$reportIncome->sortBy(['fecha','asc'],['created_at','asc']);
+                $reporteFinal=$reportIncome;
             }
             if(count($reportsOuputs)){
-                $reporteFinal=$reportOutput->sortBy(['fecha','asc'],['created_at','asc']);
+                $reporteFinal=$reportOutput;
             }
         }
             if ($request->year > date('Y')) {

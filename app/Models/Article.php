@@ -101,6 +101,8 @@ class Article extends Model
             ->when($year < date('Y'), function ($query) use ($year){
                 $query->WhereYear('incomes.created_at', $year);   
                 })
+            ->orderBy('fecha','ASC')
+            ->orderBy('created_at','ASC')
             ->get();
     }
 
@@ -128,6 +130,8 @@ class Article extends Model
                 ->when($year < date('Y'), function ($query) use ($year){
                 $query->WhereYear('outputs.delivery_date', $year);   
                 })
+            ->orderBy('fecha','ASC')
+            ->orderBy('created_at','ASC')
             ->get();
     }
 
