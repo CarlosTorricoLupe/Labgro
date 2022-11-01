@@ -125,6 +125,9 @@ class OrderController extends Controller
     public function notifications()
     {
         $notifitacions = Order::GetNotifications()->get();
+        foreach ($notifitacions as $notifitacion){
+            $notifitacion['detail'] = Order::GetMaterials($notifitacion->order_id)->get();
+        }
         Order::ViewedAllGeneral();
         return response()->json([
             'sucess' => true,
