@@ -55,8 +55,8 @@ class ProductSeeder extends Seeder
             'unit_id'=>$ltr->id
         ]);
         $jug->ingredients()->attach(1,['quantity'=>0.1]);
-        $jug->ingredients()->attach(2,['quantity'=>0.09]);
-        $jug->ingredients()->attach(3,['quantity'=>0.666666]);
+        $jug->ingredients()->attach(3,['quantity'=>0.09]);
+        $jug->ingredients()->attach(2,['quantity'=>0.666666]);
         $jug->ingredients()->attach(4,['quantity'=>0.25]);
 
         // $ques=Product::create([
