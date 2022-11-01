@@ -45,7 +45,7 @@ class OutputController extends Controller
         $response = array();
 
         if( $this->verifyStockArticle($details['details']) ){
-            list($balance_stock,$balance_price)=$this->getBalances($details['details']);
+            list($balance_stock,$balance_price,$unit_value)=$this->getBalances($details['details']);
             $this->decrementStockArticle($details['details']);
 
             $output = Output::create($request->except(['details','role_id', 'order_id']));
@@ -56,7 +56,8 @@ class OutputController extends Controller
                     'budget_output'=>$detail['budget_output'],
                     'total'=>$detail['total'],
                     'balance_stock'=>$balance_stock,
-                    'balance_price'=>$balance_price
+                    'balance_price'=>$balance_price,
+                    'unit_value'=>$unit_value
                     ]
                 );
             }
@@ -117,13 +118,15 @@ class OutputController extends Controller
     public function getBalances($details){
          $balance_stock = 0;
          $balance_price = 0;
+         $unit_value=0;
         foreach($details as $detail){
             $article=Article::find($detail['article_id']);
             if ($article) {
             $balance_stock=$article->stock - $detail['quantity'];
             $balance_price=($article->unit_price * $article->stock) - $detail['total'];
+            $unit_value=$article->unit_price;
             }
-            return [$balance_stock,$balance_price];
+            return [$balance_stock,$balance_price,$unit_value];
         }
     }
 

@@ -16,6 +16,7 @@ class AddBalanceToOutputDetails extends Migration
         Schema::table('output_details', function (Blueprint $table) {
             $table->float('balance_stock')->nullable();
             $table->float('balance_price')->nullable();
+            $table->float('unit_value')->nullable();
         });
     }
 

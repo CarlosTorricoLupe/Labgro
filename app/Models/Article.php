@@ -114,7 +114,7 @@ class Article extends Model
                     'outputs.delivery_date as fecha',
                     'outputs.receipt as comprobante',
                     'sections.name as origen',
-                    'articles.unit_price as valUnit',
+                    'output_details.unit_value as valUnit',
                     'output_details.quantity as cantidadSalida',
                     'output_details.total as importeSalida',
                     'output_details.balance_stock as cantidadSaldo',
