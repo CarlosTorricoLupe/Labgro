@@ -205,7 +205,7 @@ class ArticleController extends Controller
             }
 
         if (count($reportsIncomes)&& count($reportsOuputs)) {
-            $reporteFinal=$reportIncome->concat($reportOutput);
+            $reporteFinal=($reportIncome->concat($reportOutput))->sortBy(['fecha','ASC']);
         }else{
             if (count($reportsIncomes)) {
                 $reporteFinal=$reportIncome;
