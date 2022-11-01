@@ -10,6 +10,7 @@ use App\Models\Output;
 use App\Models\Order;
 use App\Models\OutputDetail;
 use Illuminate\Http\Request;
+use Carbon\Carbon;
 
 class OutputController extends Controller
 {
@@ -47,8 +48,9 @@ class OutputController extends Controller
         if( $this->verifyStockArticle($details['details']) ){
             list($balance_stock,$balance_price)=$this->getBalances($details['details']);
             $this->decrementStockArticle($details['details']);
-
-            $output = Output::create($request->except(['details','role_id', 'order_id']));
+            $input = $request->except(['details','role_id', 'order_id']);
+            $input['delivery_date'] = $input['delivery_date'] . " " . Carbon::now()->format("h:m:s");
+            $output = Output::create($input);
             foreach ($details['details'] as $detail){
                 $output->articles()->attach(
                     $detail['article_id'],
