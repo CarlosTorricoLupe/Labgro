@@ -164,14 +164,14 @@ class ArticleController extends Controller
 
     public function physicalReport(Request $request){
         $reporteFinal=[];
-        $reportsIncomes=Article::getArticlePhysicalReport($request->id,$request->monthone,$request->monthtwo,$request->year);
+        $reportsIncomes=Article::getArticlePhysicalReport($request->id,$request->monthone,$request->monthtwo,$request->year,$request->area);
             $result = array();
             foreach($reportsIncomes as $income){
                 $importeSaldo=($income->stock+$income->cantidadEntrada)*$income->valUnit;
                 $result[]=[
                     'fecha'=> $income->fecha,
                     'comprobante'=> $income->comprobante,
-                    'Origen'=> "Ingreso",
+                    'Origen'=> $income->origen,
                     'cantidadEntrada'=> $income->cantidadEntrada,
                     'importeEntrada'=> $income->importeEntrada,
                     'cantidadSalida'=> "",
@@ -184,7 +184,7 @@ class ArticleController extends Controller
                 ];
                 $reportIncome=collect($result);
             }
-        $reportsOuputs=Article::getArticlePhysicalReportOutput($request->id,$request->monthone,$request->monthtwo,$request->year);
+        $reportsOuputs=Article::getArticlePhysicalReportOutput($request->id,$request->monthone,$request->monthtwo,$request->year,$request->area);
             $result2 = array();
             foreach($reportsOuputs as $outputs){
                 $result2[]=[
@@ -215,7 +215,7 @@ class ArticleController extends Controller
             }
         }
             if ($request->year > date('Y')) {
-                $reporteFinal=collect($reporteFinal->last());
+                $reporteFinal=collect([$reporteFinal->last()]);
             }
         return response()->json([
             'success'=>true,

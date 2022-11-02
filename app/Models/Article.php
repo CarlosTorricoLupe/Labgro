@@ -78,12 +78,13 @@ class Article extends Model
              ->get();
     }
 
-    public static function getArticlePhysicalReport($id,$monthone, $monthtwo,$year){
+    public static function getArticlePhysicalReport($id,$monthone, $monthtwo,$year,$area){
         return self::join('article_incomes','articles.id','article_incomes.article_id')
                 ->join('incomes','article_incomes.income_id','incomes.id')
                 ->select(//'articles.name_article as article_name',
                     'incomes.created_at as fecha',
-                    'incomes.invoice_number as comprobante',                    
+                    'incomes.invoice_number as comprobante',   
+                    'incomes.origen as origen',
                     'article_incomes.quantity as cantidadEntrada',
                     'article_incomes.total_price as importeEntrada',
                     'article_incomes.current_stock as stock',
@@ -101,12 +102,15 @@ class Article extends Model
             ->when($year < date('Y'), function ($query) use ($year){
                 $query->WhereYear('incomes.created_at', $year);   
                 })
+                ->when(isset($area), function ($query) use ($area){
+                    $query->where('incomes.origen','like',"%$area%");
+                })
             ->orderBy('fecha','ASC')
             ->orderBy('created_at','ASC')
             ->get();
     }
 
-    public static function getArticlePhysicalReportOutput($id,$monthone, $monthtwo,$year){
+    public static function getArticlePhysicalReportOutput($id,$monthone, $monthtwo,$year,$area){
         return self::join('output_details','articles.id','output_details.article_id')
                 ->join('outputs','output_details.output_id','outputs.id')
                 ->join('sections','outputs.section_id','sections.id')
@@ -130,6 +134,9 @@ class Article extends Model
                 ->when($year < date('Y'), function ($query) use ($year){
                 $query->WhereYear('outputs.delivery_date', $year);   
                 })
+            ->when(isset($area), function ($query) use ($area){
+                $query->where('sections.name','like',"%$area%");
+            })
             ->orderBy('fecha','ASC')
             ->orderBy('created_at','ASC')
             ->get();
