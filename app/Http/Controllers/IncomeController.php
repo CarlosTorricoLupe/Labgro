@@ -21,6 +21,10 @@ class IncomeController extends Controller
             ->filterValue($request->value)
             ->paginate(12)
             ->appends(request()->query());
+        foreach($incomes as $income){
+            $detail=Article_income::getDetails($income->id)->toArray();
+            $income->details=$detail;
+        }
           return response()->json([
             'success' => true,
             'incomes'=> $incomes

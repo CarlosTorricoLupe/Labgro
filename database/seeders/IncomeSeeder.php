@@ -49,7 +49,8 @@ class IncomeSeeder extends Seeder
             'budget_output'=>50,
             'total'=>25,
             'balance_stock' => 15,
-            'balance_price' => 75
+            'balance_price' => 75,
+            'unit_value'=>5
         ]);
         $article=Article::find(1)->update(['stock'=>15,'stock_total'=>15]);
         $output = Output::create([
@@ -64,7 +65,8 @@ class IncomeSeeder extends Seeder
             'budget_output'=>50,
             'total'=>15,
             'balance_stock' => 12,
-            'balance_price' => 60
+            'balance_price' => 60,
+            'unit_value'=>5
         ]);
         $article=Article::find(1)->update(['stock'=>12,'stock_total'=>12]);
         $output = Output::create([
@@ -79,7 +81,8 @@ class IncomeSeeder extends Seeder
             'budget_output'=>50,
             'total'=>60,
             'balance_stock' => 0,
-            'balance_price' => 0
+            'balance_price' => 0,
+            'unit_value'=>5
         ]);
         $article=Article::find(1)->update(['stock'=>0,'stock_total'=>0]);
         $income=Income::create([
@@ -126,7 +129,8 @@ class IncomeSeeder extends Seeder
             'budget_output'=>60,
             'total'=>50,
             'balance_stock' => 40,
-            'balance_price' =>200
+            'balance_price' =>200,
+            'unit_value'=>5
         ]);
         $article=Article::find(5)->update(['stock'=>40,'stock_total'=>40]);
 
@@ -142,7 +146,8 @@ class IncomeSeeder extends Seeder
             'budget_output'=>60,
             'total'=>75,
             'balance_stock' => 25,
-            'balance_price' => 125
+            'balance_price' => 125,
+            'unit_value'=>5
         ]);
         $article=Article::find(5)->update(['stock'=>25,'stock_total'=>25]);
 
@@ -158,7 +163,8 @@ class IncomeSeeder extends Seeder
             'budget_output'=>60,
             'total'=>75,
             'balance_stock' => 10,
-            'balance_price' => 50
+            'balance_price' => 50,
+            'unit_value'=>5
         ]);
         $article=Article::find(5)->update(['stock'=>10,'stock_total'=>10]);
 
@@ -174,7 +180,8 @@ class IncomeSeeder extends Seeder
             'budget_output'=>61,
             'total'=>50,
             'balance_stock' => 0,
-            'balance_price' => 0
+            'balance_price' => 0,
+            'unit_value'=>5
         ]);
         $article=Article::find(5)->update(['stock'=>0,'stock_total'=>0]);
 
@@ -193,6 +200,21 @@ class IncomeSeeder extends Seeder
             'unit_value'=>10
         ]);
         $article=Article::find(6)->update(['stock'=>25,'stock_total'=>25,'unit_price'=>10]);
+
+        $income3=Income::create([
+            "receipt" => 203,
+            "total" =>  50.00,
+            "provider" =>  "",
+            "order_number" =>  204,
+            "created_at" =>  "2022-10-11 10:30:12",
+            "invoice_number" => 204]);
+        $income2->articles()->attach(6,['quantity'=>10,
+            'unit_price'=>5,
+            'total_price'=>50,
+            'current_stock'=>25,
+            'current_price'=>10,
+            'unit_value'=>8.571
+        ]);
 
         // for ($i=0; $i < 3; $i++) {
         //     $incom=Income::create([
