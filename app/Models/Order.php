@@ -76,12 +76,13 @@ class Order extends Model
             ->where('order_materials.order_id',$id)
             ->get();
     }
-    public function scopeGetTypeStatus($query, $value, $month, $year, $section){
+    public function scopeGetTypeStatus($query, $value, $monthone, $monthtwo, $year, $section){
         $query->join('sections','orders.section_id','sections.id')
             ->select('sections.name as section_name', 'orders.id', 'orders.receipt', 'orders.order_number', 'orders.date_issue as order_date', 'orders.status', 'orders.created_at', 'orders.observation')
             ->where('status', $value);
-        if(isset($month)){
-            $query->WhereMonth('orders.created_at', $month);
+        if(isset($monthone) && isset($monthtwo)){
+            $query->WhereMonth('orders.created_at', '>=',  $monthone)
+                ->WhereMonth('orders.created_at', '<=', $monthtwo);
         }
         if(isset($year)){
             $query->WhereYear('orders.created_at', $year);

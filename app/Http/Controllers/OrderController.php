@@ -17,14 +17,14 @@ class OrderController extends Controller
     public function index(Request $request)
     {
          $orders = [
-             "pendiente" => $this->getCountMaterial('pending', $request->month, $request->year, $request->area, $request->article),
-             "aprobado" => $this->getCountMaterial('approved', $request->month, $request->year, $request->area, $request->article),
-             "reprobado" => $this->getCountMaterial('reprobate', $request->month, $request->year, $request->area, $request->article),
+             "pendiente" => $this->getCountMaterial('pending', $request->monthone, $request->monthtwo, $request->year, $request->area, $request->article),
+             "aprobado" => $this->getCountMaterial('approved', $request->monthone, $request->monthtwo, $request->year, $request->area, $request->article),
+             "reprobado" => $this->getCountMaterial('reprobate', $request->monthone, $request->monthtwo, $request->year, $request->area, $request->article),
         ];
         return response()->json($orders,200);
     }
-    public function getCountMaterial($status, $month, $year, $area, $article){
-        $orders = Order::GetTypeStatus($status, $month, $year, $area)->get();
+    public function getCountMaterial($status, $monthone, $monthtwo,  $year, $area, $article){
+        $orders = Order::GetTypeStatus($status, $monthone, $monthtwo,$year, $area)->get();
         $result = [];
         foreach ($orders as $order){
             $order['quantity_materials'] = $order->materials()->count();
@@ -39,7 +39,7 @@ class OrderController extends Controller
                     $filter = true;
                 }
             }
-            //unset($order['materials']);
+            unset($order['materials']);
             if($filter){
                 $result[] = $order;
             }
