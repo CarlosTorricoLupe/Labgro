@@ -95,7 +95,7 @@ class Product extends Model
                 'unit_measure')
                 ->Where('role_id',auth()->user()->role_id)
                 ->where('products.id',$id)
-                ->get();
+                ->first();
         
     }
 
