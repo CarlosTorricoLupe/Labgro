@@ -16,19 +16,35 @@ class OrderController extends Controller
      */
     public function index(Request $request)
     {
-         $orders=[
-             "pendiente" => $this->getCountMaterial('pending', $request->month, $request->year),
-             "aprobado" => $this->getCountMaterial('approved', $request->month, $request->year),
-             "reprobado" => $this->getCountMaterial('reprobate', $request->month, $request->year),
+         $orders = [
+             "pendiente" => $this->getCountMaterial('pending', $request->month, $request->year, $request->area, $request->article),
+             "aprobado" => $this->getCountMaterial('approved', $request->month, $request->year, $request->area, $request->article),
+             "reprobado" => $this->getCountMaterial('reprobate', $request->month, $request->year, $request->area, $request->article),
         ];
         return response()->json($orders,200);
     }
-    public function getCountMaterial($status, $month, $year){
-        $orders =Order::GetTypeStatus($status, $month, $year)->get();
+    public function getCountMaterial($status, $month, $year, $area, $article){
+        $orders = Order::GetTypeStatus($status, $month, $year, $area)->get();
+        $result = [];
         foreach ($orders as $order){
             $order['quantity_materials'] = $order->materials()->count();
+            $order['materials'] = Order::GetMaterials($order->id)->get();
+            $filter = false;
+            foreach ($order['materials'] as $material){
+                if (isset($article)){
+                    if( strpos(strtoupper($material['name_article']), strtoupper($article)) !== false ){
+                        $filter = true;
+                    }
+                }else {
+                    $filter = true;
+                }
+            }
+            //unset($order['materials']);
+            if($filter){
+                $result[] = $order;
+            }
         }
-        return $orders;
+        return $result;
     }
 
     /**

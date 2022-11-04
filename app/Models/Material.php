@@ -67,6 +67,12 @@ class Material extends Model
             ->select('materials.*', 'articles.name_article','units.unit_measure')
             ->where('materials.id', $id);
     }
+    public function scopeGetMaterialsByOrderId($query, $id){
+        return $query->join('articles','materials.article_id','articles.id')
+            ->join('units','articles.unit_id','units.id')
+            ->select('materials.*', 'articles.name_article','units.unit_measure')
+            ->where('materials.id', $id);
+    }
     public function scopeGetMaterialByRoleIdArticleId($query, $role_id, $article_id){
         return $query->where('role_id',$role_id)->where('article_id',$article_id);
     }
@@ -86,5 +92,5 @@ class Material extends Model
             ->select('materials.*', 'articles.name_article','units.unit_measure')
             ->where('role_id',auth()->user()->role_id);
     }
-    
+
 }
