@@ -1,6 +1,8 @@
 <?php
 
 namespace App\Http\Controllers;
+
+use App\Exports\PhysicalReportExport;
 use App\Http\Requests\CreateArticleRequest;
 use App\Http\Requests\UpdateArticleRequest;
 use App\Http\Resources\ArticleResource;
@@ -8,6 +10,7 @@ use App\Models\Article;
 use App\Models\Output;
 use App\Models\Unit;
 use Illuminate\Http\Request;
+use Maatwebsite\Excel\Facades\Excel;
 use function PHPUnit\Framework\isEmpty;
 
 class ArticleController extends Controller
@@ -221,5 +224,14 @@ class ArticleController extends Controller
             'success'=>true,
             'report'=>$reporteFinal,
         ],200);
+    }
+
+    public function PhysicalExport(Request $request) 
+    {
+        $controller=app('App\Http\Controllers\ArticleController')->physicalReport($request);
+        $art=$controller->getOriginalContent()['report'];
+        
+        return Excel::download(new PhysicalReportExport($art), 'physical.xlsx');
+
     }
 }

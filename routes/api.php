@@ -130,6 +130,7 @@ Route::group(['middleware' => ['auth:api']], function() {
 //VERIFIRY PRICE
     Route::get('/verifyPriceArticle/{id}', [OutputController::class, 'verififyPriceArticle']);
     Route::get('/article/getPhysicalReport', [ArticleController::class, 'physicalReport']);
+    Route::get('article/getPhysicalReport/export', [ArticleController::class, 'PhysicalExport']);
 });
 
 
