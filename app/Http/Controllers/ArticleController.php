@@ -167,6 +167,7 @@ class ArticleController extends Controller
 
     public function physicalReport(Request $request){
         $reporteFinal=[];
+        $article=Article::find($request->id,['name_article']);
         $reportsIncomes=Article::getArticlePhysicalReport($request->id,$request->monthone,$request->monthtwo,$request->year,$request->area);
             $result = array();
             foreach($reportsIncomes as $income){
@@ -198,8 +199,8 @@ class ArticleController extends Controller
                     'importeEntrada'=> "",
                     'cantidadSalida'=> $outputs->cantidadSalida,
                     'importeSalida'=> $outputs->importeSalida,
-                    'cantidadSaldo'=> $outputs->cantidadSaldo,
-                    'importeSaldo'=> $outputs->importeSaldo,
+                    'cantidadSaldo'=> $outputs->cantidadSaldo == 0 ? "0":$outputs->cantidadSaldo,
+                    'importeSaldo'=> $outputs->importeSaldo == 0 ? "0":$outputs->importeSaldo,
                     'precioMedio'=> "",
                     'created_at'=> $outputs->created_at->toDateTimeString(),
                     'valorUnit'=> $outputs->valUnit,
@@ -222,6 +223,7 @@ class ArticleController extends Controller
             }
         return response()->json([
             'success'=>true,
+            'article'=>$article->name_article,
             'report'=>$reporteFinal,
         ],200);
     }
@@ -230,8 +232,12 @@ class ArticleController extends Controller
     {
         $controller=app('App\Http\Controllers\ArticleController')->physicalReport($request);
         $art=$controller->getOriginalContent()['report'];
+        $name=$controller->getOriginalContent()['article'];
+        $monthone=$request->monthone;
+        $monthtwo=$request->monthtwo;
+        $year=$request->year;
         
-        return Excel::download(new PhysicalReportExport($art), 'physical.xlsx');
+        return Excel::download(new PhysicalReportExport($art,$name,$monthone,$monthtwo,$year), 'Reporte Fisico '.$name.' '.$monthone.'-'.$monthtwo.'-'.$year.'.xlsx');
 
     }
 }
