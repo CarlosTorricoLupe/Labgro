@@ -25,9 +25,14 @@ class OutputController extends Controller
             ->filterValue($request->value)
             ->paginate(12)
             ->appends(request()->query());
+
+        foreach ($outputs as $output){
+            $output['details'] = OutputDetail::getDetails($output->id);
+        }
+
         return response()->json([
             'success' => true,
-            'incomes'=> $outputs
+            'outputs'=> $outputs
         ]);
 
     }
