@@ -136,7 +136,8 @@ class ArticleController extends Controller
         ];
         $period = $periods[$request->trimestre];
         $year = $request->year;
-        $incomes = Article::getInputs($year, $period[0], $period[1])->get();
+        $article = $request->article;
+        $incomes = Article::getInputs($year, $article, $period[0], $period[1])->get();
         foreach($incomes as $income){
             $outputs = Output::getOutputs($income->article_id , $year, $period[0], $period[1])->get();
             if(count($outputs)>0){
@@ -228,7 +229,7 @@ class ArticleController extends Controller
         ],200);
     }
 
-    public function PhysicalExport(Request $request) 
+    public function PhysicalExport(Request $request)
     {
         $controller=app('App\Http\Controllers\ArticleController')->physicalReport($request);
         $art=$controller->getOriginalContent()['report'];
@@ -236,7 +237,7 @@ class ArticleController extends Controller
         $monthone=$request->monthone;
         $monthtwo=$request->monthtwo;
         $year=$request->year;
-        
+
         return Excel::download(new PhysicalReportExport($art,$name,$monthone,$monthtwo,$year), 'Reporte Fisico '.$name.' '.$monthone.'-'.$monthtwo.'-'.$year.'.xlsx');
 
     }
