@@ -83,7 +83,7 @@ class Article extends Model
                 ->join('incomes','article_incomes.income_id','incomes.id')
                 ->select(//'articles.name_article as article_name',
                     'incomes.created_at as fecha',
-                    'incomes.invoice_number as comprobante',   
+                    'incomes.invoice_number as comprobante',
                     'incomes.origen as origen',
                     'article_incomes.quantity as cantidadEntrada',
                     'article_incomes.total_price as importeEntrada',
@@ -97,10 +97,10 @@ class Article extends Model
             ->WhereMonth('incomes.created_at', '>=',  $monthone)
             ->WhereMonth('incomes.created_at', '<=', $monthtwo)
             ->when($year >= date('Y'), function ($query) use ($year){
-                $query->WhereYear('incomes.created_at', date('Y'));   
+                $query->WhereYear('incomes.created_at', date('Y'));
             })
             ->when($year < date('Y'), function ($query) use ($year){
-                $query->WhereYear('incomes.created_at', $year);   
+                $query->WhereYear('incomes.created_at', $year);
                 })
                 ->when(isset($area), function ($query) use ($area){
                     $query->where('incomes.origen','like',"%$area%");
@@ -124,15 +124,15 @@ class Article extends Model
                     'output_details.balance_stock as cantidadSaldo',
                     'output_details.balance_price as importeSaldo',
                     'output_details.created_at as created_at'
-                )   
+                )
             ->where('output_details.article_id',$id)
             ->WhereMonth('outputs.delivery_date', '>=',  $monthone)
             ->WhereMonth('outputs.delivery_date', '<=', $monthtwo)
             ->when($year >= date('Y'), function ($query) use ($year){
-                $query->WhereYear('outputs.delivery_date', date('Y'));   
+                $query->WhereYear('outputs.delivery_date', date('Y'));
                 })
                 ->when($year < date('Y'), function ($query) use ($year){
-                $query->WhereYear('outputs.delivery_date', $year);   
+                $query->WhereYear('outputs.delivery_date', $year);
                 })
             ->when(isset($area), function ($query) use ($area){
                 $query->where('sections.name','like',"%$area%");
@@ -142,11 +142,12 @@ class Article extends Model
             ->get();
     }
 
-    public static function getInputs($year, $periodIni, $periodEnd){
+    public static function getInputs($year, $article, $periodIni, $periodEnd){
         return DB::table('articles')
             ->join('article_incomes','articles.id','article_incomes.article_id')
             ->join('incomes','article_incomes.income_id',"incomes.id")
             ->join('units','articles.unit_id',"units.id")
+            ->where('articles.name_article','like',"%$article%")
             ->whereYear('incomes.created_at',$year)
             ->WhereMonth('incomes.created_at', '>=', $periodIni)
             ->WhereMonth('incomes.created_at', '<=', $periodEnd)
