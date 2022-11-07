@@ -131,6 +131,9 @@ Route::group(['middleware' => ['auth:api']], function() {
     Route::get('/verifyPriceArticle/{id}', [OutputController::class, 'verififyPriceArticle']);
     Route::get('/article/getPhysicalReport', [ArticleController::class, 'physicalReport']);
     Route::get('article/getPhysicalReport/export', [ArticleController::class, 'PhysicalExport']);
+    Route::get('getConsolidate/export', [ProductionController::class, 'consolidateExport']);
+    Route::get('getDetailProduction/export',[ProductionController::class,'detailProductionExport']);
+    Route::get('getSummaryProduction/export',[ProductionController::class,'summaryProductionExport']);
 });
 
 
