@@ -39,7 +39,6 @@ class OrderController extends Controller
                     $filter = true;
                 }
             }
-            unset($order['materials']);
             if($filter){
                 $result[] = $order;
             }
