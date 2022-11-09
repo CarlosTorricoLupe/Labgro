@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\PeripheralReportExport;
 use App\Exports\PhysicalReportExport;
 use App\Http\Requests\CreateArticleRequest;
 use App\Http\Requests\UpdateArticleRequest;
@@ -155,6 +156,7 @@ class ArticleController extends Controller
                 $income->balance_stock = $r_balance_stock;
                 $income->amount2 = $income->unit_price * $r_balance_stock;
             }
+            unset($income->article_id);
         }
         if(count($incomes)){
             return $incomes;
@@ -237,8 +239,25 @@ class ArticleController extends Controller
         $monthone=$request->monthone;
         $monthtwo=$request->monthtwo;
         $year=$request->year;
-
         return Excel::download(new PhysicalReportExport($art,$name,$monthone,$monthtwo,$year), 'Reporte Fisico '.$name.' '.$monthone.'-'.$monthtwo.'-'.$year.'.xlsx');
+    }
 
+    public function peripheralReportExport(Request $request)
+    {
+        $controller=app('App\Http\Controllers\ArticleController')->peripheralReport($request);
+        $art=$controller;
+        $name=$request->article ? $request->article : "";
+        $periods=[
+            'Primer Trimestre'=>[1,3],
+            'Segundo Trimestre'=>[4,6],
+            'Tercer Trimestre'=>[7,9],
+            'Cuarto Trimestre'=>[10,12],
+            'gestion'=>[1,12]
+        ];
+        $period = $periods[$request->trimestre];
+        $monthone = $period[0];
+        $monthtwo = $period[1];
+        $year=$request->year;
+        return Excel::download(new PeripheralReportExport($art,$name,$monthone,$monthtwo,$year), 'Reporte Periferico  '.$name.' '.$monthone.'-'.$monthtwo.'-'.$year.'.xlsx');
     }
 }
