@@ -32,7 +32,7 @@ class OutputController extends Controller
 
         return response()->json([
             'success' => true,
-            'outputs'=> $outputs
+            'incomes'=> $outputs
         ]);
 
     }
