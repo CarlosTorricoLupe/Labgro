@@ -293,6 +293,6 @@ class OutputController extends Controller
         $monthone=$request->monthone;
         $monthtwo=$request->monthtwo;
         $year=$request->year;
-        return Excel::download(new OuputExport($colection,$monthone,$monthtwo,$year), 'Entradas '.$monthone.'-'.$monthtwo.'-'.$year.'.xlsx');
+        return Excel::download(new OuputExport($colection,$monthone,$monthtwo,$year), 'Salidas '.$monthone.'-'.$monthtwo.'-'.$year.'.xlsx');
     }
 }
