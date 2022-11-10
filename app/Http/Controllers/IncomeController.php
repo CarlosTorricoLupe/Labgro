@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Exports\IncomeExport;
+use App\Exports\OuputExport;
 use App\Http\Requests\IncomeRequest;
 use App\Models\Article;
 use App\Models\Article_income;
@@ -212,7 +212,7 @@ class IncomeController extends Controller
         $year=$request->year;
 
         // return view('incomes', compact('colection'));
-         return Excel::download(new IncomeExport($colection,$monthone,$monthtwo,$year), 'Entradas '.$monthone.'-'.$monthtwo.'-'.$year.'.xlsx');
+         return Excel::download(new OuputExport($colection,$monthone,$monthtwo,$year), 'Entradas '.$monthone.'-'.$monthtwo.'-'.$year.'.xlsx');
 
     }
 }

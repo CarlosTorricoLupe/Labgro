@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\OuputExport;
 use App\Http\Requests\OutputRequest;
 use App\Models\Article;
 use App\Models\Article_income;
@@ -11,6 +12,7 @@ use App\Models\Order;
 use App\Models\OutputDetail;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
+use Maatwebsite\Excel\Facades\Excel;
 
 class OutputController extends Controller
 {
@@ -281,4 +283,16 @@ class OutputController extends Controller
             'outputs' => $outputs]);
     }
 
+    public function outputExport(Request $request)
+    {
+        $controller=app('App\Http\Controllers\OutputController')->index($request);
+        $art=$controller->getOriginalContent()['incomes'];
+        $outputs=collect($art);
+        $data=$outputs['data'];
+        $colection=collect($data);
+        $monthone=$request->monthone;
+        $monthtwo=$request->monthtwo;
+        $year=$request->year;
+        return Excel::download(new OuputExport($colection,$monthone,$monthtwo,$year), 'Entradas '.$monthone.'-'.$monthtwo.'-'.$year.'.xlsx');
+    }
 }

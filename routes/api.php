@@ -136,7 +136,7 @@ Route::group(['middleware' => ['auth:api']], function() {
     Route::get('getSummaryProduction/export',[ProductionController::class,'summaryProductionExport']);
     Route::get('/peripheralReport/export', [ArticleController::class, 'peripheralReportExport']);
     Route::get('income/export', [IncomeController::class, 'incomeExport']);
-
+    Route::get('output_export', [OutputController::class, 'outputExport']);
 });
 
 
