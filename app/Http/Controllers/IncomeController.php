@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\IncomeExport;
 use App\Http\Requests\IncomeRequest;
 use App\Models\Article;
 use App\Models\Article_income;
 use App\Models\Income;
 use Illuminate\Http\Request;
+use Maatwebsite\Excel\Facades\Excel;
 
 class IncomeController extends Controller
 {
@@ -197,4 +199,20 @@ class IncomeController extends Controller
         ],200);
     }
 
+
+    public function incomeExport(Request $request)
+    {
+        $controller=app('App\Http\Controllers\IncomeController')->index($request);
+        $art=$controller->getOriginalContent()['incomes'];
+        $incomes=collect($art);
+        $data=$incomes['data'];
+        $colection=collect($data);
+        $monthone=$request->monthone;
+        $monthtwo=$request->monthtwo;
+        $year=$request->year;
+
+        // return view('incomes', compact('colection'));
+         return Excel::download(new IncomeExport($colection,$monthone,$monthtwo,$year), 'Entradas '.$monthone.'-'.$monthtwo.'-'.$year.'.xlsx');
+
+    }
 }

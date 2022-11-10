@@ -29,7 +29,6 @@ class OutputController extends Controller
         foreach ($outputs as $output){
             $output['details'] = OutputDetail::getDetails($output->id);
         }
-
         return response()->json([
             'success' => true,
             'incomes'=> $outputs

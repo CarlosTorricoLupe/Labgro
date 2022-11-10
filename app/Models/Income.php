@@ -38,7 +38,7 @@ class Income extends Model
         if(isset($year)){
             $query->WhereYear('incomes.created_at',$year);
         }
-        return $query->select('incomes.id', 'incomes.receipt', 'incomes.order_number', 'incomes.provider', 'incomes.total', 'incomes.invoice_number', 'incomes.created_at');
+        return $query->select('incomes.id', 'incomes.receipt', 'incomes.order_number', 'incomes.provider', 'incomes.total', 'incomes.invoice_number', 'incomes.created_at')->distinct();
     }
 
     public function scopeFilterValue($query, $value){
