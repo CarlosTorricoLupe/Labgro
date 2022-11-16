@@ -133,7 +133,7 @@ class ArticleController extends Controller
             'Segundo Trimestre'=>[4,6],
             'Tercer Trimestre'=>[7,9],
             'Cuarto Trimestre'=>[10,12],
-            'gestion'=>[1,12]
+            'Gestion Completa'=>[1,12]
         ];
         $period = $periods[$request->trimestre];
         $year = $request->year;
@@ -252,7 +252,7 @@ class ArticleController extends Controller
             'Segundo Trimestre'=>[4,6],
             'Tercer Trimestre'=>[7,9],
             'Cuarto Trimestre'=>[10,12],
-            'gestion'=>[1,12]
+            'Gestion Completa'=>[1,12]
         ];
         $period = $periods[$request->trimestre];
         $monthone = $period[0];
