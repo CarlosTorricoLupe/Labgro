@@ -46,7 +46,7 @@ class NotificationReportExport implements FromCollection, ShouldAutoSize, WithHe
                 $result[$cont]['receipt'] = $notification['receipt'];
                 $result[$cont]['order_date'] = $notification['order_date'];
                 $result[$cont]['name_article'] = $material['name_article'];
-                $result[$cont]['quantity_materials'] = $notification['quantity_materials'];
+                $result[$cont]['quantity_materials'] = $material['quantity'];
                 $cont++;
             }
         }
