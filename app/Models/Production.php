@@ -58,6 +58,7 @@ class Production extends Model
                 'presentation_production_product.unit_price_sale as unit_price_sale',
             )
            ->groupBy('presentations','presentation_name','product_name','product_code','unit_cost_production','unit_price_sale')
+           ->orderBy('presentation_production_product.created_at','asc')
            ->orderBy('productions.date_production','asc')
            ->get();
     }
