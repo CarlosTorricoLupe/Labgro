@@ -110,9 +110,12 @@ class PhysicalReportExport implements FromCollection, ShouldAutoSize, WithMappin
                 $date1 = Carbon::parse('01-'.$this->monthone.'-22')->locale('es');
                 $date2 = Carbon::parse('01-'.$this->monthtwo.'-22')->locale('es');
 
-
-                $event->sheet->setCellValue('A1','KARDEX FISICO VALORADO ('.$this->name.')');
-                $event->sheet->setCellValue('A2',$date1->monthName.' a '.$date2->monthName. ' de '. $this->year);
+                if($this->year>2022){
+                    $event->sheet->setCellValue('A1','KARDEX FISICO VALORADO APERTURA DE GESTION('.$this->name.')');    
+                }else{
+                    $event->sheet->setCellValue('A1','KARDEX FISICO VALORADO ('.$this->name.')');
+                    $event->sheet->setCellValue('A2',$date1->monthName.' a '.$date2->monthName. ' de '. $this->year);
+                }
                 $event->sheet->setCellValue('D4','ENTRADAS');
                 $event->sheet->setCellValue('F4','SALIDAS');
                 $event->sheet->setCellValue('H4','SALDOS');
