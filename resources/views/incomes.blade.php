@@ -1,6 +1,7 @@
      <table >
          <tr>
              <th>No</th>
+             <th>Fecha</th>
              <th>Comprobante</th>
              <th>Num. de Orden</th>
              <th>Proveedor</th>
@@ -16,6 +17,7 @@
          <tr>
              @if($key == 0 )
              <td>{{ $value['id'] }}</td>
+             <td>{{ \Carbon\Carbon::parse($value['created_at'])->setTimezone('America/La_Paz')->format('d/m/Y') }}</td>
              <td>{{ $value['receipt'] }}</td>
              <td>{{ $value['order_number'] }}</td>
              <td>{{ $value['provider'] }}</td>
