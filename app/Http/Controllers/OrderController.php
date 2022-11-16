@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\NotificationReportExport;
 use App\Http\Requests\CreateOrderRequest;
 use App\Http\Requests\UpdateOrderRequest;
 use App\Models\Order;
 use Illuminate\Http\Request;
+use Maatwebsite\Excel\Facades\Excel;
 
 class OrderController extends Controller
 {
@@ -159,5 +161,22 @@ class OrderController extends Controller
         ],200);
     }
 
+    public function notificationsExport(Request $request)
+    {
+        $controller=app('App\Http\Controllers\OrderController')->index($request);
+        $name=$request->article ? $request->article : "";
+        $monthone = $request->monthone;
+        $monthtwo = $request->monthtwo;
+        $status = $request->status;
+        $year=$request->year;
+        if($status=="pendiente"){
+            $art=$controller->getOriginalContent()['pendiente'];
+        }elseif ($status=="aprobado"){
+            $art=$controller->getOriginalContent()['aprobado'];
+        }else{
+            $art=$controller->getOriginalContent()['reprobado'];
+        }
+        return Excel::download(new NotificationReportExport($art,$name,$monthone,$monthtwo,$year,$status), 'Reporte Notificaciones '.$name.' '.$monthone.'-'.$monthtwo.'-'.$year.'.xlsx');
+    }
 
 }
