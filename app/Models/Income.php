@@ -26,19 +26,27 @@ class Income extends Model
         return $this->belongsToMany(Article::class,'article_incomes',"income_id","article_id")->withPivot('quantity','unit_price','total_price')->withTimestamps();
     }
 
-    public function scopeSearchIncome($query, $value, $month, $year){
-        if(isset($value)){
-            $query->where('receipt','like',"%$value%");
-        }
+    public function scopeSearchIncome($query, $monthone, $monthtwo,  $year){
+        $query->join('article_incomes','article_incomes.income_id','incomes.id')
+            -> join('articles','article_incomes.article_id','articles.id');
 
-        if(isset($month)){
-            $query->WhereMonth('created_at',$month);
+        if(isset($monthone) && isset($monthtwo)){
+            $query->WhereMonth('incomes.created_at', '>=',  $monthone)
+                ->WhereMonth('incomes.created_at', '<=', $monthtwo);
         }
 
         if(isset($year)){
-            $query->WhereYear('created_at',$year);
+            $query->WhereYear('incomes.created_at',$year);
         }
-        return $query->select('incomes.id', 'incomes.receipt','incomes.order_number','provider', 'total','invoice_number','created_at');
+        return $query->select('incomes.id', 'incomes.receipt', 'incomes.order_number', 'incomes.provider', 'incomes.total', 'incomes.invoice_number', 'incomes.created_at')->distinct();
+    }
+
+    public function scopeFilterValue($query, $value){
+        if(isset($value)){
+            $query->Where('incomes.receipt','like',"%$value%")
+                ->orWhere('articles.name_article','like',"%$value%");
+        }
+        return $query;
     }
 
     public static function getIncome($id){

@@ -24,6 +24,8 @@ class CreateArticleIncomesTable extends Migration
             $table->boolean('is_consumed')->default(0);
             $table->date('last_output')->nullable(); //ultima fecha en que salio el articulo
             $table->decimal('current_stock',11,2)->nullable();
+            $table->decimal('current_price',11,2)->nullable();
+            $table->decimal('unit_value',11,2)->nullable();
         });
     }
 

@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\NotificationReportExport;
 use App\Http\Requests\CreateOrderRequest;
 use App\Http\Requests\UpdateOrderRequest;
 use App\Models\Order;
 use Illuminate\Http\Request;
+use Maatwebsite\Excel\Facades\Excel;
 
 class OrderController extends Controller
 {
@@ -16,19 +18,34 @@ class OrderController extends Controller
      */
     public function index(Request $request)
     {
-         $orders=[
-             "pendiente" => $this->getCountMaterial('pending', $request->month, $request->year),
-             "aprobado" => $this->getCountMaterial('approved', $request->month, $request->year),
-             "reprobado" => $this->getCountMaterial('reprobate', $request->month, $request->year),
+         $orders = [
+             "pendiente" => $this->getCountMaterial('pending', $request->monthone, $request->monthtwo, $request->year, $request->area, $request->article),
+             "aprobado" => $this->getCountMaterial('approved', $request->monthone, $request->monthtwo, $request->year, $request->area, $request->article),
+             "reprobado" => $this->getCountMaterial('reprobate', $request->monthone, $request->monthtwo, $request->year, $request->area, $request->article),
         ];
         return response()->json($orders,200);
     }
-    public function getCountMaterial($status, $month, $year){
-        $orders =Order::GetTypeStatus($status, $month, $year)->get();
+    public function getCountMaterial($status, $monthone, $monthtwo,  $year, $area, $article){
+        $orders = Order::GetTypeStatus($status, $monthone, $monthtwo,$year, $area)->get();
+        $result = [];
         foreach ($orders as $order){
             $order['quantity_materials'] = $order->materials()->count();
+            $order['materials'] = Order::GetMaterials($order->id)->get();
+            $filter = false;
+            foreach ($order['materials'] as $material){
+                if (isset($article)){
+                    if( strpos(strtoupper($material['name_article']), strtoupper($article)) !== false ){
+                        $filter = true;
+                    }
+                }else {
+                    $filter = true;
+                }
+            }
+            if($filter){
+                $result[] = $order;
+            }
         }
-        return $orders;
+        return $result;
     }
 
     /**
@@ -125,6 +142,9 @@ class OrderController extends Controller
     public function notifications()
     {
         $notifitacions = Order::GetNotifications()->get();
+        foreach ($notifitacions as $notifitacion){
+            $notifitacion['detail'] = Order::GetMaterials($notifitacion->order_id)->get();
+        }
         Order::ViewedAllGeneral();
         return response()->json([
             'sucess' => true,
@@ -141,5 +161,22 @@ class OrderController extends Controller
         ],200);
     }
 
+    public function notificationsExport(Request $request)
+    {
+        $controller=app('App\Http\Controllers\OrderController')->index($request);
+        $name=$request->article ? $request->article : "";
+        $monthone = $request->monthone;
+        $monthtwo = $request->monthtwo;
+        $status = $request->status;
+        $year=$request->year;
+        if($status=="pendiente"){
+            $art=$controller->getOriginalContent()['pendiente'];
+        }elseif ($status=="aprobado"){
+            $art=$controller->getOriginalContent()['aprobado'];
+        }else{
+            $art=$controller->getOriginalContent()['reprobado'];
+        }
+        return Excel::download(new NotificationReportExport($art,$name,$monthone,$monthtwo,$year,$status), 'Reporte Notificaciones '.$name.' '.$monthone.'-'.$monthtwo.'-'.$year.'.xlsx');
+    }
 
 }

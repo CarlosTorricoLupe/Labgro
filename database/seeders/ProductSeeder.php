@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use App\Models\Material;
 use App\Models\PresentationUnit;
 use App\Models\Product;
+use App\Models\Unit;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Arr;
 
@@ -44,29 +45,31 @@ class ProductSeeder extends Seeder
             }
         }
 */
+        $ltr = Unit::where('unit_measure','Ltr')->first();
         $jug=Product::create([
             'name' => 'Jugo',
             'code'=> 'Jug',
             'description' => 'Jugo elaborada en la Facultad de Agronomía',
             'role_id'=>5,
             'image'=> 'https://picsum.photos/700/400?random',
+            'unit_id'=>$ltr->id
         ]);
         $jug->ingredients()->attach(1,['quantity'=>0.1]);
-        $jug->ingredients()->attach(2,['quantity'=>0.09]);
-        $jug->ingredients()->attach(3,['quantity'=>0.666666]);
+        $jug->ingredients()->attach(3,['quantity'=>0.09]);
+        $jug->ingredients()->attach(2,['quantity'=>0.666666]);
         $jug->ingredients()->attach(4,['quantity'=>0.25]);
 
-        $ques=Product::create([
-            'name' => 'Queso',
-            'code'=> 'Ques',
-            'description' => 'Queso elaborada en la Facultad de Agronomía',
-            'role_id'=>2,
-            'image'=> 'https://picsum.photos/700/400?random',
-        ]);
-        $ques->ingredients()->attach(5,['quantity'=>0.4]);
-        $ques->ingredients()->attach(6,['quantity'=>0.3]);
-        $ques->ingredients()->attach(7,['quantity'=>0.666666]);
-        $ques->ingredients()->attach(8,['quantity'=>17.8]);
-        $ques->ingredients()->attach(9,['quantity'=>2.5]);
+        // $ques=Product::create([
+        //     'name' => 'Queso',
+        //     'code'=> 'Ques',
+        //     'description' => 'Queso elaborada en la Facultad de Agronomía',
+        //     'role_id'=>2,
+        //     'image'=> 'https://picsum.photos/700/400?random',
+        // ]);
+        // $ques->ingredients()->attach(5,['quantity'=>0.4]);
+        // $ques->ingredients()->attach(6,['quantity'=>0.3]);
+        // $ques->ingredients()->attach(7,['quantity'=>0.666666]);
+        // $ques->ingredients()->attach(8,['quantity'=>17.8]);
+        // $ques->ingredients()->attach(9,['quantity'=>2.5]);
     }
 }

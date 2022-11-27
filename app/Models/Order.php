@@ -27,7 +27,7 @@ class Order extends Model
 
     public function materials()
     {
-        return $this->belongsToMany(Material::class,'order_materials', 'order_id', 'material_id')->withPivot('quantity')->withTimestamps();
+        return $this->belongsToMany(Material::class,'order_materials', 'order_id', 'material_id')->withPivot('quantity','quantity_approved')->withTimestamps();
     }
     public function outputs(){
         return $this->belongsToMany(Output::class,'orders_outputs', 'order_id', 'output_id')->withTimestamps();
@@ -76,15 +76,19 @@ class Order extends Model
             ->where('order_materials.order_id',$id)
             ->get();
     }
-    public function scopeGetTypeStatus($query, $value, $month, $year){
+    public function scopeGetTypeStatus($query, $value, $monthone, $monthtwo, $year, $section){
         $query->join('sections','orders.section_id','sections.id')
-            ->select('sections.name as section_name', 'orders.id', 'orders.id', 'orders.id', 'orders.receipt', 'orders.order_number', 'orders.date_issue as order_date', 'orders.status', 'orders.created_at', 'orders.observation')
+            ->select('sections.name as section_name', 'orders.id', 'orders.receipt', 'orders.order_number', 'orders.date_issue as order_date', 'orders.status', 'orders.created_at', 'orders.observation')
             ->where('status', $value);
-        if(isset($month)){
-            $query->WhereMonth('orders.created_at', $month);
+        if(isset($monthone) && isset($monthtwo)){
+            $query->WhereMonth('orders.created_at', '>=',  $monthone)
+                ->WhereMonth('orders.created_at', '<=', $monthtwo);
         }
         if(isset($year)){
             $query->WhereYear('orders.created_at', $year);
+        }
+        if (isset($section)){
+            $query->Where('sections.name','like',"%$section%");
         }
         return $query->orderBy('orders.created_at', 'desc');
     }
@@ -123,6 +127,7 @@ class Order extends Model
             ->where('orders.view_order', 'false');
 
     }
+
     public function scopeGetNotifications($query){
         return $query->join('sections','orders.section_id','sections.id')
             ->select('sections.id as section_id','sections.name as section_name', 'orders.id as order_id', 'orders.receipt', 'orders.order_number', 'orders.date_issue as order_date', 'orders.status', 'orders.created_at', 'orders.observation',  'orders.view_order')
@@ -130,6 +135,15 @@ class Order extends Model
             ->orderByRaw("case orders.view_order when 'true' then 1 when 'false' then 2 end")
             ->orderBy('orders.updated_at', 'desc');
     }
+
+    public function scopeGetMaterials($query, $order_id){
+        return $query->join('order_materials', 'order_materials.order_id','orders.id')
+            ->join('materials','order_materials.material_id','materials.id')
+            ->join('articles','materials.article_id','articles.id')
+            ->select('articles.name_article','order_materials.quantity', 'order_materials.quantity_approved')
+            ->where('orders.id', $order_id);
+    }
+
     public function scopeViewedAllGeneral($query){
         return $query->where('role_id',auth()->user()->role_id)
             ->update(['view_order'=>'true']);

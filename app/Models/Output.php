@@ -4,11 +4,15 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
 
 class Output extends Model
 {
     use HasFactory;
 
+    protected $casts = [
+        'delivery_date' => "datetime:Y-m-d",
+    ];
     protected $fillable = [
         'section_id',
         'receipt',
@@ -20,27 +24,35 @@ class Output extends Model
 
     public function articles(){
         return $this->belongsToMany(Article::class, "output_details", "output_id", "article_id")
-                    ->withPivot('quantity','budget_output','total')
+                    ->withPivot('quantity','budget_output','total','balance_stock','balance_price')
                     ->withTimestamps();;
     }
 
     public function orders(){
         return $this->belongsToMany(Order::class,'orders_outputs', 'output_id', 'order_id')->withTimestamps();
     }
-    public function scopeSearchOutput($query, $value, $month, $year){
-        $query->join('sections','outputs.section_id','sections.id');
-        if(isset($value)){
-            $query->where('receipt','like',"%$value%");
-        }
-
-        if(isset($month)){
-            $query->WhereMonth('order_date',$month);
+    public function scopeSearchOutput($query, $monthone, $monthtwo, $year){
+        $query->join('output_details','outputs.id','output_details.output_id')
+            ->join('articles','output_details.article_id','articles.id')
+            ->join('sections','outputs.section_id','sections.id');
+        if(isset($monthone) && isset($monthtwo)){
+            $query->WhereMonth('order_date', '>=',  $monthone)
+                ->WhereMonth('order_date', '<=', $monthtwo);
         }
 
         if(isset($year)){
             $query->WhereYear('order_date',$year);
         }
         return $query->select('outputs.*', 'sections.name');
+    }
+
+    public function scopeFilterValue($query, $value){
+        if(isset($value)){
+            $query->where('outputs.receipt','like',"%$value%")
+                ->orWhere('sections.name','like',"%$value%")
+                ->orWhere('articles.name_article','like',"%$value%");
+        }
+        return $query;
     }
 
     public static function getOutput($id){
@@ -72,6 +84,20 @@ class Output extends Model
             ->where('output_details.article_id',$id)
             ->paginate(12)->appends(request()->query());
 
+    }
+
+    public static function getOutputs($article_id, $year, $periodIni, $periodEnd){
+        return DB::table('outputs')
+            ->join('output_details','outputs.id','output_details.output_id')
+            ->join('articles','output_details.article_id','articles.id')
+            ->whereYear('outputs.delivery_date',$year)
+            ->WhereMonth('outputs.delivery_date', '>=', $periodIni)
+            ->WhereMonth('outputs.delivery_date', '<=', $periodEnd)
+            ->Where('output_details.article_id', $article_id)
+            ->select(
+                'output_details.quantity as outputs',
+                'output_details.balance_stock',
+            );
     }
 
     public static function boot() {

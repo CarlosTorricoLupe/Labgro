@@ -14,7 +14,8 @@ class Product extends Model
         'code',
         'description',
         'image',
-        'role_id'
+        'role_id',
+        'unit_id'
     ];
 
     public function presentations()
@@ -32,14 +33,21 @@ class Product extends Model
         return $this->belongsToMany(Production::class,'production_products')->withPivot('quantity')->withTimestamps();
     }
 
+    public function units(){
+        return $this->belongsToMany(Unit::class);
+    }
+
     public static function searchProducts($value='',$month,$year){
         if (!$value && !$month && !$year) {
-            return self::select('products.id',
+            return self::join('units','products.unit_id','units.id')
+            ->select('products.id',
                 'products.name',
                 'products.code',
                 'products.description',
                 'products.image',
-                'products.created_at')
+                'products.created_at',
+                'unit_id',
+                'unit_measure')
                 ->Where('role_id',auth()->user()->role_id)
                 ->get();
         }
@@ -75,6 +83,21 @@ class Product extends Model
             ->where('material_products.material_id', $material_id);
     }
 
+    public static function showProduct($id){
+        return self::join('units','products.unit_id','units.id')
+        ->select('products.id',
+                'products.name',
+                'products.code',
+                'products.description',
+                'products.image',
+                'products.created_at',
+                'unit_id',
+                'unit_measure')
+                ->Where('role_id',auth()->user()->role_id)
+                ->where('products.id',$id)
+                ->first();
+        
+    }
 
     public static function boot() {
         parent::boot();

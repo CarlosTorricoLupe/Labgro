@@ -20,6 +20,7 @@ use App\Http\Controllers\ProductionController;
 use App\Http\Controllers\ProductionProductController;
 use App\Http\Controllers\ProductMaterialController;
 use App\Http\Controllers\ProductPresentationController;
+use Illuminate\Routing\Route as RoutingRoute;
 
 /*
 |--------------------------------------------------------------------------
@@ -128,7 +129,16 @@ Route::group(['middleware' => ['auth:api']], function() {
 
 //VERIFIRY PRICE
     Route::get('/verifyPriceArticle/{id}', [OutputController::class, 'verififyPriceArticle']);
-
+    Route::get('/article/getPhysicalReport', [ArticleController::class, 'physicalReport']);
+    Route::get('article/getPhysicalReport/export', [ArticleController::class, 'PhysicalExport']);
+    Route::get('getConsolidate/export', [ProductionController::class, 'consolidateExport']);
+    Route::get('getDetailProduction/export',[ProductionController::class,'detailProductionExport']);
+    Route::get('getSummaryProduction/export',[ProductionController::class,'summaryProductionExport']);
+    Route::get('/peripheralReport/export', [ArticleController::class, 'peripheralReportExport']);
+    Route::get('income/export', [IncomeController::class, 'incomeExport']);
+    Route::get('output_export', [OutputController::class, 'outputExport']);
+    Route::get('output_export', [OutputController::class, 'outputExport']);
+    Route::get('orders_export', [OrderController::class, 'notificationsExport']);
 });
 
 

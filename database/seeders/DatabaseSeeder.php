@@ -26,7 +26,7 @@ class DatabaseSeeder extends Seeder
              ArticleSeeder::class,
              SectionSeeder::class,
              IncomeSeeder::class,
-             OutputSeeder::class,
+             //OutputSeeder::class,
              MaterialSeeder::class,
              PresentationUnitsSeeder::class,
              ProductSeeder::class,

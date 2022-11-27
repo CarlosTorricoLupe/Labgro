@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\OuputExport;
 use App\Http\Requests\OutputRequest;
 use App\Models\Article;
 use App\Models\Article_income;
@@ -10,6 +11,8 @@ use App\Models\Output;
 use App\Models\Order;
 use App\Models\OutputDetail;
 use Illuminate\Http\Request;
+use Carbon\Carbon;
+use Maatwebsite\Excel\Facades\Excel;
 
 class OutputController extends Controller
 {
@@ -20,9 +23,14 @@ class OutputController extends Controller
      */
     public function index(Request $request)
     {
-        $outputs = Output::searchOutput($request->outputvalue, $request->month, $request->year)
+        $outputs = Output::searchOutput($request->monthone, $request->monthtwo ,$request->year)
+            ->filterValue($request->value)
             ->paginate(12)
             ->appends(request()->query());
+
+        foreach ($outputs as $output){
+            $output['details'] = OutputDetail::getDetails($output->id);
+        }
         return response()->json([
             'success' => true,
             'incomes'=> $outputs
@@ -38,21 +46,26 @@ class OutputController extends Controller
      */
 
 
-    public function store(OutputRequest $request, $id_order = null)
+    public function store(OutputRequest $request)
     {
         $details = $request->only('details');
         $response = array();
 
         if( $this->verifyStockArticle($details['details']) ){
+            list($balance_stock,$balance_price,$unit_value)=$this->getBalances($details['details']);
             $this->decrementStockArticle($details['details']);
-
-            $output = Output::create($request->except(['details','role_id', 'order_id']));
+            $input = $request->except(['details','role_id', 'order_id']);
+            $input['delivery_date'] = $input['delivery_date'] . " " . Carbon::now()->format("H:i:s");
+            $output = Output::create($input);
             foreach ($details['details'] as $detail){
                 $output->articles()->attach(
                     $detail['article_id'],
                     ['quantity'=>$detail['quantity'],
                     'budget_output'=>$detail['budget_output'],
-                    'total'=>$detail['total']
+                    'total'=>$detail['total'],
+                    'balance_stock'=>$balance_stock,
+                    'balance_price'=>$balance_price,
+                    'unit_value'=>$unit_value
                     ]
                 );
             }
@@ -90,32 +103,13 @@ class OutputController extends Controller
             $quantity_order = $detail['quantity'];
 
             if( ($stock_article - $quantity_order) < 0 ){
-                if(($this->translateStockIncome($article, $quantity_order)) == false){
-                    $is_permit = false;
-                }
+                $is_permit=false;
             }
         }
         return $is_permit;
     }
 
-    public function translateStockIncome($article, $quantity_order){
-        $is_permit = false;
 
-        $income = Article_income::
-            where('article_id', $article->id )
-            ->where('is_consumed', '=' , 0)
-            ->first();
-
-        if( ($article->stock + $income->quantity) > $quantity_order) {
-            $article->stock = $article->stock + $income->quantity;
-            $income->is_consumed = 1;
-            $article->save();
-            $income->save();
-            $is_permit = true;
-        }
-
-        return $is_permit;
-    }
 
     public function decrementStockArticle($details){
         foreach ($details as $detail){
@@ -126,6 +120,21 @@ class OutputController extends Controller
                 $article->stock_total = $article->stock;
                 $article->save();
             }
+        }
+    }
+
+    public function getBalances($details){
+         $balance_stock = 0;
+         $balance_price = 0;
+         $unit_value=0;
+        foreach($details as $detail){
+            $article=Article::find($detail['article_id']);
+            if ($article) {
+            $balance_stock=$article->stock - $detail['quantity'];
+            $balance_price=($article->unit_price * $article->stock) - $detail['total'];
+            $unit_value=$article->unit_price;
+            }
+            return [$balance_stock,$balance_price,$unit_value];
         }
     }
 
@@ -274,4 +283,16 @@ class OutputController extends Controller
             'outputs' => $outputs]);
     }
 
+    public function outputExport(Request $request)
+    {
+        $controller=app('App\Http\Controllers\OutputController')->index($request);
+        $art=$controller->getOriginalContent()['incomes'];
+        $outputs=collect($art);
+        $data=$outputs['data'];
+        $colection=collect($data);
+        $monthone=$request->monthone;
+        $monthtwo=$request->monthtwo;
+        $year=$request->year;
+        return Excel::download(new OuputExport($colection,$monthone,$monthtwo,$year), 'Salidas '.$monthone.'-'.$monthtwo.'-'.$year.'.xlsx');
+    }
 }

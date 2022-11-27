@@ -2,11 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\ConsolidateReportExport;
+use App\Exports\DetailProductionReportExport;
+use App\Exports\SummaryProductionReportExport;
 use App\Models\Presentation_production_product;
 use App\Models\Production;
 use App\Models\Production_product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Maatwebsite\Excel\Facades\Excel;
 use Psr\Http\Message\RequestInterface;
 use Tymon\JWTAuth\Facades\JWTAuth;
 
@@ -17,10 +21,7 @@ class ProductionController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function __construct()
-    {
-        $this->user = JWTAuth::parseToken()->authenticate();
-    }
+    
 
     public function index(Request $request)
     {
@@ -123,12 +124,13 @@ class ProductionController extends Controller
 
 
     public function getDetailProduction(Request $request){
+        $response = array();
         $pr=Production::whereDate('productions.created_at','>=',$request->start_date)
         ->whereDate('productions.created_at','<=',$request->end_date)
-        ->where('productions.role_id',auth()->user()->role_id)->get(['id','quantity_used']);
+        ->where('productions.role_id',auth()->user()->role_id)->get(['id','quantity_used'])->toArray();
         foreach($pr as $p){
             $result = array();
-            $presentations=Production::getProductsByProduction($p->id);
+            $presentations=Production::getProductsByProduction($p['id']);
             foreach($presentations as $presentation){
                 $import =  $presentation->units_produced*$presentation->unit_cost_production;
                 $result[]=[
@@ -145,10 +147,11 @@ class ProductionController extends Controller
                     'Cantidad_efectivamente_producido' =>$presentation->units_produced,
                     'Importe_efectivamente_producido' =>$import
                 ];
+                $p['presentation']= $result;
             }
-            $p->presentation=$result;
+            $response[]=$p;
         }
-        return $pr;
+        return $response;
        }
 
        public function getSummaryProduction(Request $request){
@@ -172,4 +175,31 @@ class ProductionController extends Controller
         return $result;
 
        }
+
+       public function consolidateExport(Request $request) {
+        $controller=app('App\Http\Controllers\ProductionController')->getConsolidate($request);
+        $monthone=$request->start_date;
+        $monthtwo=$request->end_date;
+        $cont=collect($controller);
+        
+        return Excel::download(new ConsolidateReportExport($cont,$monthone,$monthtwo), 'CUADRO ECONOMICO CONSOLIDADO '.$monthone.' a '.$monthtwo.'.xlsx');
+        }
+
+        public function detailProductionExport(Request $request) {
+            $controller=app('App\Http\Controllers\ProductionController')->getDetailProduction($request);
+            $monthone=$request->start_date;
+            $monthtwo=$request->end_date;
+            $cont=collect($controller);
+            
+            return Excel::download(new DetailProductionReportExport($cont,$monthone,$monthtwo), 'DETALLE DE PRODUCCION '.$monthone.' a '.$monthtwo.'.xlsx');
+        }
+
+        public function summaryProductionExport(Request $request) {
+            $controller=app('App\Http\Controllers\ProductionController')->getSummaryProduction($request);
+            $monthone=$request->start_date;
+            $monthtwo=$request->end_date;
+            $cont=collect($controller);
+            
+            return Excel::download(new SummaryProductionReportExport($cont,$monthone,$monthtwo), 'RESUMEN DE PRODUCCION '.$monthone.' a '.$monthtwo.'.xlsx');
+        }
 }

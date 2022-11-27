@@ -20,6 +20,7 @@ class CreateIncomesTable extends Migration
             $table->string('provider')->nullable();
             $table->integer('order_number')->nullable();
             $table->integer('invoice_number');
+            $table->string('origen')->default('Ingreso');
             $table->timestamps();
         });
     }
